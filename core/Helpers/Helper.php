@@ -2,6 +2,6 @@
 
 namespace phpGone\Helpers;
 
-class Assets{
+class Helper{
     
 }
