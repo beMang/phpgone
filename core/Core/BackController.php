@@ -90,6 +90,11 @@ class BackController extends ApplicationComponent
         $this->action = $action;
     }
 
+    /**
+     * Renvoie une instance de \phpGone\Renderer\Renderer
+     *
+     * @return \phpGone\Renderer\Renderer
+     */
     public function getRenderer(){
         if(is_null($this->renderer)){
             $this->setRenderer(new \phpGone\Renderer\Renderer($this->getApp()));
@@ -99,6 +104,12 @@ class BackController extends ApplicationComponent
         }
     }
 
+    /**
+     * Défini l'attribut renderer
+     *
+     * @param \phpGone\Renderer\Renderer $renderer
+     * @return void
+     */
     private function setRenderer(\phpGone\Renderer\Renderer $renderer){
         $this->renderer = $renderer;
     }
