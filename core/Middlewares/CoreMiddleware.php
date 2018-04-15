@@ -26,8 +26,10 @@ class CoreMiddleware extends Middleware
         if (is_null($controller)) {
             return $next($request);
         }
+        ob_start();
         $controller->execute();
-        $response->getBody()->write($controller->getMainRender()->render());
+        $responseController = ob_get_clean();
+        $response->getBody()->write($responseController);
         //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)
         //                               ->info('Requête traitée par le core(Middleware)');
         return $response;

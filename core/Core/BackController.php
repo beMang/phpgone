@@ -31,20 +31,6 @@ class BackController extends ApplicationComponent
     protected $module = '';
 
     /**
-     * Rendu principal du controller
-     *
-     * @var \phpGone\Core\Renderer\RendererInterface
-     */
-    protected $mainRender = null;
-
-    /**
-     * Vue associée au controller
-     *
-     * @var string
-     */
-    protected $view = '';
-
-    /**
      * Constucteur du BackController
      *
      * @param Application $app Application du composant BackController
@@ -54,13 +40,9 @@ class BackController extends ApplicationComponent
     public function __construct(Application $app, $module, $action)
     {
         parent::__construct($app);
-
-        $renderClassName = '\phpGone\Renderer\\' . $app->getConfig()->get("defaultMainRender") . 'Renderer';
-        $this->setMainRender(new $renderClassName($this->getApp()));
         
         $this->setModule($module);
         $this->setAction($action);
-        $this->setView($action);
     }
 
     /**
@@ -76,27 +58,6 @@ class BackController extends ApplicationComponent
             throw new \RuntimeException('L\'action' . $this->action . 'n\'est pas définie sur ce module');
         }
         $this->$method($this->app->getRequest());
-    }
-
-    /**
-     * Récupère le rendu principal
-     *
-     * @return \phpGone\Core\Renderer\RendererInterface
-     */
-    public function getMainRender()
-    {
-        return $this->mainRender;
-    }
-
-    /**
-     * Modifie le rendu principal
-     *
-     * @param \phpGone\Renderer\RendererInterface $render Rendu à définir
-     * @return void
-     */
-    public function setMainRender(\phpGone\Renderer\RendererInterface $render)
-    {
-        $this->mainRender = $render;
     }
 
     /**
@@ -125,28 +86,5 @@ class BackController extends ApplicationComponent
             throw new \InvalidArgumentException('L\'action doit être une chaine de caractères valide');
         }
         $this->action = $action;
-    }
-
-    /**
-     * Défini la vue correspondante au module et à l'action
-     *
-     * @param string $view
-     * @return \InvalidArgumentException Si erreur
-     */
-    public function setView($view)
-    {
-        if (!is_string($view) || empty($view)) {
-            throw new \InvalidArgumentException('La vue doit être une chaine de caractères valides');
-        }
-        $this->view = $view;
-
-        if ($this->getApp()->getConfig()->get("defaultMainRender") == 'Twig') {
-            $extension = '.twig';
-        } else {
-            $extension = '.php';
-        }
-        $this->getMainRender()->setContentFile(
-            '/' . $this->module . '/' . $this->view . $extension
-        );
     }
 }
