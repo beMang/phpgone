@@ -44,7 +44,7 @@ class CoreMiddleware extends Middleware
     public function getController($router, $request)
     {
         $xml = new \DOMDocument;
-        $routes = $this->getApp()->getConfig()->get('routes');
+        $routes = $this->getConfig()->get('routes');
         
         //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {

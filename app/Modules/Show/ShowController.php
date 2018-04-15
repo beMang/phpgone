@@ -7,6 +7,6 @@ class ShowController extends \phpGone\Core\BackController
 {
     public function executeIndex(\Psr\Http\Message\ServerRequestInterface $request)
     {
-        Renderer::twigRender('Show/index.twig', []);
+        $this->getRenderer()->twigRender('Show/index.twig', []);
     }
 }

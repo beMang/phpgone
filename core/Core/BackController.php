@@ -30,6 +30,8 @@ class BackController extends ApplicationComponent
      */
     protected $module = '';
 
+    protected $renderer = null;
+
     /**
      * Constucteur du BackController
      *
@@ -86,5 +88,18 @@ class BackController extends ApplicationComponent
             throw new \InvalidArgumentException('L\'action doit être une chaine de caractères valide');
         }
         $this->action = $action;
+    }
+
+    public function getRenderer(){
+        if(is_null($this->renderer)){
+            $this->setRenderer(new \phpGone\Renderer\Renderer($this->getApp()));
+            return $this->renderer;
+        } else{
+            return $this->renderer;
+        }
+    }
+
+    private function setRenderer(\phpGone\Renderer\Renderer $renderer){
+        $this->renderer = $renderer;
     }
 }

@@ -94,8 +94,6 @@ class Application
     {
         return $this->config;
     }
-    
-    //MIDDLEWARES (Fonctionnement) NOTES : Class pour les middlewares
 
     /**
      * Ajoute un middleware à l'application (Au début du tableau)

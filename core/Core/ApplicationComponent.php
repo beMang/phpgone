@@ -43,6 +43,16 @@ abstract class ApplicationComponent
         return $this->app;
     }
 
+    /**
+     * Renvoie la classe de configuration de l'application
+     *
+     * @return \phpGone\Core\Config
+     */
+    public function getConfig()
+    {
+        return $this->getApp()->getConfig();
+    }
+
     public function setApp(\phpGone\Core\Application $app)
     {
         $this->app = $app;
