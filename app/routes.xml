@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<config>
+    <routes>
+        <route url="/news" module="News" action="index" var=""/>
+        <route url="/" module="Show" action="index" var=""/>
+        <route url="(?:^\/news\/)([\w%-]*$)" module="News" action="unique" vars="slug"/>
+    </routes>
+    
+    <definitions>
+        <define hostPDO="localhost" bdname="test"/>
+    </definitions>
+</config>
