@@ -7,3 +7,4 @@
 * Ecriture de tests
 * Développement d'extension twig
 * Développement d'un système de cache
+* Nouveau système de rendu

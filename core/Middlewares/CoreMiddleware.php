@@ -42,24 +42,11 @@ class CoreMiddleware extends Middleware
     public function getController($router, $request)
     {
         $xml = new \DOMDocument;
-        $xml->load($this->getApp()->getConfig()->get('routesConfigFiles'));
-
-        $routes = $xml->getElementsByTagName('route');
+        $routes = $this->getApp()->getConfig()->get('routes');
         
         //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {
-            $vars = [];
-
-            if ($route->hasAttribute('vars')) {
-                $vars = explode(',', $route->getAttribute('vars'));
-            }
-
-            $router->addRoute(new \phpGone\Router\Route(
-                $route->getAttribute('url'),
-                $route->getAttribute('module'),
-                $route->getAttribute('action'),
-                $vars
-            ));
+            $router->addRoute($route);
         }
 
         try {
