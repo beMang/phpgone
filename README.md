@@ -1,6 +1,8 @@
 # phpGone
 Le framework phpGone est en cours de développement, la documentation sera écrite plus tard. 
 
+**Cette page n'est plus à jour**
+
 ## Néanmoins voici le principe général du framework :
 Ceci traite uniquement du CoreMiddleware :
 Chaque partie du site possède un module :
