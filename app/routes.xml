@@ -2,9 +2,7 @@
 
 <config>
     <routes>
-        <route url="/news" module="News" action="index" var=""/>
         <route url="/" module="Show" action="index" var=""/>
-        <route url="(?:^\/news\/)([\w%-]*$)" module="News" action="unique" vars="slug"/>
     </routes>
     
     <definitions>
