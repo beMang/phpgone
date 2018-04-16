@@ -21,12 +21,9 @@ class Renderer extends ApplicationComponent{
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
         ]);
-        /*
-        Extension
-        foreach ($this->getApp()->getConfig()->get('TwigExtensions') as $extension) {
-            $twig->addExtension(new $extension);
+        foreach ($this->getConfig()->get('TwigExtensions') as $extension) {
+            $twig->addExtension(new $extension($this->getApp()));
         }
-        */
         echo $twig->render($view, $datas);
     }
 

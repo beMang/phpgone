@@ -10,11 +10,12 @@
  */
 namespace phpGone\Renderer\TwigExtensions;
 
+use phpGone\Renderer\TwigExtensions\BaseTwigExtension;
+
 /**
- * Class FormExtension
- * Facilite la génération de formulaire
+ * @example Cette classe est un exemple (incomplet) d'une extension twig
  */
-class FormExtension extends \Twig_Extension
+class FormExtension extends BaseTwigExtension
 {
     public function getFunctions()
     {
@@ -23,8 +24,8 @@ class FormExtension extends \Twig_Extension
         ];
     }
 
-    public function field($key, $value, $label, array $option = [])
+    public function field()
     {
-        //TO DO !!
+        return $this->getConfig()->get('database.host');
     }
 }

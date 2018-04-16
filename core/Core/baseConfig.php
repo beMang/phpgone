@@ -23,8 +23,7 @@ use phpGone\Core\MiddlewaresDispatcher;
 
 return[
     'TwigExtensions' => [
-        phpGone\Renderer\TwigExtensions\FormExtension::class,
-        phpGone\Renderer\TwigExtensions\FlashExtension::class
+        phpGone\Renderer\TwigExtensions\FormExtension::class
     ],
     'database.host' => 'mysql:host=localhost;dbname=test',
     'database.user' => 'root',

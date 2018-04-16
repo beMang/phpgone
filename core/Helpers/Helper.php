@@ -2,6 +2,8 @@
 
 namespace phpGone\Helpers;
 
-class Helper{
+use phpGone\Core\ApplicationComponent;
+
+class Helper extends ApplicationComponent{
     
 }

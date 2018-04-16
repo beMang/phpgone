@@ -11,7 +11,7 @@
  */
 namespace adriHelpers;
 
-class FileManager
+class FileManager extends \phpGone\Helpers\Helper
 {
     const FICHIER_TROP_GROS = 0;
     const EXTENSION_INVALIDE = 1;
@@ -19,10 +19,6 @@ class FileManager
 
     protected $dirImg;
     protected $maxSizeImg;
-
-    public function __construct()
-    {
-    }
 
     public function moveImageUpload($fileNamePost, $fileName, $dossierDestination)
     {
