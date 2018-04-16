@@ -71,12 +71,14 @@ class Application
         $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
     }
 
-    public function send(){
+    public function send()
+    {
         $responseSender = new \phpGone\Core\ResponseSender();
         $responseSender->send($this->httpResponse);
     }
 
-    public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response){
+    public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response)
+    {
         $this->httpResponse = $response;
     }
 

@@ -95,11 +95,12 @@ class BackController extends ApplicationComponent
      *
      * @return \phpGone\Renderer\Renderer
      */
-    public function getRenderer(){
-        if(is_null($this->renderer)){
+    public function getRenderer()
+    {
+        if (is_null($this->renderer)) {
             $this->setRenderer(new \phpGone\Renderer\Renderer($this->getApp()));
             return $this->renderer;
-        } else{
+        } else {
             return $this->renderer;
         }
     }
@@ -110,7 +111,8 @@ class BackController extends ApplicationComponent
      * @param \phpGone\Renderer\Renderer $renderer
      * @return void
      */
-    private function setRenderer(\phpGone\Renderer\Renderer $renderer){
+    private function setRenderer(\phpGone\Renderer\Renderer $renderer)
+    {
         $this->renderer = $renderer;
     }
 }

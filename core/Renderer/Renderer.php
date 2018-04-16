@@ -4,9 +4,11 @@ namespace phpGone\Renderer;
 
 use phpGone\Core\ApplicationComponent;
 
-class Renderer extends ApplicationComponent{
+class Renderer extends ApplicationComponent
+{
 
-    public function render($view, $datas){
+    public function render($view, $datas)
+    {
         if (!file_exists($fileToRender)) {
             throw new \RuntimeException('La vue spécifiée n\'existe pas' . $fileToRender);
         }
@@ -16,7 +18,8 @@ class Renderer extends ApplicationComponent{
         require $fileToRender;
     }
 
-    public function twigRender($view, $datas){
+    public function twigRender($view, $datas)
+    {
         $loaderTwig = new \Twig_Loader_Filesystem(__DIR__ . '/../../app/views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
@@ -45,5 +48,4 @@ class Renderer extends ApplicationComponent{
         return $twig->render($this->contentFile, $this->vars);
     }
     */
-
 }
