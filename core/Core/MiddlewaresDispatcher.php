@@ -66,7 +66,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
     private function getMiddleware()
     {
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
-            $middleWareClass = '\\phpGone\Middlewares\\' . $this->middlewares[$this->middlewaresIndex]; 
+            $middleWareClass = '\\phpGone\Middlewares\\' . $this->middlewares[$this->middlewaresIndex];
             $middleware = new $middleWareClass($this->getApp());
             $this->middlewaresIndex++;
             return $middleware;

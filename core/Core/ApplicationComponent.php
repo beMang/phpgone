@@ -12,9 +12,8 @@ namespace phpGone\Core;
 
 /**
  * Class ApplicationComponent
- * Abstraite, faite pour les composants de l'application
  */
-abstract class ApplicationComponent
+class ApplicationComponent
 {
     /**
      * Application du composant
