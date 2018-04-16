@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+</head>
+<body>
+    <h1>Test d'un module de news avec phpGone</h1>
+    {% for new in news %}
+        <a href="/news/{{ new.Titre }}">{{ new.Titre }}</a><br />
+    {% endfor %}
+</body>
+</html>

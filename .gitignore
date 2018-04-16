@@ -1,0 +1,6 @@
+/.vscode/
+*.log
+*.cache
+/vendor/
+/tmp/cache/twig/*
+composer.lock
