@@ -26,9 +26,9 @@ class ErrorController extends \phpGone\Core\BackController
      * @param string $module Module à traiter
      * @param string $action Action à executer
      */
-    public function __construct(Application $app, $module, $action)
+    public function __construct(Application $app, $action)
     {
-        parent::__construct($app, $module, $action);
+        parent::__construct($app, $action);
     }
 
     /**
