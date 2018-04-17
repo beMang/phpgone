@@ -40,7 +40,6 @@ class TestResponse extends \PHPUnit\Framework\TestCase
         $app->addMiddlewares('TrailingSlashMiddleware');
         $response = $app->run();
         $this->assertEquals(301, $response->getStatusCode(301));
-        var_dump($response->getHeaders());
         $this->assertEquals('/asfdsq', $response->getHeaders()['Location'][0]);
     }
 }
