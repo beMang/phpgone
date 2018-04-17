@@ -68,7 +68,7 @@ class Application
      */
     public function run()
     {
-        $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
+        return $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
     }
 
     public function send()
@@ -80,6 +80,7 @@ class Application
     public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response)
     {
         $this->httpResponse = $response;
+        return $response;
     }
 
     public function getRequest()

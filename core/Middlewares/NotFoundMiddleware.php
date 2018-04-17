@@ -31,7 +31,7 @@ class NotFoundMiddleware extends Middleware
         $controller->execute();
         $response = new Response;
         $response = $response->withStatus(404);
-        $response->getBody()->write($controller->getMainRender()->render());
+        $response->getBody()->write('Error 404');
         //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)->info('Not Found 404'); //Log
         return $response;
     }
