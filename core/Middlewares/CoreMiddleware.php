@@ -61,10 +61,8 @@ class CoreMiddleware extends Middleware
 
         $_GET = array_merge($_GET, $matchedRoute->getVars());
 
-        $controllerClass = '\\app\\Modules\\'
-                            . $matchedRoute->getModule() . '\\'
-                            . $matchedRoute->getModule() . '' . 'Controller';
+        $controllerClass = '\\app\\Controllers\\' . $matchedRoute->getController();
                             
-        return new $controllerClass($this->getApp(), $matchedRoute->getModule(), $matchedRoute->getAction());
+        return new $controllerClass($this->getApp(), $matchedRoute->getAction());
     }
 }
