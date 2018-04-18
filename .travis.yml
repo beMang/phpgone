@@ -4,8 +4,8 @@ php:
   - nightly
 
 install:
-  composer install
-  composer dump -o
+  - composer install
+  - composer dump -o
 
 script:
   ./vendor/bin/phpunit
