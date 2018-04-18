@@ -7,5 +7,6 @@ return [
     'defaultAsset' => 'site',
     'routes' => [
         new Route('^[\/]$', 'Show\Show', 'index', ['test'])
-    ]
+    ],
+    'viewError404' => 'Error/show.twig'
 ];

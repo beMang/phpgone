@@ -28,10 +28,12 @@ class NotFoundMiddleware extends Middleware
     public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
     {
         $controller = new \phpGone\Error\ErrorController($this->getApp(), 'show');
-        $controller->execute();
         $response = new Response;
         $response = $response->withStatus(404);
-        $response->getBody()->write('<h1>Error 404</h1>');
+        ob_start();
+        $controller->execute();
+        $responseController = ob_get_clean();
+        $response->getBody()->write($responseController);
         //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)->info('Not Found 404'); //Log
         return $response;
     }

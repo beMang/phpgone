@@ -22,7 +22,7 @@ class TestResponse extends \PHPUnit\Framework\TestCase
         $this->assertContains('Error 404', $stream->read(1024 * 8));
     }
 
-    public function testNewsIndex()
+    public function testIndex()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
