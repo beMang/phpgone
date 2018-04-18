@@ -9,7 +9,6 @@ class TestResponse extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         require "vendor/autoload.php";
-        $_SERVER['DOCUMENT_ROOT'] = 'C:\Users\adrie\Desktop\Jeux\Site\exemplePhpGone\tests';
     }
 
     public function testError404()
@@ -20,18 +19,18 @@ class TestResponse extends \PHPUnit\Framework\TestCase
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
-        $this->assertContains('<h1>Error 404</h1>', $stream->read(1024 * 8));
+        $this->assertContains('Error 404', $stream->read(1024 * 8));
     }
 
-    public function testNewsIndex()
+    public function testIndex()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/news');
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $app->addMiddlewares('TrailingSlashMiddleware');
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
-        $this->assertContains('<h1>Test d\'un module de news avec phpGone</h1>', $stream->read(1024 * 8));
+        $this->assertContains('<h1>phpGone - Pour simplifier le php</h1>', $stream->read(1024 * 8));
     }
 
     public function testTrailingSlashMiddleware()
@@ -41,7 +40,6 @@ class TestResponse extends \PHPUnit\Framework\TestCase
         $app->addMiddlewares('TrailingSlashMiddleware');
         $response = $app->run();
         $this->assertEquals(301, $response->getStatusCode(301));
-        var_dump($response->getHeaders());
         $this->assertEquals('/asfdsq', $response->getHeaders()['Location'][0]);
     }
 }

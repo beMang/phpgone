@@ -68,16 +68,19 @@ class Application
      */
     public function run()
     {
-        $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
+        return $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
     }
 
-    public function send(){
+    public function send()
+    {
         $responseSender = new \phpGone\Core\ResponseSender();
         $responseSender->send($this->httpResponse);
     }
 
-    public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response){
+    public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response)
+    {
         $this->httpResponse = $response;
+        return $response;
     }
 
     public function getRequest()
@@ -94,8 +97,6 @@ class Application
     {
         return $this->config;
     }
-    
-    //MIDDLEWARES (Fonctionnement) NOTES : Class pour les middlewares
 
     /**
      * Ajoute un middleware à l'application (Au début du tableau)

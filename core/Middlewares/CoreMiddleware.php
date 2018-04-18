@@ -26,8 +26,10 @@ class CoreMiddleware extends Middleware
         if (is_null($controller)) {
             return $next($request);
         }
+        ob_start();
         $controller->execute();
-        $response->getBody()->write($controller->getMainRender()->render());
+        $responseController = ob_get_clean();
+        $response->getBody()->write($responseController);
         //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)
         //                               ->info('Requête traitée par le core(Middleware)');
         return $response;
@@ -42,24 +44,11 @@ class CoreMiddleware extends Middleware
     public function getController($router, $request)
     {
         $xml = new \DOMDocument;
-        $xml->load($this->getApp()->getConfig()->get('routesConfigFiles'));
-
-        $routes = $xml->getElementsByTagName('route');
+        $routes = $this->getConfig()->get('routes');
         
         //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {
-            $vars = [];
-
-            if ($route->hasAttribute('vars')) {
-                $vars = explode(',', $route->getAttribute('vars'));
-            }
-
-            $router->addRoute(new \phpGone\Router\Route(
-                $route->getAttribute('url'),
-                $route->getAttribute('module'),
-                $route->getAttribute('action'),
-                $vars
-            ));
+            $router->addRoute($route);
         }
 
         try {
@@ -72,10 +61,8 @@ class CoreMiddleware extends Middleware
 
         $_GET = array_merge($_GET, $matchedRoute->getVars());
 
-        $controllerClass = '\\app\\Modules\\'
-                            . $matchedRoute->getModule() . '\\'
-                            . $matchedRoute->getModule() . '' . 'Controller';
+        $controllerClass = '\\app\\Controllers\\' . $matchedRoute->getController();
                             
-        return new $controllerClass($this->getApp(), $matchedRoute->getModule(), $matchedRoute->getAction());
+        return new $controllerClass($this->getApp(), $matchedRoute->getAction());
     }
 }

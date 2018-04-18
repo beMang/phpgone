@@ -1,6 +1,12 @@
 <?php
+
+use phpGone\Router\Route;
+
 return [
-    'routesConfigFiles' => __DIR__ . '\routes.xml',
     'defaultMainRender' => 'Twig',
-    'defaultAsset' => 'site'
+    'defaultAsset' => 'site',
+    'routes' => [
+        new Route('^[\/]$', 'Show\Show', 'index', ['test'])
+    ],
+    'viewError404' => 'Error/show.twig'
 ];

@@ -1,7 +1,11 @@
 # phpGone
 Le framework phpGone est en cours de développement, la documentation sera écrite plus tard. 
 
-**Cette page n'est plus à jour**
+## Statut de build
+* Master : [![Build Status](https://travis-ci.org/beMang/phpgone.svg?branch=master)](https://travis-ci.org/beMang/phpgone)
+* Branch dev : [![Build Status](https://travis-ci.org/beMang/phpgone.svg?branch=develop)](https://travis-ci.org/beMang/phpgone)
+
+**Cette page est totalement dépréciée**
 
 ## Néanmoins voici le principe général du framework :
 Ceci traite uniquement du CoreMiddleware :
@@ -19,31 +23,22 @@ Il y a un système de middleware permettant d'influencer la réponse ou la requ�
     * Traitement de la requête par le controleur correspondant (Effectue la bonne action)
     * Rendu des informations (Render et variables)
   * Not Found Middleware (404)
-* Envoi de la réponse de l'application
+* Renvoi du résultat
+* Envoi du résultat aux clients
 
 ## Fonctionalités disponibles
 * Router et routes
 * Rendu twig
 * Configuration simple
 * Middlewares
-* Container (PHP-DI)
-* Logs (1 issues opened)
 
-## Fonctionalités en développement (instable ou inachevés)
-* Database
-* File manager
-* Session
-* Cache
-* Middleware CSRF
-* Query Builder
-* TwigExtension : FormExtension
+### Fonctionalités en développement : voir les issues
 
 ## PSR
 Le framework respecte/respectera certains psr :
 * Logger interface (psr-3)
-* Autoloading standard (psr-4)
+* Autoloading standard (psr-4) avec Composer
 * HTTP Message interface (psr-7)
-* Container Interface (psr-11)
 * Simple cache (psr-16)
 * Coding Style Guide (psr-2 et donc psr-1)
 
