@@ -24,9 +24,5 @@ use phpGone\Core\MiddlewaresDispatcher;
 return[
     'TwigExtensions' => [
         phpGone\Renderer\TwigExtensions\FormExtension::class
-    ],
-    'database.host' => 'mysql:host=localhost;dbname=test',
-    'database.user' => 'root',
-    'database.password' => 'Ka#W6#m$',
-    'routesConfigFiles' => 'test'
+    ]
 ];

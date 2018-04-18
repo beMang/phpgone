@@ -34,4 +34,8 @@ class Config
             return false;
         }
     }
+
+    public function defineUnique($nameParam, $valParam){
+        $this->config[$nameParam] = $valParam;
+    }
 }
