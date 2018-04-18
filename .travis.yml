@@ -5,6 +5,7 @@ php:
 
 install:
   composer install
+  composer dump -o
 
 script:
   ./vendor/bin/phpunit
