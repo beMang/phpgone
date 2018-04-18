@@ -5,15 +5,15 @@ namespace phpGone\Router;
 class Route
 {
     protected $action;
-    protected $module;
+    protected $controller;
     protected $url;
     protected $varsNames;
     protected $vars = [];
 
-    public function __construct($url, $module, $action, array $varsNames)
+    public function __construct($url, $controller, $action, array $varsNames)
     {
         $this->setUrl($url);
-        $this->setModule($module);
+        $this->setController($controller);
         $this->setAction($action);
         $this->setVarsNames($varsNames);
     }
@@ -44,10 +44,11 @@ class Route
             return false;
         }
     }
-    public function setModule($module)
+
+    public function setController($controller)
     {
-        if (is_string($module)) {
-            $this->module = $module;
+        if (is_string($controller)) {
+            $this->module = $controller;
         } else {
             return false;
         }
@@ -78,7 +79,7 @@ class Route
         return $this->action;
     }
 
-    public function getModule()
+    public function getController()
     {
         return $this->module;
     }

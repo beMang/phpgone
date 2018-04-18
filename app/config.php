@@ -6,6 +6,6 @@ return [
     'defaultMainRender' => 'Twig',
     'defaultAsset' => 'site',
     'routes' => [
-        new Route('^[\/]$', 'Show', 'index', ['test'])
+        new Route('^[\/]$', 'Show\Show', 'index', ['test'])
     ]
 ];

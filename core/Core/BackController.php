@@ -23,13 +23,6 @@ class BackController extends ApplicationComponent
      */
     protected $action = '';
 
-    /**
-     * Module du controller
-     *
-     * @var string
-     */
-    protected $module = '';
-
     protected $renderer = null;
 
     /**
@@ -39,11 +32,10 @@ class BackController extends ApplicationComponent
      * @param string $module Module du controller
      * @param string $action Action à executer sur le controller
      */
-    public function __construct(Application $app, $module, $action)
+    public function __construct(Application $app, $action)
     {
         parent::__construct($app);
         
-        $this->setModule($module);
         $this->setAction($action);
     }
 
