@@ -7,10 +7,9 @@ install:
   - composer install
   - composer dump -o
 
+cache:
+  directories:
+  - vendor
+
 script:
   ./vendor/bin/phpunit
-
-after_succes:
-   cache:
-    directories:
-     - vendor
