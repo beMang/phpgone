@@ -9,3 +9,8 @@ install:
 
 script:
   ./vendor/bin/phpunit
+
+after_succes:
+   cache:
+    directories:
+     - vendor
