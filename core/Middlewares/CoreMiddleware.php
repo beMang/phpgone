@@ -49,6 +49,7 @@ class CoreMiddleware extends Middleware
         //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {
             $router->addRoute($route);
+            unset($route);
         }
 
         try {

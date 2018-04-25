@@ -7,16 +7,11 @@ use phpGone\Core\ApplicationComponent;
 
 class BaseTwigExtension extends \Twig_Extension
 {
-    protected $applicationComponentInstance = null;
+    protected $applicationComponentInstance;
 
     public function __construct(Application $app)
     {
-        $this->setApplicationComponentInstance(new ApplicationComponent($app));
-    }
-
-    private function setApplicationComponentInstance(ApplicationComponent $appComponent)
-    {
-        $this->applicationComponentInstance = $appComponent;
+        $this->applicationComponentInstance = new ApplicationComponent($app);
     }
 
     public function __call($funcName, $args)
