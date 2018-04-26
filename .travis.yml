@@ -12,4 +12,8 @@ cache:
   - vendor
 
 script:
-  ./vendor/bin/phpunit
+  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpunit" --coverage-clover build/logs/clover.xml
+
+after_succes:
+  travis_retry php vendor/bin/php-coveralls
