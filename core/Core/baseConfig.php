@@ -9,20 +9,8 @@
  * @author Antonutti Adrien <antonuttiadrien@email.com>
  */
 
- //USAGE
-
-use phpGone\Log\Logger;
-use phpGone\Router\Routeur;
-use phpGone\Session\Session;
-use GuzzleHttp\Psr7\Response;
-use phpGone\Core\Application;
-use phpGone\Renderer\PhpRenderer;
-use phpGone\Database\DatabasePDO;
-use phpGone\Renderer\TwigRenderer;
-use phpGone\Core\MiddlewaresDispatcher;
-
 return[
     'TwigExtensions' => [
-        phpGone\Renderer\TwigExtensions\FormExtension::class
+        phpGone\Renderer\TwigExtensions\UrlExtension::class
     ]
 ];

@@ -20,7 +20,8 @@ class Renderer extends ApplicationComponent
 
     public function twigRender($view, $datas)
     {
-        $loaderTwig = new \Twig_Loader_Filesystem(__DIR__ . '/../../app/views/');
+        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . 'views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
         ]);

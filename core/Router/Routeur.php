@@ -45,11 +45,13 @@ class Routeur
                         if ($key !== 0) {
                             $listVars[$varsNames[$key -1]] = $match;
                         }
+                        unset($match);
                     }
                     $route->setVars($listVars);
                 }
                 return $route;
             }
+            unset($route);
         }
         throw new \RuntimeException('Aucune route ne correspond à l\'url', self::NO_ROUTE);
     }

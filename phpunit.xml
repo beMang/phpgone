@@ -4,4 +4,9 @@
     <testsuite name="phpGone test">
         <directory>./tests/ResponseTest.php</directory>
     </testsuite>
+    <filter>
+        <whitelist proceessUncoveredFromWithelist="true">
+            <directory suffic=".php">core</directory>
+        </whitelist>
+    </filter>
 </phpunit>
