@@ -7,14 +7,9 @@ class Config
     protected $config = [];
     protected $configFiles;
 
-    public function getConfig()
+    public function getConfigArray()
     {
         return $this->config;
-    }
-
-    public function getConfigFile()
-    {
-        return $this->configFiles;
     }
 
     public function get($key)

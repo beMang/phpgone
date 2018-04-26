@@ -9,6 +9,8 @@ class Renderer extends ApplicationComponent
 
     public function render($view, $datas)
     {
+        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         if (!file_exists($fileToRender)) {
             throw new \RuntimeException('La vue spécifiée n\'existe pas' . $fileToRender);
         }

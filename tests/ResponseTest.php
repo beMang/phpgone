@@ -4,13 +4,8 @@ namespace Test;
 use phpGone\Core\Application;
 use GuzzleHttp\Psr7\ServerRequest;
 
-class TestResponse extends \PHPUnit\Framework\TestCase
+class ResponseTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
-    {
-        require "vendor/autoload.php";
-    }
-
     public function testError404()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');
