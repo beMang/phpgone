@@ -3,4 +3,5 @@
 *.cache
 /vendor/
 /tmp/cache/twig/*
+/tmp/cache/log/*
 composer.lock

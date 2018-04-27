@@ -8,15 +8,14 @@
  * @copyright 2017 Antonutti Adrien
  * @author Antonutti Adrien <antonuttiadrien@email.com>
  */
-namespace phpGone\Session;
+namespace phpGone\Helpers;
 
 /**
  * Class Session
  * Gestion des sessions simples (pour l'utiliser le session_start() doit être bien démarré)
  */
-class Session
+class Session extends Helper
 {
-    use FlashTrait;
     /**
      * Ajoute un attribut à la session
      *
@@ -63,7 +62,7 @@ class Session
      * @param string $key Clé de l'attribut à supprimer
      * @return void
      */
-    public function removeAttr($attr) :void
+    public function removeAttr($key) :void
     {
         unset($_SESSION[$key]);
     }

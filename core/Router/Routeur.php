@@ -23,11 +23,7 @@ class Routeur
 
     public function addRoute(Route $route)
     {
-        if (!in_array($route, $this->routes)) {
-            $this->routes[] = $route;
-        } else {
-            return false;
-        }
+        $this->routes[] = $route;
     }
 
     public function getRoute($url)
