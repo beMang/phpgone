@@ -55,20 +55,6 @@ class BackController extends ApplicationComponent
     }
 
     /**
-     * Défini le module du controller
-     *
-     * @param string $module Module à définir
-     * @return \InvalidArgumentException Si erreur
-     */
-    public function setModule($module)
-    {
-        if (!is_string($module) || empty($module)) {
-            throw new \InvalidArgumentException('Le module doit être une chaine de caractères valide');
-        }
-        $this->module = $module;
-    }
-
-    /**
      * Défini l'action à executer
      *
      * @param string $action Action à executer

@@ -10,7 +10,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares('TrailingSlashMiddleware');
+        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
@@ -21,7 +21,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares('TrailingSlashMiddleware');
+        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
@@ -32,9 +32,20 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new ServerRequest('GET', '/asfdsq/');
         $app = new Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares('TrailingSlashMiddleware');
+        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $this->assertEquals(301, $response->getStatusCode(301));
         $this->assertEquals('/asfdsq', $response->getHeaders()['Location'][0]);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testSender(){
+        $request = new ServerRequest('GET', '/asfdsq/');
+        $app = new Application(__DIR__ . '/../app/config.php', $request);
+        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $response = $app->run();
+        $this->assertTrue($app->send());
     }
 }
