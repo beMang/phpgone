@@ -74,7 +74,7 @@ class Application
     public function send()
     {
         $responseSender = new \phpGone\Core\ResponseSender();
-        $responseSender->send($this->httpResponse);
+        return $responseSender->send($this->httpResponse);
     }
 
     public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response)

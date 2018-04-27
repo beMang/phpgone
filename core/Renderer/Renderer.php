@@ -9,6 +9,8 @@ class Renderer extends ApplicationComponent
 
     public function render($view, $datas)
     {
+        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         if (!file_exists($fileToRender)) {
             throw new \RuntimeException('La vue spécifiée n\'existe pas' . $fileToRender);
         }
@@ -20,7 +22,8 @@ class Renderer extends ApplicationComponent
 
     public function twigRender($view, $datas)
     {
-        $loaderTwig = new \Twig_Loader_Filesystem(__DIR__ . '/../../app/views/');
+        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . 'views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
         ]);

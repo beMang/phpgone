@@ -7,16 +7,11 @@ use phpGone\Core\ApplicationComponent;
 
 class BaseTwigExtension extends \Twig_Extension
 {
-    protected $applicationComponentInstance = null;
+    protected $applicationComponentInstance;
 
     public function __construct(Application $app)
     {
-        $this->setApplicationComponentInstance(new ApplicationComponent($app));
-    }
-
-    private function setApplicationComponentInstance(ApplicationComponent $appComponent)
-    {
-        $this->applicationComponentInstance = $appComponent;
+        $this->applicationComponentInstance = new ApplicationComponent($app);
     }
 
     public function __call($funcName, $args)
@@ -24,7 +19,7 @@ class BaseTwigExtension extends \Twig_Extension
         if (method_exists($this->applicationComponentInstance, $funcName)) {
             return call_user_func_array(array($this->applicationComponentInstance, $funcName), $args);
         } else {
-            throw new Exception("The $funcName method doesn't exist - BaseTwigExtension.php - Line 23");
+            throw new \Exception("The $funcName method doesn't exist - BaseTwigExtension.php - Line 23");
         }
     }
 }

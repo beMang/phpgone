@@ -4,6 +4,8 @@ Le framework phpGone est en cours de développement, la documentation sera écri
 ## Statut de build
 * Master : [![Build Status](https://travis-ci.org/beMang/phpgone.svg?branch=master)](https://travis-ci.org/beMang/phpgone)
 * Branch dev : [![Build Status](https://travis-ci.org/beMang/phpgone.svg?branch=develop)](https://travis-ci.org/beMang/phpgone)
+* Code coverage branch master : [![Coverage Status](https://coveralls.io/repos/github/beMang/phpgone/badge.svg?branch=master)](https://coveralls.io/github/beMang/phpgone?branch=master)
+* Code coverage branch dev : [![Coverage Status](https://coveralls.io/repos/github/beMang/phpgone/badge.svg?branch=develop)](https://coveralls.io/github/beMang/phpgone?branch=develop)
 
 **Cette page est totalement dépréciée**
 

@@ -51,9 +51,4 @@ class ApplicationComponent
     {
         return $this->getApp()->getConfig();
     }
-
-    public function setApp(\phpGone\Core\Application $app)
-    {
-        $this->app = $app;
-    }
 }

@@ -2,6 +2,11 @@
 
 <phpunit colors="true">
     <testsuite name="phpGone test">
-        <directory>./tests/ResponseTest.php</directory>
+        <directory suffic=".php">tests</directory>
     </testsuite>
+    <filter>
+        <whitelist proceessUncoveredFromWithelist="true">
+            <directory suffic=".php">core</directory>
+        </whitelist>
+    </filter>
 </phpunit>
