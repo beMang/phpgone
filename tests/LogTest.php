@@ -6,7 +6,11 @@ use Psr\Log\LogLevel;
 class LogTest extends \PHPUnit\Framework\TestCase{
     public function __destruct(){
         if(file_exists(__DIR__ . '/../tmp/log/phpgonelog.log')){
-            unlink(__DIR__ . '/../tmp/log/phpgonelog.log');
+            $filename = __DIR__ . '/../tmp/log/phpgonelog.log';
+
+            $handle = fopen($filename, 'r+');
+            ftruncate($handle, 0);
+            fclose($handle);
         }
     }
     public function getLogger(){

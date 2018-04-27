@@ -22,5 +22,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase{
         $this->assertEquals('test2', $this->sessionInstance->getAttr('testunit'));
         $this->sessionInstance->removeAttr('testunit');
         $this->assertArrayNotHasKey('testunit', $_SESSION);
+        $this->assertFalse($this->sessionInstance->hasAttr(uniqid()));
+        $this->assertFalse($this->sessionInstance->updateAttr(uniqid(), 'jkmlf'));
     }
 }
