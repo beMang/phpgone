@@ -19,7 +19,7 @@ class BaseTwigExtension extends \Twig_Extension
         if (method_exists($this->applicationComponentInstance, $funcName)) {
             return call_user_func_array(array($this->applicationComponentInstance, $funcName), $args);
         } else {
-            throw new Exception("The $funcName method doesn't exist - BaseTwigExtension.php - Line 23");
+            throw new \Exception("The $funcName method doesn't exist - BaseTwigExtension.php - Line 23");
         }
     }
 }

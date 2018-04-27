@@ -23,7 +23,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
      *
      * @var string[]
      */
-    protected $middlewares = ['CoreMiddleware', 'NotFoundMiddleware'];
+    protected $middlewares = [\phpGone\Middlewares\CoreMiddleware::class, \phpGone\Middlewares\NotFoundMiddleware::class];
 
     /**
      * Index à utiliser pour parcourir les middlwares
@@ -53,7 +53,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
     {
         $middleware = $this->getMiddleware();
         if (is_null($middleware)) {
-            return false;
+            throw new \RuntimeException('Aucun middleware a été défini');
         }
         return call_user_func_array($middleware, [$request, [$this, 'process']]);
     }
@@ -66,7 +66,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
     private function getMiddleware()
     {
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
-            $middleWareClass = '\\phpGone\Middlewares\\' . $this->middlewares[$this->middlewaresIndex];
+            $middleWareClass = $this->middlewares[$this->middlewaresIndex];
             $middleware = new $middleWareClass($this->getApp());
             $this->middlewaresIndex++;
             return $middleware;
