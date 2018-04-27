@@ -28,10 +28,6 @@ class Logger extends \Psr\Log\AbstractLogger
      */
     public function log($loglevel, $message, array $context = [])
     {
-        if(!file_exists(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log')){
-            $file = fopen(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', 'w+');
-            fclose($file);
-        }
         switch ($loglevel) {
             case LogLevel::EMERGENCY:
                 $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
