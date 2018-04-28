@@ -49,7 +49,7 @@ class BackController extends ApplicationComponent
         $method = 'execute' .ucfirst($this->action);
 
         if (!is_callable([$this, $method])) {
-            throw new \RuntimeException('L\'action' . $this->action . 'n\'est pas définie sur ce module');
+            throw new \RuntimeException('L\'action' . $this->action . 'n\'est pas définie sur ce controller');
         }
         $this->$method($this->app->getRequest());
     }

@@ -7,7 +7,7 @@ class BackControllerTest extends \PHPUnit\Framework\TestCase{
 
     public function testInvalidAction(){
         $action = uniqid();
-        $this->expectExceptionMessage('L\'action' . $action . 'n\'est pas définie sur ce module');
+        $this->expectExceptionMessage('L\'action' . $action . 'n\'est pas définie sur ce controller');
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $app->getConfig()->defineUnique('routes', [
@@ -34,7 +34,7 @@ class BackControllerTest extends \PHPUnit\Framework\TestCase{
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $app->getConfig()->defineUnique('routes', [
-            new Route('/', 'Sfdsqfdsq//fdsqml', $action, [])
+            new Route('/', 'Sfdsqfdsq\fdsqml', $action, [])
         ]);
         $app->run();
     }
