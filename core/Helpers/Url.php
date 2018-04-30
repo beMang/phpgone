@@ -16,4 +16,16 @@ class Url extends Helper{
     public function getTestsPath(){
         return __DIR__ . '/../../tests/';
     }
+
+    public function getAssetsPath(){
+        return $this->getAppPath() . 'assets/';
+    }
+
+    public function getRelativeAssetsPath(){
+        return $this->getRelativeAppPath() . 'assets/';
+    }
+
+    public function getRelativeAppPath(){
+        return $this->getConfig()->get('basePath') . 'app/';
+    }
 }
