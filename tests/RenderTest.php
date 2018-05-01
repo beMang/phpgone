@@ -1,8 +1,10 @@
 <?php
 namespace Test;
 
-class RenderTest extends \PHPUnit\Framework\TestCase{
-    public function testDefaultRender(){
+class RenderTest extends \PHPUnit\Framework\TestCase
+{
+    public function testDefaultRender()
+    {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/doc');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $response = $app->run();
@@ -11,7 +13,8 @@ class RenderTest extends \PHPUnit\Framework\TestCase{
         $this->assertContains('<h1>La documentation va être écrite</h1>', $stream->read(1024 * 8));
     }
 
-    public function testRenderWithInexistantView(){
+    public function testRenderWithInexistantView()
+    {
         $view = uniqid();
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/doc');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);

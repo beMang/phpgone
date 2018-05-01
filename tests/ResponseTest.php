@@ -41,7 +41,8 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testSender(){
+    public function testSender()
+    {
         $request = new ServerRequest('GET', '/asfdsq/');
         $app = new Application(__DIR__ . '/../app/config.php', $request);
         $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);

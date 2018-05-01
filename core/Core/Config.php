@@ -30,7 +30,8 @@ class Config
         }
     }
 
-    public function defineUnique($nameParam, $valParam){
+    public function defineUnique($nameParam, $valParam)
+    {
         $this->config[$nameParam] = $valParam;
     }
 }

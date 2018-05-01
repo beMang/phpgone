@@ -55,7 +55,6 @@ class Application
     public function __construct($config, \Psr\Http\Message\ServerRequestInterface $request)
     {
         $this->config = new Config();
-        $this->config->define(__DIR__ . '/baseConfig.php');
         $this->config->define($config);
         $this->httpRequest = $request;
         $this->middlewaresDispatcher = new MiddlewaresDispatcher($this);

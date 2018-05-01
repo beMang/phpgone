@@ -10,7 +10,8 @@ class Show extends \phpGone\Core\BackController
         $this->getRenderer()->twigRender('Show/index.twig', []);
     }
 
-    public function executeDoc(\Psr\Http\Message\ServerRequestInterface $request){
+    public function executeDoc(\Psr\Http\Message\ServerRequestInterface $request)
+    {
         $this->getRenderer()->twigRender('Show/index.twig', []);
         $this->getRenderer()->render('Show/doc', []);
     }
