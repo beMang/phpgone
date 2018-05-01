@@ -32,10 +32,10 @@ class Route
 
     public function setAction($action)
     {
-        if (method_exists($this->getController(), $action)) {
+        if (is_callable($this->getController(), $action)) {
             $this->action = $action;
         } else {
-            throw new \InvalidArgumentException('L\'action de la route n\'est pas définie (Méthode inconnue, Voir fichier de config)');
+            throw new \InvalidArgumentException('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
         }
     }
 

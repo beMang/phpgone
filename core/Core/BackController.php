@@ -46,11 +46,7 @@ class BackController extends ApplicationComponent
      */
     public function execute()
     {
-        $method = ucfirst($this->action);
-
-        if (!is_callable([$this, $method])) {
-            throw new \RuntimeException('L\'action' . $this->action . 'n\'est pas définie sur ce controller');
-        }
+        $method = $this->action;
         $this->$method($this->app->getRequest());
     }
 
@@ -58,13 +54,9 @@ class BackController extends ApplicationComponent
      * Défini l'action à executer
      *
      * @param string $action Action à executer
-     * @return \InvalidArgumentException Si erreur
      */
     public function setAction($action)
     {
-        if (!is_string($action) || empty($action)) {
-            throw new \InvalidArgumentException('L\'action doit être une chaine de caractères valide');
-        }
         $this->action = $action;
     }
 
