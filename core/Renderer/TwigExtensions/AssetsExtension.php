@@ -35,10 +35,28 @@ class AssetsExtension extends BaseTwigExtension
     }
 
     public function css($nameFile){
-        return '<link rel="stylesheet" type="text/css" href="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .$nameFile  . '.css">';
+        if(is_string($nameFile)){
+            return '<link rel="stylesheet" type="text/css" href="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .$nameFile  . '.css">';
+        } elseif (is_array($nameFile)) {
+            $result = '';
+            foreach ($nameFile as $file) {
+                $result = $result . '
+                <link rel="stylesheet" type="text/css" href="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .$file  . '.css">';
+            }
+            return $result;
+        }
     }
 
     public function js($nameFile){
-        return '<script src="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'js/' .$nameFile  . '.js"></script>';
+        if(is_string($nameFile)){
+            return '<script src="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'js/' .$nameFile  . '.js"></script>';
+        } elseif (is_array($nameFile)) {
+            $result = '';
+            foreach ($nameFile as $file) {
+                $result = $result . '
+                <script src="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'js/' .$file  . '.js"></script>';
+            }
+            return $result;
+        }
     }
 }
