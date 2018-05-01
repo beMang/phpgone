@@ -25,25 +25,27 @@ class Route
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             return $matches;
         } else {
+            //No match
             return false;
         }
     }
 
     public function setAction($action)
     {
-        if (is_string($action)) {
+        if (method_exists($this->getController(), $action)) {
             $this->action = $action;
         } else {
-            return false;
+            throw new \InvalidArgumentException('L\'action de la route n\'est pas définie (Méthode inconnue, Voir fichier de config)');
         }
     }
 
     public function setController($controller)
     {
-        if (is_string($controller)) {
-            $this->module = $controller;
+        if (class_exists('\\app\\Controllers\\' . $controller)) {
+            $this->module = '\\app\\Controllers\\' . $controller;
         } else {
-            return false;
+            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' . 
+            $controller . 'est inexistante (Voir fichier de config)');
         }
     }
 
@@ -56,7 +58,7 @@ class Route
             }
             $this->url = $finalUrl;
         } else {
-            return false;
+            throw new \InvalidArgumentException('L\'url de la route est invalide (Voir fichier de config)');
         }
     }
 
