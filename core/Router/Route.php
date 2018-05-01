@@ -8,6 +8,9 @@ class Route
     protected $controller;
     protected $url;
     protected $matches = null;
+    protected $patterns = [
+        '(:any)' => '(.*)'
+    ];
 
     public function __construct($url, $controller, $method)
     {
@@ -46,7 +49,11 @@ class Route
     public function setUrl($url)
     {
         if (is_string($url)) {
-            $this->url = $url;
+            $finalUrl = ' \\' . $url;
+            foreach ($this->patterns as $key => $value) {
+                $finalUrl = str_replace($key, $value, $url);
+            }
+            $this->url = $finalUrl;
         } else {
             return false;
         }
