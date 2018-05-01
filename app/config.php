@@ -5,8 +5,8 @@ use phpGone\Router\Route;
 return [
     'basePath' => '/',
     'routes' => [
-        new Route('^[\/]$', 'Show\Show', 'index', ['test']),
-        new Route('/doc', 'Show\Show', 'Doc', [])
+        new Route('/', 'Show\Show', 'index'),
+        new Route('/doc', 'Show\Show', 'doc')
     ],
     'viewError404' => 'Error/show.twig',
     'TwigExtensions' => [

@@ -37,7 +37,7 @@ class ErrorController extends \phpGone\Core\BackController
      * @param ServerRequestInterface $request Requête à traiter
      * @return void
      */
-    public function executeShow(ServerRequestInterface $request)
+    public function show(ServerRequestInterface $request)
     {
         $this->getRenderer()->twigRender($this->getConfig()->get('viewError404'), []);
     }

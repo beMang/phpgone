@@ -7,24 +7,17 @@ class Route
     protected $action;
     protected $controller;
     protected $url;
-    protected $varsNames;
-    protected $vars = [];
+    protected $matches = null;
+    protected $patterns = [
+        '(:any)' => '(.*)',
+        '(:num)' => '([0-9]*)'
+    ];
 
-    public function __construct($url, $controller, $action, array $varsNames)
+    public function __construct($url, $controller, $method)
     {
         $this->setUrl($url);
         $this->setController($controller);
-        $this->setAction($action);
-        $this->setVarsNames($varsNames);
-    }
-
-    public function hasVars()
-    {
-        if (empty($this->varsNames)) {
-            return false;
-        } else {
-            return true;
-        }
+        $this->setAction($method);
     }
 
     public function match($url)
@@ -32,48 +25,43 @@ class Route
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             return $matches;
         } else {
+            //No match
             return false;
         }
     }
 
     public function setAction($action)
     {
-        if (is_string($action)) {
+        if (is_callable([$this->getController(), $action])) {
             $this->action = $action;
         } else {
-            return false;
+            throw new \InvalidArgumentException('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
         }
     }
 
     public function setController($controller)
     {
-        if (is_string($controller)) {
-            $this->module = $controller;
+        if (class_exists('\\app\\Controllers\\' . $controller)) {
+            $this->module = '\\app\\Controllers\\' . $controller;
         } else {
-            return false;
+            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' .
+            $controller . 'est inexistante (Voir fichier de config)');
         }
     }
 
     public function setUrl($url)
     {
         if (is_string($url)) {
-            $this->url = $url;
+            $finalUrl = '\\' . $url;
+            foreach ($this->patterns as $key => $value) {
+                $finalUrl = str_replace($key, $value, $finalUrl);
+            }
+            $this->url = $finalUrl;
         } else {
-            return false;
+            throw new \InvalidArgumentException('L\'url de la route est invalide (Voir fichier de config)');
         }
     }
 
-    public function setVarsNames(array $varsNames)
-    {
-        $this->varsNames = $varsNames;
-    }
-
-    public function setVars(array $vars)
-    {
-        $this->vars = $vars;
-    }
-
-    //Getters
     public function getAction()
     {
         return $this->action;
@@ -84,13 +72,26 @@ class Route
         return $this->module;
     }
 
-    public function getVars()
+    public function getUrl()
     {
-        return $this->vars;
+        return $this->url;
     }
-    
-    public function getVarsNames()
+
+    public function setMatches($matches)
     {
-        return $this->varsNames;
+        if (is_array($matches)) {
+            $resultMatches = [];
+            $numSlug = 1;
+            foreach ($matches as $key => $value) {
+                $resultMatches['slug' . $numSlug] = $value;
+                $numSlug ++;
+            }
+            $this->matches = $resultMatches;
+        }
+    }
+
+    public function getMatches()
+    {
+        return $this->matches;
     }
 }

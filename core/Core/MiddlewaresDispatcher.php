@@ -24,7 +24,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
      * @var string[]
      */
     protected $middlewares = [
-        \phpGone\Middlewares\CoreMiddleware::class, 
+        \phpGone\Middlewares\CoreMiddleware::class,
         \phpGone\Middlewares\NotFoundMiddleware::class
     ];
 
