@@ -9,7 +9,8 @@ class Route
     protected $url;
     protected $matches = null;
     protected $patterns = [
-        '(:any)' => '(.*)'
+        '(:any)' => '(.*)',
+        '(:num)' => '([0-9]*)'
     ];
 
     public function __construct($url, $controller, $method)
@@ -49,9 +50,9 @@ class Route
     public function setUrl($url)
     {
         if (is_string($url)) {
-            $finalUrl = ' \\' . $url;
+            $finalUrl = '\\' . $url;
             foreach ($this->patterns as $key => $value) {
-                $finalUrl = str_replace($key, $value, $url);
+                $finalUrl = str_replace($key, $value, $finalUrl);
             }
             $this->url = $finalUrl;
         } else {
@@ -67,6 +68,10 @@ class Route
     public function getController()
     {
         return $this->module;
+    }
+
+    public function getUrl(){
+        return $this->url;
     }
 
     public function setMatches($matches){
