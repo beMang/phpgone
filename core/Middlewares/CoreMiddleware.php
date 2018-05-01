@@ -46,7 +46,6 @@ class CoreMiddleware extends Middleware
         $xml = new \DOMDocument;
         $routes = $this->getConfig()->get('routes');
         
-        //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {
             $router->addRoute($route);
             unset($route);
@@ -60,7 +59,9 @@ class CoreMiddleware extends Middleware
             }
         }
 
-        $_GET = array_merge($_GET, $matchedRoute->getVars());
+        var_dump($matchedRoute->getMatches());
+        exit;
+        $_GET = array_merge($_GET, $matchedRoute->getMatches());
 
         $controllerClass = '\\app\\Controllers\\' . $matchedRoute->getController();
                             

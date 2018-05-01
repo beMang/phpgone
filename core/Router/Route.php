@@ -7,24 +7,13 @@ class Route
     protected $action;
     protected $controller;
     protected $url;
-    protected $varsNames;
-    protected $vars = [];
+    protected $matches = null;
 
-    public function __construct($url, $controller, $action, array $varsNames)
+    public function __construct($url, $controller, $method)
     {
         $this->setUrl($url);
         $this->setController($controller);
-        $this->setAction($action);
-        $this->setVarsNames($varsNames);
-    }
-
-    public function hasVars()
-    {
-        if (empty($this->varsNames)) {
-            return false;
-        } else {
-            return true;
-        }
+        $this->setAction($method);
     }
 
     public function match($url)
@@ -63,17 +52,6 @@ class Route
         }
     }
 
-    public function setVarsNames(array $varsNames)
-    {
-        $this->varsNames = $varsNames;
-    }
-
-    public function setVars(array $vars)
-    {
-        $this->vars = $vars;
-    }
-
-    //Getters
     public function getAction()
     {
         return $this->action;
@@ -84,13 +62,19 @@ class Route
         return $this->module;
     }
 
-    public function getVars()
-    {
-        return $this->vars;
+    public function setMatches($matches){
+        if(is_array($matches)){
+            $resultMatches = [];
+            $numSlug = 1;
+            foreach ($matches as $key => $value) {
+                $resultMatches['slug' . $numSlug] = $value;
+                $numSlug ++;
+            }
+            $this->matches = $resultMatches;
+        }
     }
-    
-    public function getVarsNames()
-    {
-        return $this->varsNames;
+
+    public function getMatches(){
+        return $this->matches;
     }
 }

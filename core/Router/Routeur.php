@@ -29,22 +29,11 @@ class Routeur
     public function getRoute($url)
     {
         foreach ($this->routes as $route) {
-            $varsValues = $route->match($url);
+            $matches = $route->match($url);
 
             //Si la route correspond à l'url
-            if ($varsValues !== false) {
-                if ($route->hasVars() == true) {
-                    $varsNames = $route->getVarsNames();
-                    $listVars = [];
-
-                    foreach ($varsValues as $key => $match) {
-                        if ($key !== 0) {
-                            $listVars[$varsNames[$key -1]] = $match;
-                        }
-                        unset($match);
-                    }
-                    $route->setVars($listVars);
-                }
+            if ($matches !== false) {
+                $route->setMatches($matches);
                 return $route;
             }
             unset($route);
