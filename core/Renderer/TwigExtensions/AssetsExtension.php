@@ -21,7 +21,8 @@ class AssetsExtension extends BaseTwigExtension
 {
     protected $urlHelperInstance;
 
-    public function __construct(Application $app){
+    public function __construct(Application $app)
+    {
         parent::__construct($app);
         $this->urlHelperInstance = new Url($app);
     }
@@ -34,27 +35,37 @@ class AssetsExtension extends BaseTwigExtension
         ];
     }
 
-    public function css($nameFile){
-        if(is_string($nameFile)){
-            return '<link rel="stylesheet" type="text/css" href="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .$nameFile  . '.css">';
+    public function css($nameFile)
+    {
+        if (is_string($nameFile)) {
+            return '<link rel="stylesheet" type="text/css" href="' . 
+            $this->urlHelperInstance->getRelativeAssetsPath() . 
+            'css/' .$nameFile  . '.css">';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
-                <link rel="stylesheet" type="text/css" href="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .$file  . '.css">';
+                <link rel="stylesheet" type="text/css" href="' . 
+                $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' . 
+                $file  . '.css">';
             }
             return $result;
         }
     }
 
-    public function js($nameFile){
-        if(is_string($nameFile)){
-            return '<script src="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'js/' .$nameFile  . '.js"></script>';
+    public function js($nameFile)
+    {
+        if (is_string($nameFile)) {
+            return '<script src="' . 
+            $this->urlHelperInstance->getRelativeAssetsPath() . 
+            'js/' .$nameFile  . '.js"></script>';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
-                <script src="' . $this->urlHelperInstance->getRelativeAssetsPath() . 'js/' .$file  . '.js"></script>';
+                <script src="' . 
+                $this->urlHelperInstance->getRelativeAssetsPath() . 
+                'js/' .$file  . '.js"></script>';
             }
             return $result;
         }

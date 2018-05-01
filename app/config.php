@@ -4,7 +4,6 @@ use phpGone\Router\Route;
 
 return [
     'basePath' => '/',
-    'defaultAsset' => 'site',
     'routes' => [
         new Route('^[\/]$', 'Show\Show', 'index', ['test']),
         new Route('/doc', 'Show\Show', 'Doc', [])

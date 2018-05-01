@@ -21,7 +21,8 @@ class UrlExtension extends BaseTwigExtension
 {
     protected $urlHelperInstance;
 
-    public function __construct(Application $app){
+    public function __construct(Application $app)
+    {
         parent::__construct($app);
         $this->urlHelperInstance = new Url($app);
     }
