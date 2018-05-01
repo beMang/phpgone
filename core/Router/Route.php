@@ -44,7 +44,7 @@ class Route
         if (class_exists('\\app\\Controllers\\' . $controller)) {
             $this->module = '\\app\\Controllers\\' . $controller;
         } else {
-            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' . 
+            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' .
             $controller . 'est inexistante (Voir fichier de config)');
         }
     }
@@ -72,12 +72,14 @@ class Route
         return $this->module;
     }
 
-    public function getUrl(){
+    public function getUrl()
+    {
         return $this->url;
     }
 
-    public function setMatches($matches){
-        if(is_array($matches)){
+    public function setMatches($matches)
+    {
+        if (is_array($matches)) {
             $resultMatches = [];
             $numSlug = 1;
             foreach ($matches as $key => $value) {
@@ -88,7 +90,8 @@ class Route
         }
     }
 
-    public function getMatches(){
+    public function getMatches()
+    {
         return $this->matches;
     }
 }
