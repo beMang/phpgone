@@ -77,7 +77,8 @@ class MiddlewaresDispatcher extends ApplicationComponent
         return null;
     }
 
-    public function resetMiddlewares(){
+    public function resetMiddlewares()
+    {
         $this->middlewares = [];
     }
 }

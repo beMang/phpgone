@@ -1,4 +1,5 @@
 <?php
+
 namespace app\Controllers\Show;
 
 use phpGone\Renderer\Renderer;
