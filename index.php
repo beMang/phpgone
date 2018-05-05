@@ -6,10 +6,3 @@ $app = new phpGone\Core\Application(__DIR__ . '/app/config.php', \GuzzleHttp\Psr
 $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
 $response = $app->run();
 $app->send();
-
-$manager = \phpGone\Database\DBManager::getInstance($app);
-$manager->addDatabase('base');
-
-$query = new \phpGone\Database\Query('user_test', 'base');
-$object = $query->getLast();
-$query->delete($object);

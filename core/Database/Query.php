@@ -98,6 +98,24 @@ class Query
         $query->execute();
     }
 
+    public function update($object)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $cond = 'id = :id';
+        $vars = array_keys(get_class_vars(get_class($object)));
+        unset($vars[array_search('id', $vars)]);
+        $values = '';
+        foreach ($vars as $var) {
+            $values .= $var . "='" . $object->$var . "', ";
+        }
+        $values = substr($values, 0, -2);
+        $tableClassName = $this->getStringTableName();
+        $query = $db->prepare("UPDATE $tableClassName SET $values WHERE $cond");
+        $query->execute([
+            'id' => $object->id
+        ]);
+    }
+
     public function delete($object)
     {
         $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
