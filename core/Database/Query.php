@@ -4,26 +4,97 @@ namespace phpGone\Database;
 
 class Query
 {
-    protected $tableName;
+    protected $classTableName;
+    protected $stringTableName;
+    protected $stringDbName;
     protected $dbManager;
 
-    public function __construct($tableName)
+    public function __construct($tableName, $databaseName = null)
     {
-        $this->setTableName($tableName);
+        $this->setTableName($tableName, $databaseName);
         $this->setDBManager(DBManager::getInstance());
     }
 
-    private function setTableName($tableName)
+    private function setTableName($tableName, $databaseName)
     {
-        if (class_exists($tableName)) {
-            $this->tableName = $tableName;
+        if (class_exists($databaseName . '_' . $tableName)) {
+            $this->classTableName = $databaseName . '_' . $tableName;
+            $this->stringDbName = $databaseName;
+            $this->stringTableName = $tableName;
         } else {
-            throw new \InvalidArgumentException('La table' . $tableName . 'est inexistante');
+            throw new \InvalidArgumentException('La table ' . $tableName . 'est inexistante');
         }
+    }
+
+    public function getDatabaseName()
+    {
+        return $this->stringDbName;
+    }
+
+    public function getStringTableName()
+    {
+        return $this->stringTableName;
+    }
+
+    public function getClassTableName()
+    {
+        return $this->classTableName;
     }
 
     public function setDBManager(DBManager $manager)
     {
         $this->dbManager = $manager;
+    }
+
+    
+    public function getDbManager()
+    {
+        return $this->dbManager;
+    }
+
+    public function getEmptyInstance()
+    {
+        $className = $this->getClassTableName();
+        return new $className;
+    }
+
+    public function getLast()
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $query = $db->prepare('SELECT * FROM ' . $this->getStringTableName() . ' LIMIT 1');
+        $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());
+        $query->execute();
+        return $query->fetch();
+    }
+
+    public function getWithCondition($key, $value)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $query = $db->prepare('SELECT * FROM ' . $this->getStringTableName() . ' WHERE ' . $key . ' = :' . $key);
+        $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());
+        $query->execute([
+            $key => $value
+        ]);
+        return $query->fetchAll();
+    }
+
+    public function insert($object)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $vars = array_keys(get_class_vars(get_class($object)));
+        unset($vars[array_search('id', $vars)]);
+        $keys = implode(' ,', $vars);
+        $properties = [];
+        foreach ($vars as $prop) {
+            if (is_null($object->$prop)) {
+                $properties[] = "''";
+            } else {
+                $string = "'" . $object->$prop . "'";
+                $properties[] = $string;
+            }
+        }
+        $values = implode(' ,', $properties);
+        $query = $db->prepare('INSERT INTO ' . $this->getStringTableName() . " ($keys) VALUES($values)");
+        $query->execute();
     }
 }

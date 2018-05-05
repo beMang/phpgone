@@ -26,7 +26,8 @@ class DBManager extends \phpGone\Core\ApplicationComponent
     public function addDatabase($name, $hostAndDb = 'mysql:host=localhost;dbname=test', $user = 'bemang', $passwd = '')
     {
         $pdoInstance = new \PDO($hostAndDb, $user, $passwd, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $this->defineClasses($pdoInstance);
+        $pdoInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->defineClasses($name, $pdoInstance);
         $this->pdoInstances [$name] = $pdoInstance;
     }
 
@@ -39,20 +40,31 @@ class DBManager extends \phpGone\Core\ApplicationComponent
                 throw new \RuntimeException('La base de donnée est inexistante');
             }
         } else {
-            throw new \InvalidArgumentException('L\'identifiant doit être numérique');
+            throw new \InvalidArgumentException('L\'identifiant doit être une chaine de caractères');
         }
     }
 
-    public function defineClasses(\PDO $pdoInstance)
+    public function dataBaseExist($name)
+    {
+        if (is_string($name)) {
+            if (isset($this->pdoInstances[$name])) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function defineClasses($name, \PDO $pdoInstance)
     {
         $tables = $pdoInstance->query('SHOW TABLES')->fetchAll();
         foreach ($tables as $table) {
             $columns = $pdoInstance->query('SHOW COLUMNS FROM ' . $table[0])->fetchAll();
-            $classcode = 'class ' . $table[0] .' { ';
+            $classcode = 'class ' . $name . '_' . $table[0] .' { ';
             foreach ($columns as $column) {
-                if ($column['Field'] !== 'id') {
-                    $classcode .= 'public $' . $column['Field'] . ';';
-                }
+                $classcode .= 'public $' . $column['Field'] . ';';
             }
             $classcode .= "} ";
             eval($classcode);
@@ -72,5 +84,6 @@ class DBManager extends \phpGone\Core\ApplicationComponent
         } catch (PDOException $e) {
             throw new \Exception('Error sql');
         }
+        return $query->fetchAll();
     }
 }
