@@ -97,4 +97,20 @@ class Query
         $query = $db->prepare('INSERT INTO ' . $this->getStringTableName() . " ($keys) VALUES($values)");
         $query->execute();
     }
+
+    public function delete($object)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $cond = 'id = :id';
+        $query = $db->prepare('DELETE FROM ' . $this->getStringTableName() . ' WHERE ' . $cond);
+        $query->execute([
+            'id' => $object->id
+        ]);
+    }
+
+    public function deleteCustCond($cond)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        var_dump($db->query('DELETE FROM ' . $this->getStringTableName() . ' WHERE ' . $cond));
+    }
 }
