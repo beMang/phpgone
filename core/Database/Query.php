@@ -22,7 +22,7 @@ class Query
             $this->stringDbName = $databaseName;
             $this->stringTableName = $tableName;
         } else {
-            throw new \InvalidArgumentException('La table ' . $tableName . 'est inexistante');
+            throw new \InvalidArgumentException('La table ' . $databaseName . '_' . $tableName . ' est inexistante');
         }
     }
 
@@ -58,6 +58,15 @@ class Query
         return new $className;
     }
 
+    public function getAll()
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $query = $db->prepare('SELECT * FROM ' . $this->getStringTableName());
+        $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());
+        $query->execute();
+        return $query->fetchAll();
+    }
+
     public function getLast()
     {
         $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
@@ -75,6 +84,20 @@ class Query
         $query->execute([
             $key => $value
         ]);
+        return $query->fetchAll();
+    }
+
+    public function getWithInnerJoin($otherTable, $cond, $otherCond = false)
+    {
+        $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
+        $sql = 'SELECT * FROM ' . $this->getStringTableName() . ' INNER JOIN ' . $otherTable . ' ON ' . $cond;
+        if ($otherCond != false) {
+            $sql .= ' WHERE ' . $cond;
+        }
+        var_dump($sql);
+        $query = $db->prepare($sql);
+        $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());
+        $query->execute();
         return $query->fetchAll();
     }
 
@@ -129,6 +152,6 @@ class Query
     public function deleteCustCond($cond)
     {
         $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
-        var_dump($db->query('DELETE FROM ' . $this->getStringTableName() . ' WHERE ' . $cond));
+        $db->query('DELETE FROM ' . $this->getStringTableName() . ' WHERE ' . $cond);
     }
 }
