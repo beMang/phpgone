@@ -14,6 +14,6 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
 
     public function testPDO()
     {
-        new \PDO('mysql:host=localhost', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        new \PDO('mysql:host=localhost', 'root', '', array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
     }
 }
