@@ -13,6 +13,7 @@ class Query
     {
         $this->setTableName($tableName, $databaseName);
         $this->setDBManager(DBManager::getInstance());
+        return $this;
     }
 
     private function setTableName($tableName, $databaseName)
