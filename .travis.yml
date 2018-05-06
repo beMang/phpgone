@@ -13,7 +13,7 @@ addons:
 
 before_install:
   - mysql_upgrade --force -uroot
-  - sudo mysql -e -uroot "use mysql; CREATE USER 'bemang'@'localhost' IDENTIFIED BY '';GRANT ALL PRIVILEGES ON * . * TO 'bemang'@'localhost';FLUSH PRIVILEGES;"
+  - sudo mysql -e -uroot "use mysql; CREATE USER `bemang`@`localhost` IDENTIFIED BY ``;GRANT ALL PRIVILEGES ON * . * TO `bemang`@`localhost`;FLUSH PRIVILEGES;"
   - sudo mysql_upgrade
   - sudo service mysql restart
 
