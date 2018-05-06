@@ -47,8 +47,10 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $this->pdo->prepare('DROP DATABASE `test`')->execute();
     }
 
-    public function testInsert()
+    public function testEmptyInstance()
     {
-        new Query('user_test', 'base');
+        $query = new Query('user_test', 'base');
+        $instance = $query->getEmptyInstance();
+        $this->assertInstanceOf('base_user_test', $instance);
     }
 }
