@@ -23,7 +23,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
         }
     }
 
-    public function addDatabase($name, $hostAndDb = 'mysql:host=localhost;dbname=test', $user = 'bemang', $passwd = '')
+    public function addDatabase($name, $hostAndDb = 'mysql:host=localhost;dbname=test', $user = 'root', $passwd = '')
     {
         $pdoInstance = new \PDO($hostAndDb, $user, $passwd, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $pdoInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -57,7 +57,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
         }
     }
 
-    public function defineClasses($name, \PDO $pdoInstance)
+    private function defineClasses($name, \PDO $pdoInstance)
     {
         $tables = $pdoInstance->query('SHOW TABLES')->fetchAll();
         foreach ($tables as $table) {

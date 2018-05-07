@@ -7,10 +7,7 @@ use phpGone\Database\DBManager;
 
 class DatabaseTest extends \PHPUnit\Framework\TestCase
 {
-    protected $manager;
-    protected $pdo;
-
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         $pdo = new \PDO('mysql:host=localhost', 'root', '', [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
@@ -34,17 +31,18 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
                         user_id varchar(200),
                         PRIMARY KEY (id)
                     )')->execute();
-        $this->pdo = $pdo;
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $manager = DBManager::getInstance($app);
         $manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', '');
-        $this->manager = $manager;
     }
 
-    protected function tearDown()
+    public static function tearDownAfterClass()
     {
-        $this->pdo->prepare('DROP DATABASE `test`')->execute();
+        $pdo = new \PDO('mysql:host=localhost', 'root', '', [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
+        $pdo->prepare('DROP DATABASE `test`')->execute();
     }
 
     public function testEmptyInstance()
@@ -52,5 +50,17 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $query = new Query('user_test', 'base');
         $instance = $query->getEmptyInstance();
         $this->assertInstanceOf('base_user_test', $instance);
+    }
+
+    public function testInsert()
+    {
+        $query = new Query('user_test', 'base');
+        $instance = $query->getEmptyInstance();
+        $instance->name = 'Arnlold';
+        $instance->surname = 'Pierre';
+        $instance->pseudo = 'griuKu';
+        $query->insert($instance);
+        $instance->id = 1;
+        $this->assertEquals($query->getLast(), $instance);
     }
 }
