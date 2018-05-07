@@ -12,17 +12,22 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
+        $pdo = new \PDO('mysql:host=localhost', 'root', '', [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
+        $pdo->prepare('CREATE DATABASE test DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci')->execute();
+        unset($pdo);
         $pdo = new \PDO('mysql:host=localhost;dbname=test', 'root', '', [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
-        $pdo->prepare('CREATE TABLE IF NOT EXISTS user_test (
+        $pdo->prepare('CREATE TABLE user_test (
                         id int NOT NULL AUTO_INCREMENT,
                         name varchar(255),
                         surname varchar(255),
                         pseudo varchar(48),
                         PRIMARY KEY (id)
                     )')->execute();
-        $pdo->prepare('CREATE TABLE IF NOT EXISTS test2 (
+        $pdo->prepare('CREATE TABLE test2 (
                         id int NOT NULL AUTO_INCREMENT,
                         value int,
                         content varchar(255),
