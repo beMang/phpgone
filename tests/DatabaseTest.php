@@ -41,18 +41,27 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $pdo->prepare('DROP DATABASE `test`')->execute();
     }
 
-    /**
-     * Test la configuration du manager et de l'ajout une base
-     *
-     * @doesNotPerformAssertions
-     * @return  void
-     */
     public function testConfigSystem()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
         $manager = DBManager::getInstance($app);
+        $this->assertTrue($manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', ''));
+    }
+
+    public function testAddAlReadyExistDataBase()
+    {
+        $manager = DBManager::getInstance();
+        $this->expectExceptionMessage('La base de donnée existe déjà.');
         $manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', '');
+    }
+
+    public function testInvalidStringOnAddDatabase()
+    {
+        $manager = DBManager::getInstance();
+        $this->expectExceptionMessage('L\'identifiant de la db doit être une chaine de caractères non-vides');
+        $manager->addDatabase(5757, 'mysql:host=localhost;dbname=test', 'root', '');
+        $manager->addDatabase('', 'mysql:host=localhost;dbname=test', 'root', '');
     }
 
     public function testGetInvalidDatabase()
