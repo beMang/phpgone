@@ -25,6 +25,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
 
     public function addDatabase($name, $hostAndDb = 'mysql:host=localhost;dbname=test', $user = 'root', $passwd = '')
     {
+        //TO DO : verify with isset
         $pdoInstance = new \PDO($hostAndDb, $user, $passwd, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $pdoInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->defineClasses($name, $pdoInstance);

@@ -31,10 +31,6 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
                         user_id varchar(200),
                         PRIMARY KEY (id)
                     )')->execute();
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
-        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $manager = DBManager::getInstance($app);
-        $manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', '');
     }
 
     public static function tearDownAfterClass()
@@ -43,6 +39,42 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]);
         $pdo->prepare('DROP DATABASE `test`')->execute();
+    }
+
+    /**
+     * Test la configuration du manager et de l'ajout une base
+     *
+     * @doesNotPerformAssertions
+     * @return  void
+     */
+    public function testConfigSystem()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
+        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
+        $manager = DBManager::getInstance($app);
+        $manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', '');
+    }
+
+    public function testGetInvalidDatabase()
+    {
+        $this->expectExceptionMessage('La base de donnée est inexistante');
+        $manager = DBManager::getInstance();
+        $manager->getDatabase(uniqid());
+    }
+
+    public function testGetInvalidStringDatabase()
+    {
+        $this->expectExceptionMessage('L\'identifiant doit être une chaine de caractères');
+        $manager = DBManager::getInstance();
+        $manager->getDatabase(55454);
+    }
+
+    public function testDatabaseExist()
+    {
+        $manager = DBManager::getInstance();
+        $this->assertTrue($manager->dataBaseExist('base'));
+        $this->assertFalse($manager->dataBaseExist(uniqid()));
+        $this->assertFalse($manager->dataBaseExist(545));
     }
 
     public function testEmptyInstance()
@@ -61,6 +93,17 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $instance->pseudo = 'griuKu';
         $query->insert($instance);
         $instance->id = 1;
+        $this->assertEquals($query->getLast(), $instance);
+    }
+
+    public function testUpdate()
+    {
+        $query = new Query('user_test', 'base');
+        $instance = $query->getLast();
+        $instance->name = 'Viktor';
+        $instance->surname = 'Vladivostok';
+        $instance->pseudo = uniqid();
+        $query->update($instance);
         $this->assertEquals($query->getLast(), $instance);
     }
 }
