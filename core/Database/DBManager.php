@@ -27,7 +27,12 @@ class DBManager extends \phpGone\Core\ApplicationComponent
     {
         if (is_string($name) && !empty($name)) {
             if ($this->dataBaseExist($name) == false) {
-                $pdoInstance = new \PDO($hostAndDb, $user, $passwd, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+                $pdoInstance = new \PDO(
+                    $hostAndDb,
+                    $user,
+                    $passwd,
+                    [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
+                );
                 $pdoInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $this->defineClasses($name, $pdoInstance);
                 $this->pdoInstances [$name] = $pdoInstance;
@@ -80,7 +85,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
         }
     }
 
-    public function sql($sqlQuery, $params = false, $db = 1)
+    public function sql($sqlQuery, $params = false, $db = 'base')
     {
         $db = $this->getDatabase($db);
         $query = $db->prepare($sqlQuery);
@@ -93,6 +98,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
         } catch (PDOException $e) {
             throw new \Exception('Error sql');
         }
+        $query->setFetchMode(\PDO::FETCH_OBJ);
         return $query->fetchAll();
     }
 }

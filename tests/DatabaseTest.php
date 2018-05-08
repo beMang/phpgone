@@ -86,6 +86,14 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($manager->dataBaseExist(545));
     }
 
+    public function testInvalidTableName()
+    {
+        $tableName = uniqid();
+        $dbName = uniqid();
+        $this->expectExceptionMessage('La table ' . $dbName . '_' . $tableName . ' est inexistante');
+        new Query($tableName, $dbName);
+    }
+
     public function testEmptyInstance()
     {
         $query = new Query('user_test', 'base');
@@ -114,5 +122,35 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $instance->pseudo = uniqid();
         $query->update($instance);
         $this->assertEquals($query->getLast(), $instance);
+    }
+
+    public function testGetWithCondition()
+    {
+        $query = new Query('user_test', 'base');
+        $result = $query->getWithCondition('name', 'Viktor');
+        $this->assertEquals([$query->getLast()], $result);
+    }
+
+    public function testGetAllAndSqlDbManager()
+    {
+        $query = new Query('user_test', 'base');
+        $instance = $query->getEmptyInstance();
+        $instance->pseudo = uniqid();
+        $instance->surname = uniqid();
+        $instance->name = uniqid();
+        $query->insert($instance);
+        $results = $query->getAll();
+        $manager = DBManager::getInstance();
+        $realInBdd = $manager->sql('SELECT * FROM user_test', false, 'base');
+        $this->assertEquals($realInBdd[0]->name, $results[0]->name);
+    }
+
+    public function testDelete()
+    {
+        $query = new Query('user_test', 'base');
+        $toDelete = $query->getLast();
+        $id = $toDelete->id;
+        $query->delete($toDelete);
+        $this->assertEmpty($query->getWithCondition('id', $id));
     }
 }

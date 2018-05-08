@@ -95,7 +95,6 @@ class Query
         if ($otherCond != false) {
             $sql .= ' WHERE ' . $cond;
         }
-        var_dump($sql);
         $query = $db->prepare($sql);
         $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());
         $query->execute();
