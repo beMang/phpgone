@@ -58,6 +58,7 @@ class Application
         $this->config->define($config);
         $this->httpRequest = $request;
         $this->middlewaresDispatcher = new MiddlewaresDispatcher($this);
+        \phpGone\Database\DBManager::getInstance($this); //Init the DBManager
     }
 
     /**

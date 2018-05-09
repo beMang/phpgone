@@ -45,7 +45,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $manager = DBManager::getInstance($app);
+        $manager = DBManager::getInstance();
         $this->assertTrue($manager->addDatabase('base', 'mysql:host=localhost;dbname=test', 'root', ''));
     }
 
