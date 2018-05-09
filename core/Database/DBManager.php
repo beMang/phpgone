@@ -95,7 +95,7 @@ class DBManager extends \phpGone\Core\ApplicationComponent
             } else {
                 $query->execute($params);
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new \Exception('Error sql');
         }
         $query->setFetchMode(\PDO::FETCH_OBJ);

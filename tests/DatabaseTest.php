@@ -143,6 +143,8 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $manager = DBManager::getInstance();
         $realInBdd = $manager->sql('SELECT * FROM user_test', false, 'base');
         $this->assertEquals($realInBdd[0]->name, $results[0]->name);
+        $this->expectExceptionMessage('Error sql');
+        $manager->sql('SELECT * FROM' . uniqid());
     }
 
     public function testDelete()
@@ -151,6 +153,15 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $toDelete = $query->getLast();
         $id = $toDelete->id;
         $query->delete($toDelete);
+        $this->assertEmpty($query->getWithCondition('id', $id));
+    }
+
+    public function testDeleteCust()
+    {
+        $query = new Query('user_test', 'base');
+        $toDelete = $query->getLast();
+        $id = $toDelete->id;
+        $query->deleteCustCond('id = ' . $id);
         $this->assertEmpty($query->getWithCondition('id', $id));
     }
 }
