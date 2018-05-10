@@ -109,12 +109,8 @@ class Query
         $keys = implode(' ,', $vars);
         $properties = [];
         foreach ($vars as $prop) {
-            if (is_null($object->$prop)) {
-                $properties[] = "''";
-            } else {
-                $string = "'" . $object->$prop . "'";
-                $properties[] = $string;
-            }
+            $string = "'" . $object->$prop . "'";
+            $properties[] = $string;
         }
         $values = implode(' ,', $properties);
         $query = $db->prepare('INSERT INTO ' . $this->getStringTableName() . " ($keys) VALUES($values)");
