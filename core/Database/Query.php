@@ -93,7 +93,7 @@ class Query
         $db = $this->getDbManager()->getDatabase($this->getDatabaseName());
         $sql = 'SELECT * FROM ' . $this->getStringTableName() . ' INNER JOIN ' . $otherTable . ' ON ' . $cond;
         if ($otherCond != false) {
-            $sql .= ' WHERE ' . $cond;
+            $sql .= ' WHERE ' . $otherCond;
         }
         $query = $db->prepare($sql);
         $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->getClassTableName());

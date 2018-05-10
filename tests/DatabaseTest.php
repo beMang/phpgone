@@ -164,4 +164,10 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $query->deleteCustCond('id = ' . $id);
         $this->assertEmpty($query->getWithCondition('id', $id));
     }
+
+    public function testInnerJoin(Type $var = null)
+    {
+        $query = new Query('user_test', 'base');
+        $this->assertEmpty($query->getWithInnerJoin('test2', 'user_test.name = test2.value', 'user_test.id = 4'));
+    }
 }
