@@ -40,7 +40,7 @@ class AssetsExtension extends BaseTwigExtension
         if (is_string($nameFile)) {
             return '<link rel="stylesheet" type="text/css" href="' .
             $this->urlHelperInstance->getRelativeAssetsPath() .
-            'css/' .$nameFile  . '.css">';
+            'css/' . $nameFile  . '.css">';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
@@ -58,14 +58,14 @@ class AssetsExtension extends BaseTwigExtension
         if (is_string($nameFile)) {
             return '<script src="' .
             $this->urlHelperInstance->getRelativeAssetsPath() .
-            'js/' .$nameFile  . '.js"></script>';
+            'js/' . $nameFile  . '.js"></script>';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
                 <script src="' .
                 $this->urlHelperInstance->getRelativeAssetsPath() .
-                'js/' .$file  . '.js"></script>';
+                'js/' . $file  . '.js"></script>';
             }
             return $result;
         }

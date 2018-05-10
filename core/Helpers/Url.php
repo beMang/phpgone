@@ -6,39 +6,39 @@ use phpGone\Helpers\Helper;
 
 class Url extends Helper
 {
-    public function getTmpPath($custom = '')
+    public function getTmpPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tmp/' . $custom;
     }
 
-    public function getAppPath($custom = '')
+    public function getAppPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../app/' . $custom;
     }
 
-    public function getTestsPath($custom = '')
+    public function getTestsPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tests/' . $custom;
     }
 
-    public function getAssetsPath($custom = '')
+    public function getAssetsPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
-        return $this->getAppPath('assets/') . $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        return $this->getAppPath('assets') . $custom;
     }
 
-    public function getRelativeAssetsPath($custom = '')
+    public function getRelativeAssetsPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
-        return $this->getRelativeAppPath('assets/') . $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        return $this->getRelativeAppPath('assets') . $custom;
     }
 
-    public function getRelativeAppPath($custom = '')
+    public function getRelativeAppPath($custom = null)
     {
-        $custom = (!empty($custom)) ? $custom . '/' : $custom;
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
         return $this->getConfig()->get('basePath') . 'app/' . $custom;
     }
 }
