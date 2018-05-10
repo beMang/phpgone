@@ -38,7 +38,7 @@ class AssetsExtension extends BaseTwigExtension
     public function css($nameFile)
     {
         if (is_string($nameFile)) {
-            return '<link rel="stylesheet" type="text/css" href="' .
+            $result = '<link rel="stylesheet" type="text/css" href="' .
             $this->urlHelperInstance->getRelativeAssetsPath() .
             'css/' . $nameFile  . '.css">';
         } elseif (is_array($nameFile)) {
@@ -49,14 +49,14 @@ class AssetsExtension extends BaseTwigExtension
                 $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .
                 $file  . '.css">';
             }
-            return $result;
         }
+        return $result;
     }
 
     public function js($nameFile)
     {
         if (is_string($nameFile)) {
-            return '<script src="' .
+            $result = '<script src="' .
             $this->urlHelperInstance->getRelativeAssetsPath() .
             'js/' . $nameFile  . '.js"></script>';
         } elseif (is_array($nameFile)) {
@@ -67,7 +67,7 @@ class AssetsExtension extends BaseTwigExtension
                 $this->urlHelperInstance->getRelativeAssetsPath() .
                 'js/' . $file  . '.js"></script>';
             }
-            return $result;
         }
+        return $result;
     }
 }
