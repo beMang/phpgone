@@ -17,8 +17,7 @@
     "autoload": {
         "psr-4": {
             "app\\": "app",
-            "phpGone\\": "core",
-            "phpGoneHelpers\\": "core/Helpers"
+            "phpGone\\": "core"
         }
     }
 }
