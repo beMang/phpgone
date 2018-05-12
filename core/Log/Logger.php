@@ -18,6 +18,16 @@ use Psr\Log\LogLevel;
  */
 class Logger extends \Psr\Log\AbstractLogger
 {
+    static protected $loggerInstance = null;
+
+    public static function getInstance()
+    {
+        if (is_null(Logger::$loggerInstance)) {
+            Logger::$loggerInstance = new \phpGone\Log\Logger();
+        }
+        return Logger::$loggerInstance;
+    }
+
     /**
      * Envoie un log
      *
@@ -26,6 +36,11 @@ class Logger extends \Psr\Log\AbstractLogger
      * @param array $context Contexte du log
      * @return void
      */
+    public static function doLog($loglevel, $message, array $context = [])
+    {
+        Logger::getInstance()->log($loglevel, $message, $context);
+    }
+
     public function log($loglevel, $message, array $context = [])
     {
         switch ($loglevel) {

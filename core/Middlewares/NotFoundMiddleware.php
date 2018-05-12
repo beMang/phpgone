@@ -10,6 +10,8 @@
  */
 namespace phpGone\Middlewares;
 
+use Psr\Log\LogLevel;
+use phpGone\Log\Logger;
 use GuzzleHttp\Psr7\Response;
 
 /**
@@ -34,6 +36,7 @@ class NotFoundMiddleware extends Middleware
         $controller->execute();
         $responseController = ob_get_clean();
         $response->getBody()->write($responseController);
+        Logger::doLog(LogLevel::INFO, 'Error 404, NotFoundMiddleware');
         //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)->info('Not Found 404'); //Log
         return $response;
     }
