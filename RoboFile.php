@@ -8,4 +8,14 @@ class RoboFile extends \Robo\Tasks
         ->append(false)
         ->run();
     }
+
+    public function clearCache()
+    {
+        $this->_cleanDir('app/cache/twig');
+    }
+
+    public function createTmpDir()
+    {
+        
+    }
 }
