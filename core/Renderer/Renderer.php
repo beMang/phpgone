@@ -33,22 +33,16 @@ class Renderer
         echo $twig->render($view, $datas);
     }
 
-    /*
-    public static function twigRenderWithCache(){
-        if (is_null($directory)) {
-            $dir = __DIR__ . '../../../../../../tmp/cache/twig/';
-        } else {
-            $dir = $directory;
-        }
+    public static function twigRenderWithCache($view, $datas)
+    {
+        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
         $loaderTwig = new \Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/app/views/');
         $twig = new \Twig_Environment($loaderTwig, [
-            'cache' => $dir
+            'cache' => $urlHelper->getTmpPath('cache')
         ]);
-        //Ajout des extensions
         foreach ($this->getApp()->getCongig()->get('TwigExtensions') as $extension) {
             $twig->addExtension(new $extension);
         }
-        return $twig->render($this->contentFile, $this->vars);
+        echo $twig->render($view, $datas);
     }
-    */
 }
