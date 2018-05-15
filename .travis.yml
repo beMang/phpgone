@@ -20,7 +20,8 @@ cache:
   - vendor
 
 script:
-  ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/robo creat:tmp-dir
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
   - composer require php-coveralls/php-coveralls

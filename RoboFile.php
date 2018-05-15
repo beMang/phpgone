@@ -16,6 +16,10 @@ class RoboFile extends \Robo\Tasks
 
     public function createTmpDir()
     {
-        
+        $this->_mkdir('tmp');
+        $this->_mkdir('tmp/log');
+        $this->_mkdir('tmp/cache/twig');
+        $this->_mkdir('tmp/cache/phpgone');
+        $this->_touch('tmp/log/phpgonelog.log');
     }
 }
