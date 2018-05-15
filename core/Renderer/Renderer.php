@@ -36,7 +36,7 @@ class Renderer
     public static function twigRenderWithCache($view, $datas)
     {
         $urlHelper = new \phpGone\Helpers\Url($this->getApp());
-        $loaderTwig = new \Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . '/app/views/');
+        $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . '/app/views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => $urlHelper->getTmpPath('cache')
         ]);
