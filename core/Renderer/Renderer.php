@@ -33,14 +33,14 @@ class Renderer
         echo $twig->render($view, $datas);
     }
 
-    public static function twigRenderWithCache($view, $datas)
+    public function twigRenderWithCache($view, $datas)
     {
-        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $urlHelper = new \phpGone\Helpers\Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath('views'));
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => $urlHelper->getTmpPath('cache')
         ]);
-        foreach ($this->getApp()->getCongig()->get('TwigExtensions') as $extension) {
+        foreach (Config::getInstance()->get('TwigExtensions') as $extension) {
             $twig->addExtension(new $extension);
         }
         echo $twig->render($view, $datas);
