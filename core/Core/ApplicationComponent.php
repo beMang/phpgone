@@ -49,6 +49,6 @@ class ApplicationComponent
      */
     public function getConfig()
     {
-        return $this->getApp()->getConfig();
+        return \bemang\Config::getInstance();
     }
 }
