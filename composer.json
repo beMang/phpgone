@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5",
-        "consolidation/robo": "^1.0@dev"
+        "consolidation/robo": "1.*.*"
     },
     "autoload": {
         "psr-4": {
