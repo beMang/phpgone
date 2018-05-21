@@ -10,6 +10,7 @@
  */
 namespace phpGone\Error;
 
+use bemang\Config;
 use phpGone\Core\Application;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -26,19 +27,18 @@ class ErrorController extends \phpGone\Core\BackController
      * @param string $module Module à traiter
      * @param string $action Action à executer
      */
-    public function __construct(Application $app, $action)
+    public function __construct($action)
     {
-        parent::__construct($app, $action);
+        parent::__construct($action);
     }
 
     /**
      * Execution de l'action pour faire le rendu adéquat
      *
-     * @param ServerRequestInterface $request Requête à traiter
      * @return void
      */
-    public function show(ServerRequestInterface $request)
+    public function show()
     {
-        $this->getRenderer()->twigRender($this->getConfig()->get('viewError404'), []);
+        $this->getRenderer()->twigRender(Config::getInstance()->get('viewError404'), []);
     }
 }

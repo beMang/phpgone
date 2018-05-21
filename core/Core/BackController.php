@@ -14,7 +14,7 @@ namespace phpGone\Core;
  * Class BackController
  * Class abstraite de base pour les controleurs des modules
  */
-class BackController extends ApplicationComponent
+class BackController
 {
     /**
      * Action du controller
@@ -32,10 +32,8 @@ class BackController extends ApplicationComponent
      * @param string $module Module du controller
      * @param string $action Action à executer sur le controller
      */
-    public function __construct(Application $app, $action)
+    public function __construct($action)
     {
-        parent::__construct($app);
-        
         $this->setAction($action);
     }
 
@@ -47,7 +45,7 @@ class BackController extends ApplicationComponent
     public function execute()
     {
         $method = $this->action;
-        $this->$method($this->app->getRequest());
+        $this->$method();
     }
 
     /**
@@ -68,7 +66,7 @@ class BackController extends ApplicationComponent
     public function getRenderer()
     {
         if (is_null($this->renderer)) {
-            $this->setRenderer(new \phpGone\Renderer\Renderer($this->getApp()));
+            $this->setRenderer(new \phpGone\Renderer\Renderer());
             return $this->renderer;
         } else {
             return $this->renderer;

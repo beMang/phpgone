@@ -14,7 +14,7 @@ namespace phpGone\Helpers;
  * Class Session
  * Gestion des sessions simples (pour l'utiliser le session_start() doit être bien démarré)
  */
-class Session extends Helper
+class Session
 {
     /**
      * Ajoute un attribut à la session

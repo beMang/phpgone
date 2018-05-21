@@ -52,12 +52,12 @@ class Application
      * @param string $config Fichier de configuration de l'application
      * @param \Psr\Http\Message\ServerRequestInterface $request Requete à traiter
      */
-    public function __construct($config, \Psr\Http\Message\ServerRequestInterface $request)
+    public function __construct($configFile, \Psr\Http\Message\ServerRequestInterface $request)
     {
-        $this->config = new Config();
-        $this->config->define($config);
+        $config = \bemang\Config::getInstance();
+        $config->define(require($configFile));
         $this->httpRequest = $request;
-        $this->middlewaresDispatcher = new MiddlewaresDispatcher($this);
+        $this->middlewaresDispatcher = new MiddlewaresDispatcher();
         \phpGone\Database\DBManager::getInstance($this); //Init the DBManager
     }
 
@@ -91,11 +91,11 @@ class Application
     /**
      * Renvoie la classe de configuration de l'application
      *
-     * @return \phpGone\Core\Config
+     * @return \bemang\Config
      */
     public function getConfig()
     {
-        return $this->config;
+        return \bemang\Config::getInstance();
     }
 
     /**

@@ -14,15 +14,14 @@ namespace phpGone\Middlewares;
  * Abstract class Middleware
  * Classe de base pour un middleware, permet d'accéder à l'application
  */
-abstract class Middleware extends \phpGone\Core\ApplicationComponent
+abstract class Middleware
 {
     /**
      * Annule le constructeur
      * @return void
      */
-    public function __construct($app)
+    public function __construct()
     {
-        parent::__construct($app);
     }
 
     /**

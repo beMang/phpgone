@@ -2,9 +2,9 @@
 
 namespace phpGone\Helpers;
 
-use phpGone\Helpers\Helper;
+use \bemang\Config;
 
-class Url extends Helper
+class Url
 {
     public function getTmpPath($custom = null)
     {
@@ -39,6 +39,6 @@ class Url extends Helper
     public function getRelativeAppPath($custom = null)
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return $this->getConfig()->get('basePath') . 'app/' . $custom;
+        return Config::getInstance()->get('basePath') . 'app/' . $custom;
     }
 }
