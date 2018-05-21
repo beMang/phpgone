@@ -57,7 +57,7 @@ class Application
         $config = \bemang\Config::getInstance();
         $config->define(require($configFile));
         $this->httpRequest = $request;
-        $this->middlewaresDispatcher = new MiddlewaresDispatcher($this);
+        $this->middlewaresDispatcher = new MiddlewaresDispatcher();
         \phpGone\Database\DBManager::getInstance($this); //Init the DBManager
     }
 

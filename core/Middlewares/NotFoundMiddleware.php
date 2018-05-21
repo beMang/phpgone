@@ -29,7 +29,7 @@ class NotFoundMiddleware extends Middleware
      */
     public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
     {
-        $controller = new \phpGone\Error\ErrorController($this->getApp(), 'show');
+        $controller = new \phpGone\Error\ErrorController('show');
         $response = new Response;
         $response = $response->withStatus(404);
         ob_start();

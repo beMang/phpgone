@@ -2,14 +2,14 @@
 
 namespace phpGone\Renderer;
 
-use phpGone\Core\ApplicationComponent;
+use bemang\Config;
 
-class Renderer extends ApplicationComponent
+class Renderer
 {
 
     public function render($view, $datas)
     {
-        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $urlHelper = new \phpGone\Helpers\Url();
         $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         if (!file_exists($fileToRender)) {
             throw new \RuntimeException('La vue spécifiée n\'existe pas' . $fileToRender);
@@ -22,13 +22,13 @@ class Renderer extends ApplicationComponent
 
     public function twigRender($view, $datas)
     {
-        $urlHelper = new \phpGone\Helpers\Url($this->getApp());
+        $urlHelper = new \phpGone\Helpers\Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . 'views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
         ]);
-        foreach ($this->getConfig()->get('TwigExtensions') as $extension) {
-            $twig->addExtension(new $extension($this->getApp()));
+        foreach (Config::getInstance()->get('TwigExtensions') as $extension) {
+            $twig->addExtension(new $extension());
         }
         echo $twig->render($view, $datas);
     }

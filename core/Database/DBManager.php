@@ -2,21 +2,20 @@
 
 namespace phpGone\Database;
 
-class DBManager extends \phpGone\Core\ApplicationComponent
+class DBManager
 {
     protected $pdoInstances = [];
     static protected $selfInstance = null;
 
-    public function __construct(\phpGone\Core\Application $app)
+    public function __construct()
     {
-        parent::__construct($app);
         //$this->addDatabase(); Initialize default db in config
     }
 
-    public static function getInstance($app = false)
+    public static function getInstance()
     {
         if (is_null(DBManager::$selfInstance)) {
-            DBManager::$selfInstance = new DBManager($app);
+            DBManager::$selfInstance = new DBManager();
             return DBManager::$selfInstance;
         } else {
             return DBManager::$selfInstance;

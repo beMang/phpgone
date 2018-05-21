@@ -10,6 +10,8 @@
  */
 namespace phpGone\Middlewares;
 
+use bemang\Config;
+
 /**
  * Class CoreMiddleware
  * Middleware qui execute les controleurs des modules
@@ -44,7 +46,7 @@ class CoreMiddleware extends Middleware
     public function getController($router, $request)
     {
         $xml = new \DOMDocument;
-        $routes = $this->getConfig()->get('routes');
+        $routes = Config::getInstance()->get('routes');
         
         foreach ($routes as $route) {
             $router->addRoute($route);
@@ -63,6 +65,6 @@ class CoreMiddleware extends Middleware
 
         $controllerClass = $matchedRoute->getController();
                             
-        return new $controllerClass($this->getApp(), $matchedRoute->getAction());
+        return new $controllerClass($matchedRoute->getAction());
     }
 }

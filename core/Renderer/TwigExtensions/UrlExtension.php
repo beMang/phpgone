@@ -17,14 +17,13 @@ use phpGone\Renderer\TwigExtensions\BaseTwigExtension;
 /**
  * @example Cette classe est un exemple (incomplet) d'une extension twig
  */
-class UrlExtension extends BaseTwigExtension
+class UrlExtension extends \Twig_Extension
 {
     protected $urlHelperInstance;
 
-    public function __construct(Application $app)
+    public function __construct()
     {
-        parent::__construct($app);
-        $this->urlHelperInstance = new Url($app);
+        $this->urlHelperInstance = new Url();
     }
 
     public function getFunctions()

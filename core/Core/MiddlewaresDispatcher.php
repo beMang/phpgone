@@ -16,7 +16,7 @@ namespace phpGone\Core;
  * Gère les middlewares et les execute
  * @package adriRoot
  */
-class MiddlewaresDispatcher extends ApplicationComponent
+class MiddlewaresDispatcher
 {
     /**
      * Contient les différents middlewares à utiliser
@@ -70,7 +70,7 @@ class MiddlewaresDispatcher extends ApplicationComponent
     {
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
             $middleWareClass = $this->middlewares[$this->middlewaresIndex];
-            $middleware = new $middleWareClass($this->getApp());
+            $middleware = new $middleWareClass();
             $this->middlewaresIndex++;
             return $middleware;
         }
