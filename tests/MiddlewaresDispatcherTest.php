@@ -3,6 +3,11 @@ namespace Test;
 
 class MiddlewaresDispatcherTest extends \PHPUnit\Framework\TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function testWithNullMiddlewares()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');

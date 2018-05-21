@@ -5,6 +5,11 @@ use phpGone\Router\Route;
 
 class RouteTest extends \PHPUnit\Framework\TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function testUrl()
     {
         $route = new Route('/test', 'Show\Show', 'doc');

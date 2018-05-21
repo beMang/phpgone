@@ -8,6 +8,11 @@ class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
 {
     protected $assetExtension;
 
+    public static function setUpBeforeClass()
+    {
+        require(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function setUp()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');

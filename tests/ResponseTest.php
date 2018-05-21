@@ -6,6 +6,11 @@ use GuzzleHttp\Psr7\ServerRequest;
 
 class ResponseTest extends \PHPUnit\Framework\TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function testError404()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');

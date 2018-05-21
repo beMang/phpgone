@@ -21,7 +21,7 @@ cache:
 
 script:
   - ./vendor/bin/robo creat:tmp-dir
-  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
   - composer require php-coveralls/php-coveralls

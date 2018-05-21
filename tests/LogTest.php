@@ -15,6 +15,12 @@ class LogTest extends \PHPUnit\Framework\TestCase
             fclose($handle);
         }
     }
+
+    public static function setUpBeforeClass()
+    {
+        require(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function getLogger()
     {
         return new \phpGone\Log\Logger();
