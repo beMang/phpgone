@@ -49,4 +49,11 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $response = $app->run();
         $this->assertTrue($app->send());
     }
+
+    public function testGetRequest()
+    {
+        $request = new ServerRequest('GET', '/asfdsq/');
+        $app = new Application(__DIR__ . '/../app/config.php', $request);
+        $this->assertEquals($request, $app->getRequest());
+    }
 }

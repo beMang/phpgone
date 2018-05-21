@@ -89,16 +89,6 @@ class Application
     }
 
     /**
-     * Renvoie la classe de configuration de l'application
-     *
-     * @return \bemang\Config
-     */
-    public function getConfig()
-    {
-        return \bemang\Config::getInstance();
-    }
-
-    /**
      * Ajoute un middleware à l'application (Au début du tableau)
      *
      * @param string $middleware Nom du middleware à utiliser
