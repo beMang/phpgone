@@ -8,12 +8,12 @@ class Show extends \phpGone\Core\BackController
 {
     public function index()
     {
-        $this->getRenderer()->twigRender('Show/index.twig', []);
+        Renderer::twigRender('Show/index.twig', []);
     }
 
     public function doc()
     {
-        $this->getRenderer()->twigRenderWithCache('Show/index.twig', []);
-        $this->getRenderer()->render('Show/doc', []);
+        Renderer::twigRenderWithCache('Show/index.twig', []);
+        Renderer::render('Show/doc', []);
     }
 }

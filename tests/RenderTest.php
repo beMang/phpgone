@@ -1,6 +1,8 @@
 <?php
 namespace Test;
 
+use phpGone\Renderer\Renderer;
+
 class RenderTest extends \PHPUnit\Framework\TestCase
 {
     public static function setUpBeforeClass()
@@ -24,8 +26,7 @@ class RenderTest extends \PHPUnit\Framework\TestCase
         $urlHelper = new \phpGone\Helpers\Url;
         $exptedPath = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
-        $render = new \phpGone\Renderer\Renderer();
-        $render->render($view, []);
+        Renderer::render($view, []);
     }
 
     public function testRenderWithCache()

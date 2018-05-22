@@ -6,8 +6,7 @@ use bemang\Config;
 
 class Renderer
 {
-
-    public function render($view, $datas)
+    public static function render($view, $datas)
     {
         $urlHelper = new \phpGone\Helpers\Url();
         $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
@@ -20,7 +19,7 @@ class Renderer
         require $fileToRender;
     }
 
-    public function twigRender($view, $datas)
+    public static function twigRender($view, $datas)
     {
         $urlHelper = new \phpGone\Helpers\Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . 'views/');
@@ -33,7 +32,7 @@ class Renderer
         echo $twig->render($view, $datas);
     }
 
-    public function twigRenderWithCache($view, $datas)
+    public static function twigRenderWithCache($view, $datas)
     {
         $urlHelper = new \phpGone\Helpers\Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath('views'));

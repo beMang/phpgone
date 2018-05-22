@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de la classe Application
  *
