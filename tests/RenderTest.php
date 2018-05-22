@@ -28,9 +28,4 @@ class RenderTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
         Renderer::render($view, []);
     }
-
-    public function testRenderWithCache()
-    {
-        //TODO
-    }
 }

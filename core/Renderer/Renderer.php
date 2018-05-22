@@ -37,7 +37,7 @@ class Renderer
         $urlHelper = new \phpGone\Helpers\Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath('views'));
         $twig = new \Twig_Environment($loaderTwig, [
-            'cache' => $urlHelper->getTmpPath('cache')
+            'cache' => $urlHelper->getTmpPath('cache/twig')
         ]);
         foreach (Config::getInstance()->get('TwigExtensions') as $extension) {
             $twig->addExtension(new $extension);
