@@ -13,13 +13,13 @@ services:
 
 install:
   - composer install
-  - composer dump -o
 
 cache:
   directories:
   - vendor
 
 script:
+  - composer dump -o
   - ./vendor/bin/robo creat:tmp-dir
   - phpunit --coverage-clover build/logs/clover.xml
 

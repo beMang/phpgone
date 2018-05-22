@@ -21,12 +21,15 @@ class RenderTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithInexistantView()
     {
         $view = uniqid();
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/doc');
-        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $urlHelper = new \phpGone\Helpers\Url($app);
+        $urlHelper = new \phpGone\Helpers\Url;
         $exptedPath = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
-        $render = new \phpGone\Renderer\Renderer($app);
+        $render = new \phpGone\Renderer\Renderer();
         $render->render($view, []);
+    }
+
+    public function testRenderWithCache()
+    {
+        //TODO
     }
 }
