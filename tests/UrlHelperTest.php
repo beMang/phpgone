@@ -7,7 +7,7 @@ class UrlHelperTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
-        require(__DIR__ . '/../vendor/autoload.php');
+        require_once(__DIR__ . '/../vendor/autoload.php');
     }
     
     public function setUp()
