@@ -10,7 +10,8 @@
         "psr/log": "^1.0",
         "twig/twig": "^2.4",
         "guzzlehttp/psr7": "^1.4",
-        "bemang/config-system": "1.*.*"
+        "bemang/config-system": "1.*.*",
+        "psr/http-server-middleware": "^1.0@dev"
     },
     "require-dev": {
         "consolidation/robo": "^1.0@dev"
