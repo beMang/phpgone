@@ -13,14 +13,15 @@ services:
 
 install:
   - composer install
-  - composer dump -o
 
 cache:
   directories:
   - vendor
 
 script:
-  ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - composer dump -o
+  - ./vendor/bin/robo creat:tmp-dir
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
   - composer require php-coveralls/php-coveralls

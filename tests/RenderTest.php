@@ -1,8 +1,15 @@
 <?php
 namespace Test;
 
+use phpGone\Renderer\Renderer;
+
 class RenderTest extends \PHPUnit\Framework\TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require_once(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function testDefaultRender()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/doc');
@@ -16,12 +23,9 @@ class RenderTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithInexistantView()
     {
         $view = uniqid();
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/doc');
-        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $urlHelper = new \phpGone\Helpers\Url($app);
+        $urlHelper = new \phpGone\Helpers\Url;
         $exptedPath = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
-        $render = new \phpGone\Renderer\Renderer($app);
-        $render->render($view, []);
+        Renderer::render($view, []);
     }
 }

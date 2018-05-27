@@ -12,6 +12,7 @@ namespace phpGone\Error;
 
 use bemang\Config;
 use phpGone\Core\Application;
+use phpGone\Renderer\Renderer;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -39,6 +40,6 @@ class ErrorController extends \phpGone\Core\BackController
      */
     public function show()
     {
-        $this->getRenderer()->twigRender(Config::getInstance()->get('viewError404'), []);
+        Renderer::twigRender(Config::getInstance()->get('viewError404'), []);
     }
 }

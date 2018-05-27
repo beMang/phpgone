@@ -7,6 +7,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
 {
     protected $sessionInstance;
 
+    public static function setUpBeforeClass()
+    {
+        require_once(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function setUp()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');

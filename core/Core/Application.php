@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de la classe Application
  *
@@ -58,7 +59,6 @@ class Application
         $config->define(require($configFile));
         $this->httpRequest = $request;
         $this->middlewaresDispatcher = new MiddlewaresDispatcher();
-        \phpGone\Database\DBManager::getInstance($this); //Init the DBManager
     }
 
     /**
@@ -89,22 +89,12 @@ class Application
     }
 
     /**
-     * Renvoie la classe de configuration de l'application
-     *
-     * @return \bemang\Config
-     */
-    public function getConfig()
-    {
-        return \bemang\Config::getInstance();
-    }
-
-    /**
      * Ajoute un middleware à l'application (Au début du tableau)
      *
      * @param string $middleware Nom du middleware à utiliser
      * @return \phpGone\Core\Application Application (Pour enchainer les méthodes pipe)
      */
-    public function addMiddlewares($middleware)
+    public function addMiddleware($middleware)
     {
         $this->middlewaresDispatcher->pipe($middleware);
         return $this;

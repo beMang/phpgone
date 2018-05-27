@@ -6,11 +6,16 @@ use GuzzleHttp\Psr7\ServerRequest;
 
 class ResponseTest extends \PHPUnit\Framework\TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        require_once(__DIR__ . '/../vendor/autoload.php');
+    }
+    
     public function testError404()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
@@ -21,7 +26,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
@@ -32,7 +37,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new ServerRequest('GET', '/asfdsq/');
         $app = new Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $this->assertEquals(301, $response->getStatusCode(301));
         $this->assertEquals('/asfdsq', $response->getHeaders()['Location'][0]);
@@ -45,8 +50,15 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         $request = new ServerRequest('GET', '/asfdsq/');
         $app = new Application(__DIR__ . '/../app/config.php', $request);
-        $app->addMiddlewares(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
         $response = $app->run();
         $this->assertTrue($app->send());
+    }
+
+    public function testGetRequest()
+    {
+        $request = new ServerRequest('GET', '/asfdsq/');
+        $app = new Application(__DIR__ . '/../app/config.php', $request);
+        $this->assertEquals($request, $app->getRequest());
     }
 }
