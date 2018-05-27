@@ -15,6 +15,6 @@ class MiddlewaresDispatcherTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('Aucun middleware a été défini');
         $dispatcher = new \phpGone\Core\MiddlewaresDispatcher($app);
         $dispatcher->resetMiddlewares();
-        $dispatcher->process($request);
+        $dispatcher->handle($request);
     }
 }

@@ -13,12 +13,16 @@ namespace phpGone\Middlewares;
 use Psr\Log\LogLevel;
 use phpGone\Log\Logger;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Class NotFoundMiddleware
  * Permet de gérer une requête 404
  */
-class NotFoundMiddleware extends Middleware
+class NotFoundMiddleware implements MiddlewareInterface
 {
     /**
      * Fait fonctionner le middleware (Méthode magique)
@@ -27,7 +31,7 @@ class NotFoundMiddleware extends Middleware
      * @param string $next Fonction à appeler
      * @return \Psr\Http\Message\Response
      */
-    public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $controller = new \phpGone\Error\ErrorController('show');
         $response = new Response;

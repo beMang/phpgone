@@ -11,13 +11,17 @@
  */
 namespace phpGone\Core;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
 /**
  * class MiddlewaresDispatcher
  *
  * Gère les middlewares et les execute
  * @package adriRoot
  */
-class MiddlewaresDispatcher
+class MiddlewaresDispatcher implements RequestHandlerInterface
 {
     /**
      * Contient les différents middlewares à utiliser
@@ -50,16 +54,16 @@ class MiddlewaresDispatcher
     /**
      * Parcours les middlwares et les execute
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request Requête à envoyer au middlware
-     * @return callable/bool Fonction à appeler ou false si erreur
+     * @param ServerRequestInterface $request Requête à envoyer au middlware
+     * @return ResponseInterface Réponse de l'ensemble des middelwares
      */
-    public function process(\Psr\Http\Message\ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $middleware = $this->getMiddleware();
         if (is_null($middleware)) {
             throw new \RuntimeException('Aucun middleware a été défini');
         }
-        return call_user_func_array($middleware, [$request, [$this, 'process']]);
+        return call_user_func_array([$middleware, 'process'], [$request, $this]);
     }
 
     /**

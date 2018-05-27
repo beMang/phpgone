@@ -68,7 +68,7 @@ class Application
      */
     public function run()
     {
-        return $this->setHttpResponse($this->middlewaresDispatcher->process($this->httpRequest));
+        return $this->setHttpResponse($this->middlewaresDispatcher->handle($this->httpRequest));
     }
 
     public function send()
