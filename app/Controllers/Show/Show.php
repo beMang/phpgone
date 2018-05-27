@@ -13,7 +13,7 @@ class Show extends \phpGone\Core\BackController
 
     public function doc()
     {
-        Renderer::twigRenderWithCache('Show/index.twig', []);
+        Renderer::twigRender('Show/index.twig', [], true);
         Renderer::render('Show/doc', []);
     }
 }
