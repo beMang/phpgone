@@ -11,14 +11,18 @@
 namespace phpGone\Middlewares;
 
 use bemang\Config;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Class CoreMiddleware
  * Middleware qui execute les controleurs des modules
  */
-class CoreMiddleware extends Middleware
+class CoreMiddleware implements MiddlewareInterface
 {
-    public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = new \GuzzleHttp\Psr7\Response();
         $controller = $this->getController(
@@ -26,7 +30,7 @@ class CoreMiddleware extends Middleware
             $request
         );
         if (is_null($controller)) {
-            return $next($request);
+            return $handler->handle($request);
         }
         ob_start();
         $controller->execute();
