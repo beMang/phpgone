@@ -52,7 +52,7 @@ class Renderer
         $urlHelper = new Url();
         $cache = new FileCache($urlHelper->getTmpPath('cache/phpgone'));
         if ($cache->has(self::NAME_CACHE . $view) === true) {
-            echo $cache->get(self::NAME_CACHE);
+            echo $cache->get(self::NAME_CACHE . $view);
         } else {
             $fileToRender = $urlHelper->getAppPath('views') . $view . '.php';
             if (!file_exists($fileToRender)) {
