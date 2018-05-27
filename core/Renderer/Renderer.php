@@ -51,7 +51,7 @@ class Renderer
     {
         $urlHelper = new Url();
         $cache = new FileCache($urlHelper->getTmpPath('cache/phpgone'));
-        if ($cache->has(self::NAME_CACHE) === true) {
+        if ($cache->has(self::NAME_CACHE . $view) === true) {
             echo $cache->get(self::NAME_CACHE);
         } else {
             $fileToRender = $urlHelper->getAppPath('views') . $view . '.php';
@@ -62,7 +62,7 @@ class Renderer
             extract($datas);
             require $fileToRender;
             $content = ob_get_clean();
-            $cache->set(self::NAME_CACHE, $content);
+            $cache->set(self::NAME_CACHE . $view, $content);
             echo $content;
         }
     }
