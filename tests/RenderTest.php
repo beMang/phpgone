@@ -23,9 +23,7 @@ class RenderTest extends \PHPUnit\Framework\TestCase
     public function testRenderWithInexistantView()
     {
         $view = uniqid();
-        $urlHelper = new \phpGone\Helpers\Url;
-        $exptedPath = $urlHelper->getAppPath() . 'views/' . $view . '.php';
-        $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
+        $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $view);
         Renderer::render($view, []);
     }
 }

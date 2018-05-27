@@ -41,7 +41,7 @@ class Renderer
         $urlHelper = new Url();
         $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         if (!file_exists($fileToRender)) {
-            throw new \RuntimeException('La vue spécifiée n\'existe pas - vue : ' . $fileToRender);
+            throw new \RuntimeException('La vue spécifiée n\'existe pas' . $view);
         }
         extract($datas);
         require $fileToRender;
