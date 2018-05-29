@@ -3,25 +3,73 @@
 namespace phpGone\Renderer;
 
 use bemang\Config;
+use phpGone\Helpers\Url;
+use bemang\Cache\FileCache;
 
 class Renderer
 {
-    public static function render($view, $datas)
+    const NAME_CACHE = 'phpGoneCache';
+
+    public static function render($view, $datas, $cache = false)
     {
-        $urlHelper = new \phpGone\Helpers\Url();
+        if (is_bool($cache)) {
+            if ($cache === false) {
+                self::classicRender($view, $datas);
+            } else {
+                self::cacheRender($view, $datas);
+            }
+        } else {
+            throw new \InvalidArgumentException('Le cache doit être un booléen');
+        }
+    }
+
+    public static function twigRender($view, $datas, $cache = false)
+    {
+        if (is_bool($cache)) {
+            if ($cache === false) {
+                self::classicTwigRender($view, $datas);
+            } else {
+                self::cacheTwigRender($view, $datas);
+            }
+        } else {
+            throw new \InvalidArgumentException('Le cache doit être un booléen');
+        }
+    }
+
+    protected static function classicRender($view, $datas)
+    {
+        $urlHelper = new Url();
         $fileToRender = $urlHelper->getAppPath() . 'views/' . $view . '.php';
         if (!file_exists($fileToRender)) {
-            throw new \RuntimeException('La vue spécifiée n\'existe pas' . $fileToRender);
+            throw new \RuntimeException('La vue spécifiée n\'existe pas' . $view);
         }
-
         extract($datas);
-
         require $fileToRender;
     }
 
-    public static function twigRender($view, $datas)
+    protected static function cacheRender($view, $datas)
     {
-        $urlHelper = new \phpGone\Helpers\Url();
+        $urlHelper = new Url();
+        $cache = new FileCache($urlHelper->getTmpPath('cache/phpgone'));
+        if ($cache->has(self::NAME_CACHE . $view) === true) {
+            echo $cache->get(self::NAME_CACHE . $view);
+        } else {
+            $fileToRender = $urlHelper->getAppPath('views') . $view . '.php';
+            if (!file_exists($fileToRender)) {
+                throw new \RuntimeException('La vue spécifiée n\'existe pas' . $view);
+            }
+            ob_start();
+            extract($datas);
+            require $fileToRender;
+            $content = ob_get_clean();
+            $cache->set(self::NAME_CACHE . $view, $content);
+            echo $content;
+        }
+    }
+
+    protected static function classicTwigRender($view, $datas)
+    {
+        $urlHelper = new Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath() . 'views/');
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => false
@@ -32,9 +80,9 @@ class Renderer
         echo $twig->render($view, $datas);
     }
 
-    public static function twigRenderWithCache($view, $datas)
+    protected static function cacheTwigRender($view, $datas)
     {
-        $urlHelper = new \phpGone\Helpers\Url();
+        $urlHelper = new Url();
         $loaderTwig = new \Twig_Loader_Filesystem($urlHelper->getAppPath('views'));
         $twig = new \Twig_Environment($loaderTwig, [
             'cache' => $urlHelper->getTmpPath('cache/twig')

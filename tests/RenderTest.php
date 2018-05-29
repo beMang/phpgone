@@ -1,6 +1,7 @@
 <?php
 namespace Test;
 
+use bemang\Cache\FileCache;
 use phpGone\Renderer\Renderer;
 
 class RenderTest extends \PHPUnit\Framework\TestCase
@@ -18,14 +19,44 @@ class RenderTest extends \PHPUnit\Framework\TestCase
         $stream = $response->getBody();
         $stream->rewind();
         $this->assertContains('<h1>La documentation va être écrite</h1>', $stream->read(1024 * 8));
+        $this->expectExceptionMessage('Le cache doit être un booléen');
+        Renderer::render('test', [], 'jlkmf');
     }
 
     public function testRenderWithInexistantView()
     {
         $view = uniqid();
-        $urlHelper = new \phpGone\Helpers\Url;
-        $exptedPath = $urlHelper->getAppPath() . 'views/' . $view . '.php';
-        $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $exptedPath);
+        $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $view);
         Renderer::render($view, []);
+    }
+
+    public function testUnknowCacheTypeTwig()
+    {
+        $this->expectExceptionMessage('Le cache doit être un booléen');
+        Renderer::twigRender('test', [], 'jlkmf');
+    }
+
+    public function testCacheRender()
+    {
+        ob_start();
+        Renderer::render('Show/doc', [], true);
+        $content = ob_get_clean();
+        $cache = new FileCache(__DIR__ . '/../tmp/cache/phpgone/');
+        $this->assertEquals($cache->get('phpGoneCacheShow/doc'), $content);
+        ob_start();
+        Renderer::render('Show/doc', [], true);
+        $newContent = ob_get_clean();
+        $this->assertEquals($cache->get('phpGoneCacheShow/doc'), $newContent);
+        ob_start();
+        Renderer::render('Show/forTest', [], true);
+        $newContent = ob_get_clean();
+        $this->assertEquals($cache->get('phpGoneCacheShow/forTest'), $newContent);
+    }
+
+    public function testCacheRenderWithInexistantView()
+    {
+        $view = uniqid();
+        $this->expectExceptionMessage('La vue spécifiée n\'existe pas' . $view);
+        Renderer::render($view, [], true);
     }
 }
