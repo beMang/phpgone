@@ -47,6 +47,10 @@ class RenderTest extends \PHPUnit\Framework\TestCase
         Renderer::render('Show/doc', [], true);
         $newContent = ob_get_clean();
         $this->assertEquals($cache->get('phpGoneCacheShow/doc'), $newContent);
+        ob_start();
+        Renderer::render('Show/forTest', [], true);
+        $newContent = ob_get_clean();
+        $this->assertEquals($cache->get('phpGoneCacheShow/forTest'), $newContent);
     }
 
     public function testCacheRenderWithInexistantView()
