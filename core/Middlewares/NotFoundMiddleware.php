@@ -33,7 +33,7 @@ class NotFoundMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $controller = new \phpGone\Error\ErrorController('show');
+        $controller = new \phpGone\Error\ErrorController('show', $request);
         $response = new Response;
         $response = $response->withStatus(404);
         ob_start();

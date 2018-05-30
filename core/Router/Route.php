@@ -81,9 +81,13 @@ class Route
     {
         if (is_array($matches)) {
             $resultMatches = [];
-            $numSlug = 1;
+            $numSlug = 0;
             foreach ($matches as $key => $value) {
-                $resultMatches['slug' . $numSlug] = $value;
+                if ($numSlug === 0) {
+                    $resultMatches['completePath'] = $value;
+                } else {
+                    $resultMatches['slug' . $numSlug] = $value;
+                }
                 $numSlug ++;
             }
             $this->matches = $resultMatches;

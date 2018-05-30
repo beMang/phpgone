@@ -10,6 +10,8 @@
  */
 namespace phpGone\Core;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Class BackController
  * Class abstraite de base pour les controleurs des modules
@@ -21,9 +23,9 @@ class BackController
      *
      * @var string
      */
-    protected $action = '';
+    protected $action;
 
-    protected $renderer = null;
+    private $request;
 
     /**
      * Constucteur du BackController
@@ -32,9 +34,10 @@ class BackController
      * @param string $module Module du controller
      * @param string $action Action à executer sur le controller
      */
-    public function __construct($action)
+    public function __construct(string $action, $request)
     {
         $this->setAction($action);
+        $this->setRequest($request);
     }
 
     /**
@@ -44,8 +47,15 @@ class BackController
      */
     public function execute()
     {
-        $method = $this->action;
-        $this->$method();
+        if (method_exists($this, 'setUp')) {
+            call_user_func_array([$this, 'setUp'], [$this->request]);
+        }
+        call_user_func_array([$this, $this->action], [$this->request]);
+    }
+
+    private function setRequest(ServerRequestInterface $request)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -53,7 +63,7 @@ class BackController
      *
      * @param string $action Action à executer
      */
-    public function setAction($action)
+    public function setAction(string $action)
     {
         $this->action = $action;
     }

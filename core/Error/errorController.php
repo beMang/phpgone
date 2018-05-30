@@ -22,18 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 class ErrorController extends \phpGone\Core\BackController
 {
     /**
-     * Constructeur du controller
-     *
-     * @param Application $app Application à faire passer au composant (ApplicationComponent)
-     * @param string $module Module à traiter
-     * @param string $action Action à executer
-     */
-    public function __construct($action)
-    {
-        parent::__construct($action);
-    }
-
-    /**
      * Execution de l'action pour faire le rendu adéquat
      *
      * @return void
