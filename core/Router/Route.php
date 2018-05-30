@@ -42,7 +42,7 @@ class Route
     public function setController($controller)
     {
         if (class_exists('\\app\\Controllers\\' . $controller)) {
-            $this->module = '\\app\\Controllers\\' . $controller;
+            $this->controller = '\\app\\Controllers\\' . $controller;
         } else {
             throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' .
             $controller . 'est inexistante (Voir fichier de config)');
@@ -69,7 +69,7 @@ class Route
 
     public function getController()
     {
-        return $this->module;
+        return $this->controller;
     }
 
     public function getUrl()

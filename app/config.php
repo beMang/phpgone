@@ -8,7 +8,7 @@ return [
         new Route('/', 'Show\Show', 'index'),
         new Route('/doc', 'Show\Show', 'doc')
     ],
-    'viewError404' => 'Error/show.twig',
+    'errorPage' => ['Error\Error', 'index'],
     'TwigExtensions' => [
         phpGone\Renderer\TwigExtensions\UrlExtension::class,
         phpGone\Renderer\TwigExtensions\AssetsExtension::class
