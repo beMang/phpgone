@@ -1,88 +1,80 @@
 <?php
 
-/**
- * Fichier de la classe Application
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
 namespace phpGone\Core;
+
+use bemang\Config;
+use phpGone\Core\ResponseSender;
+use phpGone\Core\MiddlewaresHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * class Application
- *
- * Permet d'utiliser les autres classes, c'est le centre de la lib.
- * @package adriRoot
+ * Représente l'application
  */
 class Application
 {
     /**
-     * Contient la classe du fichier de configuration
-     *
-     * @var string
-     */
-    protected $config;
-
-    /**
      * Contient la requête
      *
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var ServerRequestInterface
      */
     protected $httpRequest;
 
     /**
      * Contient la réponse générée par l'application
      *
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var ResponseInterface
      */
     protected $httpResponse;
 
     /**
      * Contient le gestionnaire de middlewares
      *
-     * @var \phpGone\Core\MiddlewaresDispatcher
+     * @var MiddlewaresHandler
      */
-    protected $middlewaresDispatcher;
+    protected $middlewaresHandler;
 
     /**
      * Constructeur de la classe
      *
-     * @param string $config Fichier de configuration de l'application
-     * @param \Psr\Http\Message\ServerRequestInterface $request Requete à traiter
+     * @param string $config Fichier de base pour configuration de l'application
+     * @param ServerRequestInterface $request Requete à traiter
      */
-    public function __construct($configFile, \Psr\Http\Message\ServerRequestInterface $request)
+    public function __construct($configFile, ServerRequestInterface $request)
     {
-        $config = \bemang\Config::getInstance();
+        $config = Config::getInstance();
         $config->define(require($configFile));
         $this->httpRequest = $request;
-        $this->middlewaresDispatcher = new MiddlewaresDispatcher();
+        $this->middlewaresHandler = new MiddlewaresHandler();
     }
 
     /**
-     * Récupère une réponse en fonction de la requête
+     * Génère la réponse en fonction de la requête
      *
-     * @return \Psr\Http\Message\ResponseInterface Réponse renvoyée
+     * @return ResponseInterface Réponse générée
      */
-    public function run()
+    public function run() :ResponseInterface
     {
-        return $this->setHttpResponse($this->middlewaresDispatcher->handle($this->httpRequest));
+        return $this->setHttpResponse($this->middlewaresHandler->handle($this->httpRequest));
     }
 
-    public function send()
+    /**
+     * Envoie le résultat au client
+     *
+     * @return bool Résultat de l'envoie
+     */
+    public function send() :bool
     {
-        $responseSender = new \phpGone\Core\ResponseSender();
+        $responseSender = new ResponseSender();
         return $responseSender->send($this->httpResponse);
     }
 
-    public function setHttpResponse(\Psr\Http\Message\ResponseInterface $response)
-    {
-        $this->httpResponse = $response;
-        return $response;
-    }
-
+    /**
+     * Permet de récupérer la requête
+     *
+     * @return objet Requete
+     */
     public function getRequest()
     {
         return $this->httpRequest;
@@ -91,12 +83,18 @@ class Application
     /**
      * Ajoute un middleware à l'application (Au début du tableau)
      *
-     * @param string $middleware Nom du middleware à utiliser
-     * @return \phpGone\Core\Application Application (Pour enchainer les méthodes pipe)
+     * @param string $middleware Middleware à utiliser
+     * @return Application Application (Pour enchainer les méthodes pipe)
      */
-    public function addMiddleware($middleware)
+    public function addMiddleware($middleware) : Application
     {
-        $this->middlewaresDispatcher->pipe($middleware);
+        $this->middlewaresHandler->pipe($middleware);
         return $this;
+    }
+
+    private function setHttpResponse(ResponseInterface $response) :ResponseInterface
+    {
+        $this->httpResponse = $response;
+        return $response;
     }
 }

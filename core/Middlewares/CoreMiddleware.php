@@ -1,13 +1,5 @@
 <?php
-/**
- * Fichier de la classe CoreMiddleware
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Middlewares;
 
 use bemang\Config;
@@ -18,10 +10,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Class CoreMiddleware
- * Middleware qui execute les controleurs des modules
+ * Middleware principal qui execute la bonne méthode en fonction de la requête
  */
 class CoreMiddleware implements MiddlewareInterface
 {
+    /**
+     * Méthode principale
+     *
+     * @param ServerRequestInterface $request Requête à traiter
+     * @param RequestHandlerInterface $handler Gestionnaire de middleware
+     * @return ResponseInterface Réponse
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = new \GuzzleHttp\Psr7\Response();
@@ -36,8 +35,6 @@ class CoreMiddleware implements MiddlewareInterface
         $controller->execute();
         $responseController = ob_get_clean();
         $response->getBody()->write($responseController);
-        //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)
-        //                               ->info('Requête traitée par le core(Middleware)');
         return $response;
     }
 
