@@ -13,6 +13,7 @@ namespace phpGone\Middlewares;
 use bemang\Config;
 use Psr\Log\LogLevel;
 use phpGone\Log\Logger;
+use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -36,7 +37,8 @@ class NotFoundMiddleware implements MiddlewareInterface
     {
         $errorPageConfig = Config::getInstance()->get('errorPage');
         $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
-        $controller = new $controllerClass($errorPageConfig[1], $request);
+        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
+        $controller = new $controllerClass($route, $request);
         $response = new Response;
         ob_start();
         $controller->execute();

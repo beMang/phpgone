@@ -2,6 +2,7 @@
 
 namespace phpGone\Core;
 
+use phpGone\Router\Route;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -19,9 +20,9 @@ abstract class BackController
      * @param string $module Action à appeler
      * @param ServerRequestInterface $request Requête à traiter
      */
-    public function __construct(string $action, $request)
+    public function __construct(Route $route, $request)
     {
-        $this->setAction($action);
+        $this->setAction($route->getAction());
         $this->setRequest($request);
     }
 
