@@ -6,9 +6,16 @@ use phpGone\Renderer\Renderer;
 
 class Show extends \phpGone\Core\BackController
 {
+    protected $mainView;
+
+    public function setUp()
+    {
+        $this->mainView = 'Show/index.twig';
+    }
+
     public function index()
     {
-        Renderer::twigRender('Show/index.twig', []);
+        Renderer::twigRender($this->mainView, []);
     }
 
     public function doc()
