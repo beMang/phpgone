@@ -58,7 +58,7 @@ class CoreMiddleware implements MiddlewareInterface
             $matchedRoute = $router->getRoute($request->getUri()->getPath());
         } catch (\RuntimeException $e) {
             if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
-                return null; //Permet de traiter la requête NotFound (Middleware)
+                return null; //Permet de passer au middleware suivant
             }
         }
 

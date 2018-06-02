@@ -4,6 +4,9 @@ namespace app\Controllers\Show;
 
 use phpGone\Renderer\Renderer;
 
+/**
+ * Controller basique
+ */
 class Show extends \phpGone\Core\BackController
 {
     protected $mainView;
