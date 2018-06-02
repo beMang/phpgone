@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Controllers\Show;
+namespace app\Controllers\Demo;
 
 use phpGone\Renderer\Renderer;
 
@@ -13,7 +13,7 @@ class Show extends \phpGone\Core\BackController
 
     public function setUp()
     {
-        $this->mainView = 'Show/index.twig';
+        $this->mainView = 'Demo/index.twig';
     }
 
     public function index()
@@ -23,7 +23,7 @@ class Show extends \phpGone\Core\BackController
 
     public function doc()
     {
-        Renderer::twigRender('Show/index.twig', [], true);
-        Renderer::render('Show/doc', []);
+        Renderer::twigRender('Demo/index.twig', [], true);
+        Renderer::render('Demo/doc', []);
     }
 }

@@ -5,6 +5,7 @@
     <file>./core</file>
     <file>./app/</file>
     <file>./tests/</file>
+    <file>index.php</file>
 
     <rule ref="PSR2"></rule>
 </ruleset>
