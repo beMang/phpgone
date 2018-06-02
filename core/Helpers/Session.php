@@ -1,13 +1,5 @@
 <?php
-/**
- * Fichier de la classe Session
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Helpers;
 
 /**

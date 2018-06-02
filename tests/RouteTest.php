@@ -12,7 +12,7 @@ class RouteTest extends \PHPUnit\Framework\TestCase
     
     public function testUrl()
     {
-        $route = new Route('/test', 'Show\Show', 'doc');
+        $route = new Route('/test', 'Demo\Show', 'doc');
         $this->assertContains('/test', $route->getUrl());
     }
 
@@ -28,12 +28,12 @@ class RouteTest extends \PHPUnit\Framework\TestCase
     {
         $action = uniqid();
         $this->expectExceptionMessage('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
-        new Route('/test', 'Show\Show', $action);
+        new Route('/test', 'Demo\Show', $action);
     }
 
     public function testInvalidUrl()
     {
         $this->expectExceptionMessage('L\'url de la route est invalide (Voir fichier de config)');
-        new Route(45456, 'Show\Show', 'doc');
+        new Route(45456, 'Demo\Show', 'doc');
     }
 }

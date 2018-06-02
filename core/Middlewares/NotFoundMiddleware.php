@@ -45,7 +45,8 @@ class NotFoundMiddleware implements MiddlewareInterface
         $responseController = ob_get_clean();
         $response->getBody()->write($responseController);
         $response = $response->withStatus(404);
-        Logger::doLog(LogLevel::INFO, 'Error 404, NotFoundMiddleware');
+        $logger = new Logger();
+        $logger->info('Error 404, NotFoundMiddleware');
         return $response;
     }
 }
