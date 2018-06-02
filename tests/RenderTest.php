@@ -18,7 +18,7 @@ class RenderTest extends \PHPUnit\Framework\TestCase
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
-        $this->assertContains('<h1>La documentation va être écrite</h1>', $stream->read(1024 * 8));
+        $this->assertContains('<h1>phpGone - Documentation</h1>', $stream->read(1024 * 8));
         $this->expectExceptionMessage('Le cache doit être un booléen');
         Renderer::render('test', [], 'jlkmf');
     }

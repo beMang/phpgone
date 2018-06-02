@@ -23,7 +23,6 @@ class Show extends \phpGone\Core\BackController
 
     public function doc()
     {
-        Renderer::twigRender('Demo/index.twig', [], true);
         Renderer::render('Demo/doc', []);
     }
 }

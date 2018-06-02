@@ -11,6 +11,7 @@ class Error extends \phpGone\Core\BackController
 {
     public function index()
     {
+        Renderer::twigRender('Demo/index.twig', [], true);
         Renderer::twigRender('Error/404.twig', []);
     }
 }

@@ -25,5 +25,10 @@
     },
     "suggest": {
         "phpunit/phpunit": "^6.5"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "./vendor/bin/robo creat:tmp-dir"
+        ]
     }
 }
