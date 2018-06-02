@@ -1,20 +1,12 @@
 <?php
-/**
- * Fichier de la classe Session
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Helpers;
 
 /**
  * Class Session
  * Gestion des sessions simples (pour l'utiliser le session_start() doit être bien démarré)
  */
-class Session extends Helper
+class Session
 {
     /**
      * Ajoute un attribut à la session

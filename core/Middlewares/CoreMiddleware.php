@@ -1,22 +1,27 @@
 <?php
-/**
- * Fichier de la classe CoreMiddleware
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Middlewares;
+
+use bemang\Config;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Class CoreMiddleware
- * Middleware qui execute les controleurs des modules
+ * Middleware principal qui execute la bonne méthode en fonction de la requête
  */
-class CoreMiddleware extends Middleware
+class CoreMiddleware implements MiddlewareInterface
 {
-    public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
+    /**
+     * Méthode principale
+     *
+     * @param ServerRequestInterface $request Requête à traiter
+     * @param RequestHandlerInterface $handler Gestionnaire de middleware
+     * @return ResponseInterface Réponse
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = new \GuzzleHttp\Psr7\Response();
         $controller = $this->getController(
@@ -24,14 +29,12 @@ class CoreMiddleware extends Middleware
             $request
         );
         if (is_null($controller)) {
-            return $next($request);
+            return $handler->handle($request);
         }
         ob_start();
         $controller->execute();
         $responseController = ob_get_clean();
         $response->getBody()->write($responseController);
-        //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)
-        //                               ->info('Requête traitée par le core(Middleware)');
         return $response;
     }
 
@@ -44,9 +47,8 @@ class CoreMiddleware extends Middleware
     public function getController($router, $request)
     {
         $xml = new \DOMDocument;
-        $routes = $this->getConfig()->get('routes');
+        $routes = Config::getInstance()->get('routes');
         
-        //Parcours des routes du fichier xml de config
         foreach ($routes as $route) {
             $router->addRoute($route);
             unset($route);
@@ -56,14 +58,14 @@ class CoreMiddleware extends Middleware
             $matchedRoute = $router->getRoute($request->getUri()->getPath());
         } catch (\RuntimeException $e) {
             if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
-                return null; //Permet de traiter la requête NotFound (Middleware)
+                return null; //Permet de passer au middleware suivant
             }
         }
 
-        $_GET = array_merge($_GET, $matchedRoute->getVars());
+        $_GET = array_merge($_GET, $matchedRoute->getMatches());
 
-        $controllerClass = '\\app\\Controllers\\' . $matchedRoute->getController();
+        $controllerClass = $matchedRoute->getController();
                             
-        return new $controllerClass($this->getApp(), $matchedRoute->getAction());
+        return new $controllerClass($matchedRoute, $request);
     }
 }

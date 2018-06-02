@@ -10,31 +10,43 @@
  */
 namespace phpGone\Middlewares;
 
+use bemang\Config;
+use Psr\Log\LogLevel;
+use phpGone\Log\Logger;
+use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Class NotFoundMiddleware
  * Permet de gérer une requête 404
  */
-class NotFoundMiddleware extends Middleware
+class NotFoundMiddleware implements MiddlewareInterface
 {
     /**
-     * Fait fonctionner le middleware (Méthode magique)
+     * Process method for NotFoundMiddleware
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request Requête à traiter
-     * @param string $next Fonction à appeler
-     * @return \Psr\Http\Message\Response
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface Réponse 404
      */
-    public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $controller = new \phpGone\Error\ErrorController($this->getApp(), 'show');
+        $errorPageConfig = Config::getInstance()->get('errorPage');
+        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
+        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
+        $controller = new $controllerClass($route, $request);
         $response = new Response;
-        $response = $response->withStatus(404);
         ob_start();
         $controller->execute();
         $responseController = ob_get_clean();
         $response->getBody()->write($responseController);
-        //$this->getApp()->getContainer()->get(\phpGone\Log\Logger::class)->info('Not Found 404'); //Log
+        $response = $response->withStatus(404);
+        $logger = new Logger();
+        $logger->info('Error 404, NotFoundMiddleware');
         return $response;
     }
 }

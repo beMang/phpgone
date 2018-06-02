@@ -1,20 +1,11 @@
 <?php
-/**
- * Fichier de la classe Routeur
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Router;
 
  /**
   * class Routeur
   *
-  * Permet de choisir la bonne vue en fonction de l'HTTPRequest et du fichier de configuration
-  * @package adriRoot
+  * Permet de choisir la bonne route en fonction de la requête
   */
 class Routeur
 {
@@ -29,22 +20,11 @@ class Routeur
     public function getRoute($url)
     {
         foreach ($this->routes as $route) {
-            $varsValues = $route->match($url);
+            $matches = $route->match($url);
 
             //Si la route correspond à l'url
-            if ($varsValues !== false) {
-                if ($route->hasVars() == true) {
-                    $varsNames = $route->getVarsNames();
-                    $listVars = [];
-
-                    foreach ($varsValues as $key => $match) {
-                        if ($key !== 0) {
-                            $listVars[$varsNames[$key -1]] = $match;
-                        }
-                        unset($match);
-                    }
-                    $route->setVars($listVars);
-                }
+            if ($matches !== false) {
+                $route->setMatches($matches);
                 return $route;
             }
             unset($route);

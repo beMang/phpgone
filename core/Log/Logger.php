@@ -1,13 +1,5 @@
 <?php
-/**
- * Fichier de la classe Logger
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Log;
 
 use Psr\Log\LogLevel;
@@ -18,14 +10,6 @@ use Psr\Log\LogLevel;
  */
 class Logger extends \Psr\Log\AbstractLogger
 {
-    /**
-     * Envoie un log
-     *
-     * @param string $loglevel Niveau d'importance du log
-     * @param string $message Message à faire passer
-     * @param array $context Contexte du log
-     * @return void
-     */
     public function log($loglevel, $message, array $context = [])
     {
         switch ($loglevel) {
