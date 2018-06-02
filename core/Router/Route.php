@@ -25,7 +25,6 @@ class Route
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             return $matches;
         } else {
-            //No match
             return false;
         }
     }

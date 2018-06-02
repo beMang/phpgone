@@ -1,42 +1,28 @@
 <?php
-/**
- * Fichier de la classe BackController
- *
- * PHP Version 5
- *
- * @license MIT
- * @copyright 2017 Antonutti Adrien
- * @author Antonutti Adrien <antonuttiadrien@email.com>
- */
+
 namespace phpGone\Core;
 
+use phpGone\Router\Route;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class BackController
- * Class abstraite de base pour les controleurs des modules
+ * Class abstraite de base pour les controleurs
  */
-class BackController
+abstract class BackController
 {
-    /**
-     * Action du controller
-     *
-     * @var string
-     */
-    protected $action;
-
+    private $action;
     private $request;
 
     /**
      * Constucteur du BackController
      *
-     * @param Application $app Application du composant BackController
-     * @param string $module Module du controller
-     * @param string $action Action à executer sur le controller
+     * @param string $module Action à appeler
+     * @param ServerRequestInterface $request Requête à traiter
      */
-    public function __construct(string $action, $request)
+    public function __construct(Route $route, $request)
     {
-        $this->setAction($action);
+        $this->setAction($route->getAction());
         $this->setRequest($request);
     }
 
@@ -58,12 +44,7 @@ class BackController
         $this->request = $request;
     }
 
-    /**
-     * Défini l'action à executer
-     *
-     * @param string $action Action à executer
-     */
-    public function setAction(string $action)
+    private function setAction(string $action)
     {
         $this->action = $action;
     }

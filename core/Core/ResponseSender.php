@@ -1,9 +1,19 @@
 <?php
+
 namespace phpGone\Core;
 
+/**
+ * Class qui permet de renvoyer une réponse au client
+ */
 class ResponseSender
 {
-    public function send(\Psr\Http\Message\ResponseInterface $response)
+    /**
+     * Renvoie une réponse au client
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response Réponse à renvoyer
+     * @return boolean Résultat
+     */
+    public function send(\Psr\Http\Message\ResponseInterface $response) :bool
     {
         $http_line = sprintf(
             'HTTP/%s %s %s',

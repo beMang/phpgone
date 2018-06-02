@@ -12,8 +12,8 @@ class MiddlewaresDispatcherTest extends \PHPUnit\Framework\TestCase
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
-        $this->expectExceptionMessage('Aucun middleware a été défini');
-        $dispatcher = new \phpGone\Core\MiddlewaresDispatcher($app);
+        $this->expectExceptionMessage('Un middleware est mal configuré ou aucun middleware défini');
+        $dispatcher = new \phpGone\Core\MiddlewaresHandler($app);
         $dispatcher->resetMiddlewares();
         $dispatcher->handle($request);
     }
