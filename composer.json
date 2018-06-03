@@ -13,9 +13,6 @@
         "bemang/cache-system": "1.*.*",
         "psr/http-server-middleware": "^1.0@dev"
     },
-    "require-dev": {
-        "consolidation/robo": "^1.0@dev"
-    },
     "autoload": {
         "psr-4": {
             "app\\": "app",
@@ -23,11 +20,7 @@
         }
     },
     "suggest": {
-        "phpunit/phpunit": "^6.5"
-    },
-    "scripts": {
-        "post-create-project-cmd": [
-            "./vendor/bin/robo creat:tmp-dir"
-        ]
+        "phpunit/phpunit": "^6.5",
+        "consolidation/robo": "^1.3"
     }
 }
