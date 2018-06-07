@@ -9,8 +9,8 @@
         "psr/log": "1.*",
         "twig/twig": "2.*",
         "guzzlehttp/psr7": "^1.4",
-        "bemang/config-system": "1.*.*",
-        "bemang/cache-system": "1.*.*",
+        "bemang/config-system": "^1.0",
+        "bemang/cache-system": "^1.0",
         "psr/http-server-middleware": "^1.0@dev"
     },
     "autoload": {
@@ -20,7 +20,8 @@
         }
     },
     "suggest": {
-        "phpunit/phpunit": "6.*",
-        "consolidation/robo": "^1.*"
+        "phpunit/phpunit": "^6.5",
+        "consolidation/robo": "^1.0",
+        "bemang/session-system": "^1.0"
     }
 }
