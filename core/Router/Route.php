@@ -7,11 +7,12 @@ class Route
     protected $action;
     protected $controller;
     protected $url;
-    protected $matches = null;
-    protected $patterns = [
-        '(:any)' => '(.*)',
-        '(:num)' => '([0-9]*)'
-    ];
+    protected $matches = ['completePath' => null];
+    protected $expression = '([{][a-z]*[|]?[}])';
+    protected $patterns = [ 
+        'all' => '(.*)', 
+        'int' => '([0-9]*)'
+    ]; 
 
     public function __construct($url, $controller, $method)
     {
@@ -20,16 +21,17 @@ class Route
         $this->setAction($method);
     }
 
-    public function match($url)
+    public function match($url) :bool
     {
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
-            return $matches;
+            $this->setMatches($matches);
+            return true;
         } else {
             return false;
         }
     }
 
-    public function setAction($action)
+    protected function setAction($action)
     {
         if (is_callable([$this->getController(), $action])) {
             $this->action = $action;
@@ -38,7 +40,7 @@ class Route
         }
     }
 
-    public function setController($controller)
+    protected function setController($controller)
     {
         if (class_exists('\\app\\Controllers\\' . $controller)) {
             $this->controller = '\\app\\Controllers\\' . $controller;
@@ -48,13 +50,17 @@ class Route
         }
     }
 
-    public function setUrl($url)
+    protected function setUrl($url)
     {
         if (is_string($url)) {
-            $finalUrl = '\\' . $url;
-            foreach ($this->patterns as $key => $value) {
-                $finalUrl = str_replace($key, $value, $finalUrl);
+            preg_match_all($this->expression, $url, $matches);
+            foreach ($matches[0] as $key => $value) {
+                preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
+                $this->matches[$matchName[1]] = null;
             }
+            //TODO : better system for pattern (more dynamic)
+            $finalUrl = preg_replace('`[{][a-z]*[}]`', $this->patterns['all'], $url);
+            $finalUrl = preg_replace('`[{][a-z]*[|]{1}[}]`', $this->patterns['int'], $finalUrl);
             $this->url = $finalUrl;
         } else {
             throw new \InvalidArgumentException('L\'url de la route est invalide (Voir fichier de config)');
@@ -76,20 +82,17 @@ class Route
         return $this->url;
     }
 
-    public function setMatches($matches)
+    protected function setMatches($matches)
     {
         if (is_array($matches)) {
-            $resultMatches = [];
-            $numSlug = 0;
-            foreach ($matches as $key => $value) {
-                if ($numSlug === 0) {
-                    $resultMatches['completePath'] = $value;
-                } else {
-                    $resultMatches['slug' . $numSlug] = $value;
+            if (count($this->matches) === count($matches)) {
+                $keys = array_keys($this->matches);
+                for ($i=0; $i < count($this->matches); $i++) { 
+                    $this->matches[$keys[$i]] = $matches[$i];
                 }
-                $numSlug ++;
+            } else {
+                
             }
-            $this->matches = $resultMatches;
         }
     }
 

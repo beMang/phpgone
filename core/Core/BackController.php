@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 abstract class BackController
 {
-    private $action;
+    private $route;
     private $request;
 
     /**
@@ -22,7 +22,7 @@ abstract class BackController
      */
     public function __construct(Route $route, $request)
     {
-        $this->setAction($route->getAction());
+        $this->setRoute($route);
         $this->setRequest($request);
     }
 
@@ -36,7 +36,10 @@ abstract class BackController
         if (method_exists($this, 'setUp')) {
             call_user_func_array([$this, 'setUp'], [$this->request]);
         }
-        call_user_func_array([$this, $this->action], [$this->request]);
+        call_user_func_array(
+            [$this, $this->getRoute()->getAction()], 
+            $this->provideParameters($this->getRoute()->getAction())
+        );
     }
 
     private function setRequest(ServerRequestInterface $request)
@@ -44,8 +47,38 @@ abstract class BackController
         $this->request = $request;
     }
 
-    private function setAction(string $action)
+    private function setRoute(Route $route)
     {
-        $this->action = $action;
+        $this->route = $route;
+    }
+
+    private function getRoute() :Route
+    {
+        return $this->route;
+    }
+
+    protected function getActionParameters(string $action) 
+    {
+        $method = new \ReflectionMethod(get_class($this), $action);
+        return $method->getParameters();
+    }
+
+    protected function provideParameters(string $action) :array
+    {
+        $resultArray = [];
+        if (method_exists($this, $action)) {
+            $parameters = $this->getActionParameters($action);
+            foreach ($parameters as $reflectionParameter) {
+                //TODO : Faire une méthode qui prend le reflection parameters
+                if ($reflectionParameter->getType() == 'string' || $reflectionParameter->getType() == '') {
+                    if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
+                        $resultArray[] = $this->getRoute()->getMatches()[$reflectionParameter->getName()];
+                    }
+                }
+            }
+            return $resultArray;
+        } else {
+
+        }
     }
 }

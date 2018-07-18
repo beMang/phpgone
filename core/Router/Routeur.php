@@ -20,11 +20,10 @@ class Routeur
     public function getRoute($url)
     {
         foreach ($this->routes as $route) {
-            $matches = $route->match($url);
+            $findRoute = $route->match($url);
 
             //Si la route correspond à l'url
-            if ($matches !== false) {
-                $route->setMatches($matches);
+            if ($findRoute === true) {
                 return $route;
             }
             unset($route);
