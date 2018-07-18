@@ -1,10 +1,9 @@
 <?php
 
-namespace phpGone\Renderer\TwigExtensions;
+namespace phpGone\TwigExtensions;
 
 use phpGone\Helpers\Url;
 use phpGone\Core\Application;
-use phpGone\Renderer\TwigExtensions\BaseTwigExtension;
 
 /**
  * Extension twig facilitant l'accès aux url

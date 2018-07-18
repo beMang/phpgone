@@ -2,7 +2,10 @@
 
 namespace app\Controllers\Demo;
 
-use phpGone\Renderer\Renderer;
+use bemang\Config;
+use phpGone\Helpers\Url;
+use bemang\renderer\PHPRender;
+use bemang\renderer\TwigRender;
 
 /**
  * Controller basique
@@ -18,11 +21,16 @@ class Show extends \phpGone\Core\BackController
 
     public function index()
     {
-        Renderer::twigRender($this->mainView, []);
+        $url = new Url();
+        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+        echo $render->render($this->mainView, []);
     }
 
     public function doc()
     {
-        Renderer::render('Demo/doc', []);
+        $url = new Url();
+        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        echo $render->render('Demo/doc', []);
     }
 }

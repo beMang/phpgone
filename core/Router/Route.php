@@ -48,7 +48,9 @@ class Route
         if (is_callable([$this->getController(), $action])) {
             $this->action = $action;
         } else {
-            throw new \InvalidArgumentException('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
+            throw new \InvalidArgumentException(
+                'L\'action de la route est inaccesible ou inconnue (Voir fichier de config)'
+            );
         }
     }
 

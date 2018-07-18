@@ -10,7 +10,7 @@ return [
     ], //Route de l'application
     'errorPage' => ['Error\Error', 'index'], //Page pour les erreurs 404
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
-        phpGone\Renderer\TwigExtensions\UrlExtension::class,
-        phpGone\Renderer\TwigExtensions\AssetsExtension::class
+        \phpGone\TwigExtensions\UrlExtension::class,
+        \phpGone\TwigExtensions\AssetsExtension::class
     ]
 ];
