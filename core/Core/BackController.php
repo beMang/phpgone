@@ -70,16 +70,37 @@ abstract class BackController
             $resultArray = [];
             $parameters = $this->getActionParameters($action);
             foreach ($parameters as $reflectionParameter) {
-                //TODO : Faire une méthode qui prend le reflection parameters
-                if ($reflectionParameter->getType() == 'string' || $reflectionParameter->getType() == '') {
-                    if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
-                        $resultArray[] = $this->getRoute()->getMatches()[$reflectionParameter->getName()];
-                    }
-                }
+                $resultArray[] = $this->provideParameter($reflectionParameter);
             }
             return $resultArray;
         } else {
             throw new \InvalidArgumentException("La méthode $action n'existe pas");
         }
+    }
+
+    /**
+     * Fourni le bon argument
+     *
+     * @param \ReflectionParameter $param
+     * @return mixin argument à utiliser
+     */
+    protected function provideParameter(\ReflectionParameter $reflectionParameter)
+    {
+        if ($reflectionParameter->getType() == 'string' || $reflectionParameter->getType() == '') {
+            if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
+                return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
+            }
+        }
+        if ($reflectionParameter->getType() == 'Psr\Log\LoggerInterface') {
+            return new \phpGone\Log\Logger();
+        }
+        if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request') {
+            return $this->request;
+        }
+        if ($reflectionParameter->getType() == 'phpGone\Helpers\Url') {
+            return new \phpGone\Helpers\Url();
+        }
+        // Renderer (TODO with new render system)
+        // Helpers (core)
     }
 }
