@@ -30,10 +30,4 @@ class RouteTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
         new Route('/test', 'Demo\Show', $action);
     }
-
-    public function testInvalidUrl()
-    {
-        $this->expectExceptionMessage('L\'url de la route est invalide (Voir fichier de config)');
-        new Route(45456, 'Demo\Show', 'doc');
-    }
 }

@@ -2,8 +2,6 @@
 
 namespace phpGone\Router;
 
-use phpGone\Core\BackController;
-
 /**
  * Class Route
  * 
@@ -25,10 +23,10 @@ class Route
      * Constructeur class route
      *
      * @param string $url Url de la route
-     * @param BackController $controller Controlleur à appeler
+     * @param string $controller Controlleur à appeler
      * @param string $method Method du controlleur à appeler
      */
-    public function __construct(string $url, BackController $controller, string $method)
+    public function __construct(string $url, string $controller, string $method)
     {
         $this->setUrl($url);
         $this->setController($controller);
@@ -54,7 +52,7 @@ class Route
         }
     }
 
-    protected function setController(BackController $controller)
+    protected function setController(string $controller)
     {
         if (class_exists('\\app\\Controllers\\' . $controller)) {
             $this->controller = '\\app\\Controllers\\' . $controller;
@@ -104,9 +102,9 @@ class Route
     /**
      * Récupère le controlleur de la route
      *
-     * @return BackController
+     * @return string
      */
-    public function getController() :BackController
+    public function getController() :string
     {
         return $this->controller;
     }
