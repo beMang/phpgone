@@ -34,6 +34,7 @@ class CoreMiddleware implements MiddlewareInterface
         ob_start();
         $controller->execute();
         $responseController = ob_get_clean();
+        ob_end_clean();
         $response->getBody()->write($responseController);
         return $response;
     }
