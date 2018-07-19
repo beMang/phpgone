@@ -2,6 +2,13 @@
 
 namespace phpGone\Router;
 
+use phpGone\Core\BackController;
+
+/**
+ * Class Route
+ * 
+ * Représente une route
+ */
 class Route
 {
     protected $action;
@@ -14,14 +21,21 @@ class Route
         'int' => '([0-9]*)'
     ]; 
 
-    public function __construct($url, $controller, $method)
+    /**
+     * Constructeur class route
+     *
+     * @param string $url Url de la route
+     * @param BackController $controller Controlleur à appeler
+     * @param string $method Method du controlleur à appeler
+     */
+    public function __construct(string $url, BackController $controller, string $method)
     {
         $this->setUrl($url);
         $this->setController($controller);
         $this->setAction($method);
     }
 
-    public function match($url) :bool
+    public function match(string $url) :bool
     {
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             $this->setMatches($matches);
@@ -31,7 +45,7 @@ class Route
         }
     }
 
-    protected function setAction($action)
+    protected function setAction(string $action)
     {
         if (is_callable([$this->getController(), $action])) {
             $this->action = $action;
@@ -40,7 +54,7 @@ class Route
         }
     }
 
-    protected function setController($controller)
+    protected function setController(BackController $controller)
     {
         if (class_exists('\\app\\Controllers\\' . $controller)) {
             $this->controller = '\\app\\Controllers\\' . $controller;
@@ -50,36 +64,17 @@ class Route
         }
     }
 
-    protected function setUrl($url)
+    protected function setUrl(string $url)
     {
-        if (is_string($url)) {
-            preg_match_all($this->expression, $url, $matches);
-            foreach ($matches[0] as $key => $value) {
-                preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
-                $this->matches[$matchName[1]] = null;
-            }
-            //TODO : better system for pattern (more dynamic)
-            $finalUrl = preg_replace('`[{][a-z]*[}]`', $this->patterns['all'], $url);
-            $finalUrl = preg_replace('`[{][a-z]*[|]{1}[}]`', $this->patterns['int'], $finalUrl);
-            $this->url = $finalUrl;
-        } else {
-            throw new \InvalidArgumentException('L\'url de la route est invalide (Voir fichier de config)');
+        preg_match_all($this->expression, $url, $matches);
+        foreach ($matches[0] as $key => $value) {
+            preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
+            $this->matches[$matchName[1]] = null;
         }
-    }
-
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    public function getController()
-    {
-        return $this->controller;
-    }
-
-    public function getUrl()
-    {
-        return $this->url;
+        //TODO : better system for pattern (more dynamic)
+        $finalUrl = preg_replace('`[{][a-z]*[}]`', $this->patterns['all'], $url);
+        $finalUrl = preg_replace('`[{][a-z]*[|]{1}[}]`', $this->patterns['int'], $finalUrl);
+        $this->url = $finalUrl;
     }
 
     protected function setMatches($matches)
@@ -96,7 +91,42 @@ class Route
         }
     }
 
-    public function getMatches()
+    /**
+     * Récupère l'action de la route
+     *
+     * @return string
+     */
+    public function getAction() :string
+    {
+        return $this->action;
+    }
+
+    /**
+     * Récupère le controlleur de la route
+     *
+     * @return BackController
+     */
+    public function getController() :BackController
+    {
+        return $this->controller;
+    }
+
+    /**
+     * Récupère l'url de la route (transformé)
+     *
+     * @return string
+     */
+    public function getUrl() :string
+    {
+        return $this->url;
+    }
+
+    /**
+     * Renvoie les matches (url correcte)
+     *
+     * @return array
+     */
+    public function getMatches() :array
     {
         return $this->matches;
     }

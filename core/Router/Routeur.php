@@ -5,24 +5,34 @@ namespace phpGone\Router;
  /**
   * class Routeur
   *
-  * Permet de choisir la bonne route en fonction de la requête
+  * Choisi la bonne route en fonction de l'url
   */
 class Routeur
 {
     protected $routes = [];
     const NO_ROUTE = 1;
 
-    public function addRoute(Route $route)
+    /**
+     * Ajoute une route au routeur
+     *
+     * @param Route $route Route à ajouter
+     * @return void
+     */
+    public function addRoute(Route $route) :void
     {
         $this->routes[] = $route;
     }
 
+    /**
+     * Récupère la bonne route en fonction de l'url
+     *
+     * @param [type] $url
+     * @return void
+     */
     public function getRoute($url)
     {
         foreach ($this->routes as $route) {
             $findRoute = $route->match($url);
-
-            //Si la route correspond à l'url
             if ($findRoute === true) {
                 return $route;
             }

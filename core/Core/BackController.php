@@ -17,7 +17,7 @@ abstract class BackController
     /**
      * Constucteur du BackController
      *
-     * @param string $module Action à appeler
+     * @param Route $route Route qui a 'matché'
      * @param ServerRequestInterface $request Requête à traiter
      */
     public function __construct(Route $route, $request)
@@ -27,7 +27,8 @@ abstract class BackController
     }
 
     /**
-     * Execute la bonne fonction enfante en fonction de l'action
+     * Execute la bonne fonction enfante en fonction de l'action 
+     * et fourni les bons arguments
      *
      * @return void
      */
@@ -52,7 +53,7 @@ abstract class BackController
         $this->route = $route;
     }
 
-    private function getRoute() :Route
+    protected function getRoute() :Route
     {
         return $this->route;
     }
@@ -65,8 +66,8 @@ abstract class BackController
 
     protected function provideParameters(string $action) :array
     {
-        $resultArray = [];
         if (method_exists($this, $action)) {
+            $resultArray = [];
             $parameters = $this->getActionParameters($action);
             foreach ($parameters as $reflectionParameter) {
                 //TODO : Faire une méthode qui prend le reflection parameters
@@ -78,7 +79,7 @@ abstract class BackController
             }
             return $resultArray;
         } else {
-
+            throw new \InvalidArgumentException("La méthode $action n'existe pas");
         }
     }
 }
