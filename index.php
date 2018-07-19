@@ -7,5 +7,3 @@ $app = new phpGone\Core\Application(__DIR__ . '/app/config.php', \GuzzleHttp\Psr
 $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
 $response = $app->run();
 $app->send();
-
-echo ob_get_level();
