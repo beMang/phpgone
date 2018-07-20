@@ -2,6 +2,7 @@
 
 namespace phpGone\Core;
 
+use bemang\Config;
 use phpGone\Router\Route;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -20,8 +21,8 @@ abstract class BackController
      * @var array
      */
     protected $argumentToProvide = [
-        'Psr\Log\LoggerInterface' => '\phpGone\Log\Logger',
-        'phpGone\Helpers\Url' => '\phpGone\Helpers\Ur'
+        'Psr\Log\LoggerInterface' => \phpGone\Log\Logger::class,
+        'phpGone\Helpers\Url' => \phpGone\Helpers\Url::class
     ];
 
     /**
@@ -106,6 +107,12 @@ abstract class BackController
             $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
+        }
+        if (
+            $reflectionParameter->getType() == '\bemang\Config' 
+            || $reflectionParameter->getType() == '\bemang\ConfigInterface'
+        ) {
+            return Config::getInstance();
         }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {
