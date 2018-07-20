@@ -15,8 +15,8 @@ class Route
     protected $matches = ['completePath' => null];
     protected $expression = '([{][a-z]*[|]?[}])';
     protected $patterns = [ 
-        'all' => '(.*)', 
-        'int' => '([0-9]*)'
+        '`[{][a-z]*[}]`' => '(.*)', 
+        '`[{][a-z]*[|]{1}[}]`' => '([0-9]*)'
     ]; 
 
     /**
@@ -69,9 +69,10 @@ class Route
             preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
             $this->matches[$matchName[1]] = null;
         }
-        //TODO : better system for pattern (more dynamic)
-        $finalUrl = preg_replace('`[{][a-z]*[}]`', $this->patterns['all'], $url);
-        $finalUrl = preg_replace('`[{][a-z]*[|]{1}[}]`', $this->patterns['int'], $finalUrl);
+        $finalUrl = $url;
+        foreach($this->patterns as $key => $value) {
+            $finalUrl = preg_replace($key, $value, $finalUrl);
+        }
         $this->url = $finalUrl;
     }
 
