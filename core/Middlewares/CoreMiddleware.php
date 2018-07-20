@@ -46,7 +46,6 @@ class CoreMiddleware implements MiddlewareInterface
      */
     public function getController($router, $request)
     {
-        $xml = new \DOMDocument;
         $routes = Config::getInstance()->get('routes');
         
         foreach ($routes as $route) {
@@ -55,17 +54,13 @@ class CoreMiddleware implements MiddlewareInterface
         }
 
         try {
-            $matchedRoute = $router->getRoute($request->getUri()->getPath());
+            $matchedRoute = $router->getRoute($request->getUri()->getPath(), true);
         } catch (\RuntimeException $e) {
             if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant
             }
         }
-
-        $_GET = array_merge($_GET, $matchedRoute->getMatches());
-
-        $controllerClass = $matchedRoute->getController();
-                            
+        $controllerClass = $matchedRoute->getController();             
         return new $controllerClass($matchedRoute, $request);
     }
 }

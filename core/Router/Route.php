@@ -2,34 +2,48 @@
 
 namespace phpGone\Router;
 
+/**
+ * Class Route
+ * 
+ * Représente une route
+ */
 class Route
 {
     protected $action;
     protected $controller;
     protected $url;
-    protected $matches = null;
-    protected $patterns = [
-        '(:any)' => '(.*)',
-        '(:num)' => '([0-9]*)'
-    ];
+    protected $matches = ['completePath' => null];
+    protected $expression = '([{][a-z]*[|]?[}])';
+    protected $patterns = [ 
+        '`[{][a-z]*[}]`' => '(.*)', 
+        '`[{][a-z]*[|]{1}[}]`' => '([0-9]*)'
+    ]; 
 
-    public function __construct($url, $controller, $method)
+    /**
+     * Constructeur class route
+     *
+     * @param string $url Url de la route
+     * @param string $controller Controlleur à appeler
+     * @param string $method Method du controlleur à appeler
+     */
+    public function __construct(string $url, string $controller, string $method)
     {
         $this->setUrl($url);
         $this->setController($controller);
         $this->setAction($method);
     }
 
-    public function match($url)
+    public function match(string $url) :bool
     {
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
-            return $matches;
+            $this->setMatches($matches);
+            return true;
         } else {
             return false;
         }
     }
 
-    public function setAction($action)
+    protected function setAction(string $action)
     {
         if (is_callable([$this->getController(), $action])) {
             $this->action = $action;
@@ -38,7 +52,7 @@ class Route
         }
     }
 
-    public function setController($controller)
+    protected function setController(string $controller)
     {
         if (class_exists('\\app\\Controllers\\' . $controller)) {
             $this->controller = '\\app\\Controllers\\' . $controller;
@@ -48,52 +62,70 @@ class Route
         }
     }
 
-    public function setUrl($url)
+    protected function setUrl(string $url)
     {
-        if (is_string($url)) {
-            $finalUrl = '\\' . $url;
-            foreach ($this->patterns as $key => $value) {
-                $finalUrl = str_replace($key, $value, $finalUrl);
+        preg_match_all($this->expression, $url, $matches);
+        foreach ($matches[0] as $key => $value) {
+            preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
+            $this->matches[$matchName[1]] = null;
+        }
+        $finalUrl = $url;
+        foreach($this->patterns as $key => $value) {
+            $finalUrl = preg_replace($key, $value, $finalUrl);
+        }
+        $this->url = $finalUrl;
+    }
+
+    protected function setMatches($matches)
+    {
+        if (is_array($matches)) {
+            if (count($this->matches) === count($matches)) {
+                $keys = array_keys($this->matches);
+                for ($i=0; $i < count($this->matches); $i++) { 
+                    $this->matches[$keys[$i]] = $matches[$i];
+                }
+            } else {
+                
             }
-            $this->url = $finalUrl;
-        } else {
-            throw new \InvalidArgumentException('L\'url de la route est invalide (Voir fichier de config)');
         }
     }
 
-    public function getAction()
+    /**
+     * Récupère l'action de la route
+     *
+     * @return string
+     */
+    public function getAction() :string
     {
         return $this->action;
     }
 
-    public function getController()
+    /**
+     * Récupère le controlleur de la route
+     *
+     * @return string
+     */
+    public function getController() :string
     {
         return $this->controller;
     }
 
-    public function getUrl()
+    /**
+     * Récupère l'url de la route (transformé)
+     *
+     * @return string
+     */
+    public function getUrl() :string
     {
         return $this->url;
     }
 
-    public function setMatches($matches)
-    {
-        if (is_array($matches)) {
-            $resultMatches = [];
-            $numSlug = 0;
-            foreach ($matches as $key => $value) {
-                if ($numSlug === 0) {
-                    $resultMatches['completePath'] = $value;
-                } else {
-                    $resultMatches['slug' . $numSlug] = $value;
-                }
-                $numSlug ++;
-            }
-            $this->matches = $resultMatches;
-        }
-    }
-
-    public function getMatches()
+    /**
+     * Renvoie les matches (url correcte)
+     *
+     * @return array
+     */
+    public function getMatches() :array
     {
         return $this->matches;
     }
