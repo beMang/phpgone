@@ -15,6 +15,16 @@ abstract class BackController
     private $request;
 
     /**
+     * Uniqument les classes simples à construire !!
+     *
+     * @var array
+     */
+    protected $argumentToProvide = [
+        'Psr\Log\LoggerInterface' => '\phpGone\Log\Logger',
+        'phpGone\Helpers\Url' => '\phpGone\Helpers\Ur'
+    ];
+
+    /**
      * Constucteur du BackController
      *
      * @param Route $route Route qui a 'matché'
@@ -91,16 +101,18 @@ abstract class BackController
                 return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
             }
         }
-        if ($reflectionParameter->getType() == 'Psr\Log\LoggerInterface') {
-            return new \phpGone\Log\Logger();
-        }
-        if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request') {
+        if (
+            $reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' || 
+            $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
+        ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType() == 'phpGone\Helpers\Url') {
-            return new \phpGone\Helpers\Url();
+        //Provide simple classes/interfaces
+        foreach ($this->argumentToProvide as $interface => $toProvide) {
+            if ($reflectionParameter->getType() == $interface) {
+                return new $toProvide();
+            }
         }
         // Renderer (TODO with new render system)
-        // Helpers (core)
     }
 }
