@@ -14,15 +14,14 @@ abstract class BackController
 {
     private $route;
     private $request;
-
     /**
      * Uniqument les classes simples à construire !!
      *
      * @var array
      */
     protected $argumentToProvide = [
-        'Psr\Log\LoggerInterface' => \phpGone\Log\Logger::class,
-        'phpGone\Helpers\Url' => \phpGone\Helpers\Url::class
+        \Psr\Log\LoggerInterface::class => \phpGone\Log\Logger::class,
+        \phpGone\Helpers\Url::class => \phpGone\Helpers\Url::class
     ];
 
     /**
