@@ -4,6 +4,7 @@ namespace phpGone\Core;
 
 use bemang\Config;
 use phpGone\Router\Route;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -42,12 +43,12 @@ abstract class BackController
      *
      * @return void
      */
-    public function execute()
+    public function execute() :ResponseInterface
     {
         if (method_exists($this, 'setUp')) {
             call_user_func_array([$this, 'setUp'], [$this->request]);
         }
-        call_user_func_array(
+        return call_user_func_array(
             [$this, $this->getRoute()->getAction()], 
             $this->provideParameters($this->getRoute()->getAction())
         );
@@ -120,5 +121,10 @@ abstract class BackController
             }
         }
         // Renderer (TODO with new render system)
+    }
+
+    protected function render(string $view, string $system)
+    {
+        //Return a response
     }
 }

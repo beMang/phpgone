@@ -4,6 +4,7 @@ namespace app\Controllers\Demo;
 
 use bemang\Config;
 use phpGone\Helpers\Url;
+use GuzzleHttp\Psr7\Response;
 use bemang\renderer\PHPRender;
 use bemang\renderer\TwigRender;
 
@@ -24,14 +25,14 @@ class Show extends \phpGone\Core\BackController
         $url = new Url();
         $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
-        echo $render->render($this->mainView, []);
+        return new Response('200', [], $render->render($this->mainView, []));
     }
 
     public function doc()
     {
         $url = new Url();
         $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-        echo $render->render('Demo/doc', []);
+        return new Response('200', [], $render->render('Demo/doc', []));
     }
 
     /**
@@ -42,7 +43,6 @@ class Show extends \phpGone\Core\BackController
      */
     public function demonum($num)
     {
-        echo 'ça marche, voici le numéro de l\'url : ' . $num;
-    
+        return new Response('200', [], 'ça marche, voici le numéro de l\'url : ' . $num);
     }
 }

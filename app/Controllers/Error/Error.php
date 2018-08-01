@@ -5,6 +5,7 @@ namespace app\Controllers\Error;
 use bemang\Config;
 use phpGone\Helpers\Url;
 use Psr\Log\LoggerInterface;
+use GuzzleHttp\Psr7\Response;
 use bemang\renderer\TwigRender;
 
 /**
@@ -17,6 +18,6 @@ class Error extends \phpGone\Core\BackController
         $url = new Url();
         $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
-        echo $render->render('Error/404.twig', []);
+        return new Response('404', [], $render->render('Error/404.twig', []));
     }
 }

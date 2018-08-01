@@ -15,6 +15,7 @@ use Psr\Log\LogLevel;
 use phpGone\Log\Logger;
 use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
+use phpGone\Core\BackController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,16 +36,16 @@ class NotFoundMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $controller = $this->getController($request);
+        $response = $controller->execute();
+        return $response;
+    }
+
+    protected function getController(ServerRequestInterface $request): BackController
+    {
         $errorPageConfig = Config::getInstance()->get('errorPage');
         $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
         $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
-        $controller = new $controllerClass($route, $request);
-        $response = new Response;
-        ob_start();
-        $controller->execute();
-        $responseController = ob_get_clean();
-        $response->getBody()->write($responseController);
-        $response = $response->withStatus(404);
-        return $response;
+        return new $controllerClass($route, $request);
     }
 }

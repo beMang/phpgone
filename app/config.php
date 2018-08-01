@@ -4,6 +4,7 @@ use phpGone\Router\Route;
 
 return [
     'basePath' => '/', //base path for de application (better to no change)
+    'defaultRender' => 'twig', //php or twig
     'routes' => [
         new Route('/doc', 'Demo\Show', 'doc'),
         new Route('/', 'Demo\Show', 'index'),
