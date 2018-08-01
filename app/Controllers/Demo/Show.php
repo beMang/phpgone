@@ -33,4 +33,16 @@ class Show extends \phpGone\Core\BackController
         $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
         echo $render->render('Demo/doc', []);
     }
+
+    /**
+     * Voici un example de récupération d'url
+     *
+     * @param int $num
+     * @return void
+     */
+    public function demonum($num)
+    {
+        echo 'ça marche, voici le numéro de l\'url : ' . $num;
+    
+    }
 }
