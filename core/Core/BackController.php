@@ -3,7 +3,11 @@
 namespace phpGone\Core;
 
 use bemang\Config;
+use phpGone\Helpers\Url;
 use phpGone\Router\Route;
+use GuzzleHttp\Psr7\Response;
+use bemang\renderer\PHPRender;
+use bemang\renderer\TwigRender;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -114,17 +118,51 @@ abstract class BackController
         ) {
             return Config::getInstance();
         }
+        if (
+            $reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        ) {
+            //TODO
+        }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {
             if ($reflectionParameter->getType() == $interface) {
                 return new $toProvide();
             }
         }
-        // Renderer (TODO with new render system)
     }
 
-    protected function render(string $view, string $system)
+    protected function render(string $view, array $datas, string $renderSystem = null) :ResponseInterface
     {
-        //Return a response
+        if (is_null($renderSystem)) {
+            if (Config::getInstance()->get('defaultRender') === 'php') {
+                return $this->phpRender($view, $datas);
+            } 
+            if (Config::getInstance()->get('defaultRender') === 'twig') {
+                return $this->twigRender($view, $datas);
+            }
+        } else {
+            if ($renderSystem === 'php') {
+                return $this->phpRender($view, $datas);
+            } elseif ($renderSystem === 'twig') {
+                return $this->twigRender($view, $datas);
+            } else {
+                throw new InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
+            }
+        }
+    }
+
+    protected function phpRender(string $view, array $datas) :ResponseInterface
+    {
+        $url = new Url();
+        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        return new Response('200', [], $render->render($view, $datas));
+    }
+
+    protected function twigRender(string $view, array $datas) :ResponseInterface
+    {
+        $url = new Url();
+        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+        return new Response('200', [], $render->render($view, $datas));
     }
 }

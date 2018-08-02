@@ -2,11 +2,7 @@
 
 namespace app\Controllers\Demo;
 
-use bemang\Config;
-use phpGone\Helpers\Url;
 use GuzzleHttp\Psr7\Response;
-use bemang\renderer\PHPRender;
-use bemang\renderer\TwigRender;
 
 /**
  * Controller basique
@@ -22,17 +18,12 @@ class Show extends \phpGone\Core\BackController
 
     public function index()
     {
-        $url = new Url();
-        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
-        return new Response('200', [], $render->render($this->mainView, []));
+        return $this->render($this->mainView, []);
     }
 
     public function doc()
     {
-        $url = new Url();
-        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-        return new Response('200', [], $render->render('Demo/doc', []));
+        return $this->render('Demo/doc', [], 'php');
     }
 
     /**
