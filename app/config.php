@@ -6,9 +6,9 @@ return [
     'basePath' => '/', //base path for de application (better to no change)
     'defaultRender' => 'twig', //php or twig
     'routes' => [
-        new Route('/doc', 'Demo\Show', 'doc'),
-        new Route('/', 'Demo\Show', 'index'),
-        new Route('/{num|}', 'Demo\Show', 'demonum')
+        'doc' => new Route('/doc', 'Demo\Show', 'doc'),
+        'home' => new Route('/', 'Demo\Show', 'index'),
+        'testnum' => new Route('/{num|}', 'Demo\Show', 'demonum')
     ], //Route de l'application
     'errorPage' => ['Error\Error', 'index'], //Page pour les erreurs 404
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu

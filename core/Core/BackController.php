@@ -146,7 +146,7 @@ abstract class BackController
             } elseif ($renderSystem === 'twig') {
                 return $this->twigRender($view, $datas);
             } else {
-                throw new InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
+                throw new \InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
             }
         }
     }
@@ -164,5 +164,19 @@ abstract class BackController
         $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
         return new Response('200', [], $render->render($view, $datas));
+    }
+
+    protected function redirectToRoute(string $route, int $status = 301) :ResponseInterface
+    {
+        $routes = Config::getInstance()->get('routes');
+        if (isset($routes[$route]) && $routes[$route] instanceof Route) {
+            $controllerClass = $routes[$route]->getController();
+            $controller = new $controllerClass($routes[$route], $this->request);
+            $response = $controller->execute();
+            $response = $response->withStatus($status);
+            return $response;
+        } else {
+            throw new \InvalidArgumentException('Route inconnue ou invalide');
+        }
     }
 }
