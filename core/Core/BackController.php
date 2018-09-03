@@ -121,7 +121,16 @@ abstract class BackController
         if (
             $reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
         ) {
-            //TODO
+            if (Config::getInstance()->get('defaultRender') === 'php') {
+                $url = new Url();
+                return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+            } 
+            if (Config::getInstance()->get('defaultRender') === 'twig') {
+                $url = new Url();
+                $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+                $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+                return $render;
+            }
         }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {

@@ -27,7 +27,7 @@ class Show extends \phpGone\Core\BackController
     }
 
     /**
-     * Voici un example de récupération d'url
+     * Voici un exemple de récupération d'url
      *
      * @param int $num
      * @return void
