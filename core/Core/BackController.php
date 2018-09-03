@@ -188,4 +188,15 @@ abstract class BackController
             throw new \InvalidArgumentException('Route inconnue ou invalide');
         }
     }
+
+    protected function error() :ResponseInterface
+    {
+        $errorPageConfig = Config::getInstance()->get('errorPage');
+        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
+        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
+        $controller = new $controllerClass($route, $this->request);
+        $response = $controller->execute();
+        $response = $response->withStatus(404);
+        return $response;
+    }
 }
