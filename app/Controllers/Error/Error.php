@@ -2,8 +2,11 @@
 
 namespace app\Controllers\Error;
 
+use bemang\Config;
+use phpGone\Helpers\Url;
 use Psr\Log\LoggerInterface;
-use phpGone\Renderer\Renderer;
+use GuzzleHttp\Psr7\Response;
+use bemang\renderer\TwigRender;
 
 /**
  * Controller pour la gestion des erreurs 404
@@ -12,8 +15,9 @@ class Error extends \phpGone\Core\BackController
 {
     public function index(LoggerInterface $logger)
     {
-        Renderer::twigRender('Demo/index.twig', [], true);
-        Renderer::twigRender('Error/404.twig', []);
-        $logger->info('Error 404, NotFoundMiddleware');
+        $url = new Url();
+        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+        return new Response('404', [], $render->render('Error/404.twig', []));
     }
 }

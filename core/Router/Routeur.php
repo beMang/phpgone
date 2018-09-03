@@ -29,13 +29,10 @@ class Routeur
      * @param [type] $url
      * @return void
      */
-    public function getRoute($url, bool $destroyRoutes)
+    public function getRoute($url)
     {
         foreach ($this->routes as $route) {
             if ($route->match($url) === true) {
-                if ($destroyRoutes === true) {
-                    $this->routes = null;
-                }
                 return $route;
             }
             unset($route);

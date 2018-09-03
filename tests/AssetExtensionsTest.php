@@ -2,7 +2,7 @@
 
 namespace Test;
 
-use phpGone\Renderer\TwigExtensions\AssetsExtension;
+use \phpGone\TwigExtensions\AssetsExtension;
 
 class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
 {

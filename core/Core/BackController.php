@@ -3,7 +3,12 @@
 namespace phpGone\Core;
 
 use bemang\Config;
+use phpGone\Helpers\Url;
 use phpGone\Router\Route;
+use GuzzleHttp\Psr7\Response;
+use bemang\renderer\PHPRender;
+use bemang\renderer\TwigRender;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -14,15 +19,14 @@ abstract class BackController
 {
     private $route;
     private $request;
-
     /**
      * Uniqument les classes simples à construire !!
      *
      * @var array
      */
     protected $argumentToProvide = [
-        'Psr\Log\LoggerInterface' => \phpGone\Log\Logger::class,
-        'phpGone\Helpers\Url' => \phpGone\Helpers\Url::class
+        \Psr\Log\LoggerInterface::class => \phpGone\Log\Logger::class,
+        \phpGone\Helpers\Url::class => \phpGone\Helpers\Url::class
     ];
 
     /**
@@ -43,12 +47,12 @@ abstract class BackController
      *
      * @return void
      */
-    public function execute()
+    public function execute() :ResponseInterface
     {
         if (method_exists($this, 'setUp')) {
             call_user_func_array([$this, 'setUp'], [$this->request]);
         }
-        call_user_func_array(
+        return call_user_func_array(
             [$this, $this->getRoute()->getAction()], 
             $this->provideParameters($this->getRoute()->getAction())
         );
@@ -114,12 +118,85 @@ abstract class BackController
         ) {
             return Config::getInstance();
         }
+        if (
+            $reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        ) {
+            if (Config::getInstance()->get('defaultRender') === 'php') {
+                $url = new Url();
+                return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+            } 
+            if (Config::getInstance()->get('defaultRender') === 'twig') {
+                $url = new Url();
+                $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+                $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+                return $render;
+            }
+        }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {
             if ($reflectionParameter->getType() == $interface) {
                 return new $toProvide();
             }
         }
-        // Renderer (TODO with new render system)
+    }
+
+    protected function render(string $view, array $datas, string $renderSystem = null) :ResponseInterface
+    {
+        if (is_null($renderSystem)) {
+            if (Config::getInstance()->get('defaultRender') === 'php') {
+                return $this->phpRender($view, $datas);
+            } 
+            if (Config::getInstance()->get('defaultRender') === 'twig') {
+                return $this->twigRender($view, $datas);
+            }
+        } else {
+            if ($renderSystem === 'php') {
+                return $this->phpRender($view, $datas);
+            } elseif ($renderSystem === 'twig') {
+                return $this->twigRender($view, $datas);
+            } else {
+                throw new \InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
+            }
+        }
+    }
+
+    protected function phpRender(string $view, array $datas) :ResponseInterface
+    {
+        $url = new Url();
+        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        return new Response('200', [], $render->render($view, $datas));
+    }
+
+    protected function twigRender(string $view, array $datas) :ResponseInterface
+    {
+        $url = new Url();
+        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+        return new Response('200', [], $render->render($view, $datas));
+    }
+
+    protected function redirectToRoute(string $route, int $status = 301) :ResponseInterface
+    {
+        $routes = Config::getInstance()->get('routes');
+        if (isset($routes[$route]) && $routes[$route] instanceof Route) {
+            $controllerClass = $routes[$route]->getController();
+            $controller = new $controllerClass($routes[$route], $this->request);
+            $response = $controller->execute();
+            $response = $response->withStatus($status);
+            return $response;
+        } else {
+            throw new \InvalidArgumentException('Route inconnue ou invalide');
+        }
+    }
+
+    protected function error() :ResponseInterface
+    {
+        $errorPageConfig = Config::getInstance()->get('errorPage');
+        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
+        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
+        $controller = new $controllerClass($route, $this->request);
+        $response = $controller->execute();
+        $response = $response->withStatus(404);
+        return $response;
     }
 }
