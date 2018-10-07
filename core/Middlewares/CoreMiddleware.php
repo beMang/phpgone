@@ -57,7 +57,7 @@ class CoreMiddleware implements MiddlewareInterface
                 return null; //Permet de passer au middleware suivant
             }
         }
-        $controllerClass = $matchedRoute->getController();             
+        $controllerClass = $matchedRoute->getController();
         return new $controllerClass($matchedRoute, $request);
     }
 }

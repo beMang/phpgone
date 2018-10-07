@@ -4,7 +4,7 @@ namespace phpGone\Router;
 
 /**
  * Class Route
- * 
+ *
  * Représente une route
  */
 class Route
@@ -14,10 +14,10 @@ class Route
     protected $url;
     protected $matches = ['completePath' => null];
     protected $expression = '([{][a-z]*[|]?[}])';
-    protected $patterns = [ 
-        '`[{][a-z]*[}]`' => '(.*)', 
+    protected $patterns = [
+        '`[{][a-z]*[}]`' => '(.*)',
         '`[{][a-z]*[|]{1}[}]`' => '([0-9]*)'
-    ]; 
+    ];
 
     /**
      * Constructeur class route
@@ -72,7 +72,7 @@ class Route
             $this->matches[$matchName[1]] = null;
         }
         $finalUrl = $url;
-        foreach($this->patterns as $key => $value) {
+        foreach ($this->patterns as $key => $value) {
             $finalUrl = preg_replace($key, $value, $finalUrl);
         }
         $this->url = $finalUrl;
@@ -83,11 +83,10 @@ class Route
         if (is_array($matches)) {
             if (count($this->matches) === count($matches)) {
                 $keys = array_keys($this->matches);
-                for ($i=0; $i < count($this->matches); $i++) { 
+                for ($i=0; $i < count($this->matches); $i++) {
                     $this->matches[$keys[$i]] = $matches[$i];
                 }
             } else {
-                
             }
         }
     }

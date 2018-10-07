@@ -19,6 +19,7 @@ abstract class BackController
 {
     private $route;
     private $request;
+    
     /**
      * Uniqument les classes simples à construire !!
      *
@@ -42,7 +43,7 @@ abstract class BackController
     }
 
     /**
-     * Execute la bonne fonction enfante en fonction de l'action 
+     * Execute la bonne fonction enfante en fonction de l'action
      * et fourni les bons arguments
      *
      * @return void
@@ -53,7 +54,7 @@ abstract class BackController
             call_user_func_array([$this, 'setUp'], [$this->request]);
         }
         return call_user_func_array(
-            [$this, $this->getRoute()->getAction()], 
+            [$this, $this->getRoute()->getAction()],
             $this->provideParameters($this->getRoute()->getAction())
         );
     }
@@ -73,7 +74,7 @@ abstract class BackController
         return $this->route;
     }
 
-    protected function getActionParameters(string $action) 
+    protected function getActionParameters(string $action)
     {
         $method = new \ReflectionMethod(get_class($this), $action);
         return $method->getParameters();
@@ -106,25 +107,22 @@ abstract class BackController
                 return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
             }
         }
-        if (
-            $reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' || 
+        if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' ||
             $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if (
-            $reflectionParameter->getType() == '\bemang\Config' 
+        if ($reflectionParameter->getType() == '\bemang\Config'
             || $reflectionParameter->getType() == '\bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if (
-            $reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        if ($reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();
                 return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-            } 
+            }
             if (Config::getInstance()->get('defaultRender') === 'twig') {
                 $url = new Url();
                 $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
@@ -145,7 +143,7 @@ abstract class BackController
         if (is_null($renderSystem)) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 return $this->phpRender($view, $datas);
-            } 
+            }
             if (Config::getInstance()->get('defaultRender') === 'twig') {
                 return $this->twigRender($view, $datas);
             }
