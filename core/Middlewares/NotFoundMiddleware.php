@@ -43,9 +43,8 @@ class NotFoundMiddleware implements MiddlewareInterface
 
     protected function getController(ServerRequestInterface $request): BackController
     {
-        $errorPageConfig = Config::getInstance()->get('errorPage');
-        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
-        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
-        return new $controllerClass($route, $request);
+        $errorRoute = Config::getInstance()->get('routes')['404'];
+        $controllerName = $errorRoute->getController();
+        return new $controllerName($errorRoute, $request);
     }
 }

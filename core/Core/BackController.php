@@ -189,10 +189,9 @@ abstract class BackController
 
     protected function error() :ResponseInterface
     {
-        $errorPageConfig = Config::getInstance()->get('errorPage');
-        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
-        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
-        $controller = new $controllerClass($route, $this->request);
+        $errorRoute = Config::getInstance()->get('routes')['404'];
+        $controllerName = $errorRoute->getController();
+        $controller = new $controllerName($errorRoute, $this->request);
         $response = $controller->execute();
         $response = $response->withStatus(404);
         return $response;

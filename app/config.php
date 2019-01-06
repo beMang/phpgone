@@ -8,9 +8,9 @@ return [
     'routes' => [
         'doc' => new Route('/doc', 'Demo\Show', 'doc'),
         'home' => new Route('/', 'Demo\Show', 'index'),
-        'testnum' => new Route('/{num|}', 'Demo\Show', 'demonum')
+        'testnum' => new Route('/{num|}', 'Demo\Show', 'demonum'),
+        '404' => new Route('', 'Error\Error', 'index')
     ], //Route de l'application
-    'errorPage' => ['Error\Error', 'index'], //Page pour les erreurs 404
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
         \phpGone\TwigExtensions\UrlExtension::class,
         \phpGone\TwigExtensions\AssetsExtension::class
