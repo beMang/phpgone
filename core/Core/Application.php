@@ -62,7 +62,7 @@ class Application
     /**
      * Envoie le résultat au client
      *
-     * @return bool Résultat de l'envoie
+     * @return bool Résultat de l'envoi
      */
     public function send() :bool
     {
