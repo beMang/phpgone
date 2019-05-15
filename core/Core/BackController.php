@@ -173,6 +173,13 @@ abstract class BackController
         return new Response('200', [], $render->render($view, $datas));
     }
 
+    /**
+     * Permet de rediriger vers une autre route
+     *
+     * @param string $route
+     * @param integer $status
+     * @return ResponseInterface
+     */
     protected function redirectToRoute(string $route, int $status = 301) :ResponseInterface
     {
         $routes = Config::getInstance()->get('routes');
@@ -187,6 +194,11 @@ abstract class BackController
         }
     }
 
+    /**
+     * Permet de changer de route et d'avoir une erreur 404
+     *
+     * @return ResponseInterface Réponse avec l'erreur 404
+     */
     protected function error() :ResponseInterface
     {
         $errorRoute = Config::getInstance()->get('routes')['404'];

@@ -17,8 +17,6 @@ class Error extends \phpGone\Core\BackController
     {
         $logger->error('Error 404');
         $url = new Url();
-        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-        $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
-        return new Response('404', [], $render->render('Error/404.twig', []));
+        return $this->render('Error/404.twig', []);
     }
 }
