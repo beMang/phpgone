@@ -5,7 +5,7 @@ use phpGone\Router\Route;
 
 class RouteTest extends \PHPUnit\Framework\TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() :void
     {
         require_once(__DIR__ . '/../vendor/autoload.php');
     }
@@ -13,7 +13,7 @@ class RouteTest extends \PHPUnit\Framework\TestCase
     public function testUrl()
     {
         $route = new Route('/test', 'Demo\Show', 'doc');
-        $this->assertContains('/test', $route->getUrl());
+        $this->assertSTringContainsString('/test', $route->getUrl());
     }
 
     public function testUnknowController()

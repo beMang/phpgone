@@ -17,13 +17,15 @@ install:
   - composer update
   - composer dump -o
   - ./vendor/bin/robo creat:tmp-dir
+  - composer require phpunit/phpunit
 
 cache:
   directories:
   - vendor
 
 script:
-  - phpunit --coverage-clover build/logs/clover.xml
+ - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
 
 after_success:
   - composer require php-coveralls/php-coveralls

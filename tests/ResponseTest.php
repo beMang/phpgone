@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 
 class ResponseTest extends \PHPUnit\Framework\TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() :void
     {
         require_once(__DIR__ . '/../vendor/autoload.php');
     }
@@ -19,7 +19,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
-        $this->assertContains('Error 404', $stream->read(1024 * 8));
+        $this->assertSTringContainsString('Error 404', $stream->read(1024 * 8));
     }
 
     public function testIndex()
@@ -30,7 +30,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $response = $app->run();
         $stream = $response->getBody();
         $stream->rewind();
-        $this->assertContains('<h1>phpGone - Pour simplifier le php</h1>', $stream->read(1024 * 8));
+        $this->assertSTringContainsString('<h1>phpGone - Pour simplifier le php</h1>', $stream->read(1024 * 8));
     }
 
     public function testTrailingSlashMiddleware()

@@ -20,7 +20,7 @@
         }
     },
     "suggest": {
-        "phpunit/phpunit": "^6.5",
+        "phpunit/phpunit": "^8",
         "consolidation/robo": "^1.0",
         "bemang/session-system": "^1.0"
     }

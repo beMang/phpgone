@@ -5,12 +5,12 @@ class UrlHelperTest extends \PHPUnit\Framework\TestCase
 {
     private $urlInstance;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() :void
     {
         require_once(__DIR__ . '/../vendor/autoload.php');
     }
     
-    public function setUp()
+    public function setUp() :void
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);

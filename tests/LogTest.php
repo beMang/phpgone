@@ -16,7 +16,7 @@ class LogTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() :void
     {
         require_once(__DIR__ . '/../vendor/autoload.php');
     }
@@ -51,7 +51,7 @@ class LogTest extends \PHPUnit\Framework\TestCase
         foreach ($this->getLevels() as $level) {
             $message = 'Test : ' . $level;
             $this->getLogger()->$level($message, []);
-            $this->assertContains($message, $this->getLastLog());
+            $this->assertSTringContainsString($message, $this->getLastLog());
         }
     }
 
