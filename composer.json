@@ -16,7 +16,8 @@
     "autoload": {
         "psr-4": {
             "app\\": "app",
-            "phpGone\\": "core"
+            "phpGone\\": "core",
+            "tests\\": "tests"
         }
     },
     "suggest": {

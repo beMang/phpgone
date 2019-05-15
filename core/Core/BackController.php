@@ -161,14 +161,14 @@ abstract class BackController
     protected function phpRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new PHPRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         return new Response('200', [], $render->render($view, $datas));
     }
 
     protected function twigRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new TwigRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
         return new Response('200', [], $render->render($view, $datas));
     }

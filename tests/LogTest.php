@@ -1,5 +1,5 @@
 <?php
-namespace Test;
+namespace tests;
 
 use Psr\Log\LogLevel;
 
@@ -14,11 +14,6 @@ class LogTest extends \PHPUnit\Framework\TestCase
             ftruncate($handle, 0);
             fclose($handle);
         }
-    }
-
-    public static function setUpBeforeClass() :void
-    {
-        require_once(__DIR__ . '/../vendor/autoload.php');
     }
     
     public function getLogger()

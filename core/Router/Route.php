@@ -2,6 +2,8 @@
 
 namespace phpGone\Router;
 
+use bemang\Config;
+
 /**
  * Class Route
  *
@@ -56,11 +58,11 @@ class Route
 
     protected function setController(string $controller)
     {
-        if (class_exists('\\app\\Controllers\\' . $controller)) {
-            $this->controller = '\\app\\Controllers\\' . $controller;
+        if (class_exists($controller)) {
+            $this->controller = $controller;
         } else {
-            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' .
-            $controller . 'est inexistante (Voir fichier de config)');
+            throw new \InvalidArgumentException('La classe du controller ' .
+            $controller . ' est inexistante (Voir fichier de config)');
         }
     }
 
