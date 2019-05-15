@@ -33,6 +33,17 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertSTringContainsString('<h1>phpGone - Pour simplifier le php</h1>', $stream->read(1024 * 8));
     }
 
+    public function testUrlWithParameters()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/1456');
+        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $response = $app->run();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('1456', $stream->read(1024 * 8));
+    }
+
     public function testTrailingSlashMiddleware()
     {
         $request = new ServerRequest('GET', '/asfdsq/');

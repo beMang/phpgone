@@ -16,7 +16,6 @@ class Error extends \phpGone\Core\BackController
     public function index(LoggerInterface $logger)
     {
         $logger->error('Error 404');
-        $url = new Url();
         return $this->render('Error/404.twig', []);
     }
 }
