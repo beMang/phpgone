@@ -108,16 +108,16 @@ abstract class BackController
             }
         }
         if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' ||
-            $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
+            $reflectionParameter->getType() == 'Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType() == '\bemang\Config'
-            || $reflectionParameter->getType() == '\bemang\ConfigInterface'
+        if ($reflectionParameter->getType() == 'bemang\Config'
+            || $reflectionParameter->getType() == 'bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if ($reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        if ($reflectionParameter->getType() == 'bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();

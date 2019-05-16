@@ -1,6 +1,6 @@
 <?php
 
-namespace tests;
+namespace tests\TwigExtensions;
 
 use bemang\Config;
 use \phpGone\TwigExtensions\AssetsExtension;
@@ -14,7 +14,7 @@ class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
         $extension = new AssetsExtension();
         $this->assetExtension = $extension;
         $config = Config::getInstance();
-        $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
+        $config->define(require(__DIR__ . '/../TestClass/TestConfig.php'));
     }
 
     public function testCss()

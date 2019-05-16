@@ -53,4 +53,52 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertSTringContainsString('Redirect', $stream->read(1024 * 8));
         $this->assertEquals($response->getStatusCode(), 301);
     }
+
+    public function testBadRedirection()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/redirectfalse');
+        $controller = $this->getTestController('test', $request);
+        $this->expectExceptionMessage('Route inconnue ou invalide');
+        $response = $controller->execute();
+    }
+
+    public function testParameters()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
+        $controller = $this->getTestController('parameters', $request);
+        $response = $controller->execute();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('OK', $stream->read(1024 * 8));
+        $this->assertEquals($response->getStatusCode(), 200);
+
+        Config::getInstance()->define('defaultRender', 'php');
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
+        $controller = $this->getTestController('parameters', $request);
+        $response = $controller->execute();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('OK', $stream->read(1024 * 8));
+        $this->assertEquals($response->getStatusCode(), 200);
+        Config::getInstance()->define('', 'twig');
+    }
+
+    public function testRender()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/render');
+        $controller = $this->getTestController('test', $request);
+        $response = $controller->execute();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('test', $stream->read(1024 * 8));
+        $this->assertEquals($response->getStatusCode(), 200);
+
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/phprender');
+        $controller = $this->getTestController('test', $request);
+        $response = $controller->execute();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('test', $stream->read(1024 * 8));
+        $this->assertEquals($response->getStatusCode(), 200);
+    }
 }
