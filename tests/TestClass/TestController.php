@@ -52,4 +52,9 @@ class TestController extends \phpGone\Core\BackController
     {
         return new Response('404', [], 'Error 404');
     }
+
+    public function index()
+    {
+        return new Response('200', [], 'home');
+    }
 }
