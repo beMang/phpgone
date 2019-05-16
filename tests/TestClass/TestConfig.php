@@ -12,9 +12,8 @@ return [
     'viewsPath' => './tests/TestClass/views/',
     'assetsPath' => './tests/TestClass/assets/',
     'routes' => [
-        'doc' => new Route('/doc', $ctrlNamespace . 'TestController', 'doc'),
-        'home' => new Route('/', $ctrlNamespace . 'TestController', 'index'),
-        'testnum' => new Route('/{num|}', $ctrlNamespace . 'TestController', 'demonum'),
+        'test' => new Route('/{testname}', $ctrlNamespace . 'TestController', 'test'),
+        'redirect' => new Route('/', $ctrlNamespace . 'TestController', 'redirect'),
         '404' => new Route('', $ctrlNamespace . 'TestController', 'error404')
     ], //Route de l'application
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu

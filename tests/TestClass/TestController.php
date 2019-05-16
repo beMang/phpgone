@@ -6,25 +6,27 @@ use GuzzleHttp\Psr7\Response;
 
 class TestController extends \phpGone\Core\BackController
 {
-    public function index()
+    protected $test;
+
+    public function setUp()
     {
-        return $this->render($this->mainView, []);
+        $this->test = 'test';
     }
 
-    public function doc()
+    public function test($testname)
     {
-        return $this->render('Demo/doc', [], 'php');
+        if ($testname == 'error') {
+            return $this->error();
+        } elseif ($testname == 'redirect') {
+            return $this->redirectToRoute('redirect');
+        } else {
+            return new Response('200', [], $testname . ' shit');
+        }
     }
 
-    /**
-     * Voici un exemple de récupération d'url
-     *
-     * @param int $num
-     * @return void
-     */
-    public function demonum($num)
+    public function redirect()
     {
-        return new Response('200', [], 'ça marche, voici le numéro de l\'url : ' . $num);
+        return new Response('200', [], 'Redirect');
     }
 
     public function error404()

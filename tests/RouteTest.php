@@ -8,7 +8,7 @@ class RouteTest extends \PHPUnit\Framework\TestCase
     
     public function testUrl()
     {
-        $route = new Route('/test', '\\tests\\TestClass\\TestController', 'doc');
+        $route = new Route('/test', '\\tests\\TestClass\\TestController', 'test');
         $this->assertSTringContainsString('/test', $route->getUrl());
     }
 
