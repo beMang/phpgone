@@ -3,7 +3,6 @@
 namespace phpGone\TwigExtensions;
 
 use phpGone\Helpers\Url;
-use phpGone\Core\Application;
 
 /**
  * Extension twig pour ajouter des assets facilement

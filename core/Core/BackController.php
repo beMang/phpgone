@@ -96,7 +96,9 @@ abstract class BackController
 
     /**
      * Fourni le bon argument
-     *
+     * 
+     * TODO : revoir la manière de distribution de certains arguments (les mettre dans le tableau)
+     * 
      * @param \ReflectionParameter $param
      * @return mixin argument à utiliser
      */
@@ -108,16 +110,16 @@ abstract class BackController
             }
         }
         if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' ||
-            $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
+            $reflectionParameter->getType() == 'Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType() == '\bemang\Config'
-            || $reflectionParameter->getType() == '\bemang\ConfigInterface'
+        if ($reflectionParameter->getType() == 'bemang\Config'
+            || $reflectionParameter->getType() == 'bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if ($reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        if ($reflectionParameter->getType() == 'bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();
@@ -161,14 +163,14 @@ abstract class BackController
     protected function phpRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new PHPRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         return new Response('200', [], $render->render($view, $datas));
     }
 
     protected function twigRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new TwigRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
         return new Response('200', [], $render->render($view, $datas));
     }
