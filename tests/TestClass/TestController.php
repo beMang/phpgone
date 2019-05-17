@@ -29,6 +29,8 @@ class TestController extends \phpGone\Core\BackController
             return $this->render('test.twig', []);
         } elseif ($testname == 'phprender') {
             return $this->render('test', [], 'php');
+        } elseif ($testname == 'twigrender') {
+            return $this->render('test.twig', [], 'twig');
         } else {
             return new Response('200', [], $testname . ' shit');
         }
