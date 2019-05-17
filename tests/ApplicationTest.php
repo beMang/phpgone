@@ -45,7 +45,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
      */
     public function testSender()
     {
-        $request = new ServerRequest('GET', '/');
+        $request = new ServerRequest('GET', '/', ['Host' => 'local']);
         $app = new Application(__DIR__ . '/TestClass/TestConfig.php', $request);
         $response = $app->run();
         $this->assertTrue($app->send());
