@@ -28,6 +28,17 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(301, $response->getStatusCode(301));
         $this->assertEquals('/asfdsq', $response->getHeaders()['Location'][0]);
     }
+
+    public function testError404()
+    {
+        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/error/404/fmdskqq');
+        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
+        $app->addMiddleware(\phpGone\Middlewares\TrailingSlashMiddleware::class);
+        $response = $app->run();
+        $stream = $response->getBody();
+        $stream->rewind();
+        $this->assertSTringContainsString('Error 404', $stream->read(1024 * 8));
+    }
     
     /**
      * @runInSeparateProcess
