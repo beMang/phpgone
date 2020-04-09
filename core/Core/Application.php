@@ -75,7 +75,7 @@ class Application
      *
      * @return objet Requete
      */
-    public function getRequest()
+    public function getRequest() :ServerRequestInterface
     {
         return $this->httpRequest;
     }
@@ -86,7 +86,7 @@ class Application
      * @param string $middleware Middleware à utiliser
      * @return Application Application (Pour enchainer les méthodes pipe)
      */
-    public function addMiddleware($middleware) : Application
+    public function addMiddleware($middleware) :self
     {
         $this->middlewaresHandler->pipe($middleware);
         return $this;

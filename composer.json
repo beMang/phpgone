@@ -7,7 +7,7 @@
     "require": {
         "psr/simple-cache": "1.*",
         "psr/log": "1.*",
-        "guzzlehttp/psr7": "^1.4",
+        "guzzlehttp/psr7": "1.*",
         "bemang/config-system": "^1.0",
         "bemang/cache-system": "^1.0",
         "psr/http-server-middleware": "^1.0@dev",

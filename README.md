@@ -4,3 +4,7 @@ Le framework phpGone est en cours de développement, la documentation sera écri
 [![Build Status](https://travis-ci.org/beMang/phpgone.svg?branch=master)](https://travis-ci.org/beMang/phpgone)  [![Coverage Status](https://coveralls.io/repos/github/beMang/phpgone/badge.svg?branch=master)](https://coveralls.io/github/beMang/phpgone?branch=master)
 
 La documentation va être écrite lors de la sortie de la version 1.0.0
+
+## TODO LIST : 
+  * refaire l'architecture (dossier public pour js, image, css,...)
+  * Fixer les TODO marques (extension)

@@ -6,7 +6,7 @@ use \bemang\Config;
 
 /**
  * Class permettant de récupérer les url des dossiers principaux
- * @todo Prendre en compte le base path
+ * //TODO Prendre en compte le base path
  */
 class Url
 {
