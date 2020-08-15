@@ -19,7 +19,7 @@ class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
 
     public function testCss()
     {
-        $assetsPath = Config::getInstance()->get('assetsPath');
+        $assetsPath = Config::getInstance()->get('publicPath');
         $result = $this->assetExtension->css('test');
         $expected = '<link rel="stylesheet" type="text/css" href="' . $assetsPath .'css/test.css">';
         $this->assertEquals($expected, $result);
@@ -30,7 +30,7 @@ class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
 
     public function testJs()
     {
-        $assetsPath = Config::getInstance()->get('assetsPath');
+        $assetsPath = Config::getInstance()->get('publicPath');
         $result = $this->assetExtension->js('test');
         $expected = '<script src="' . $assetsPath .'js/test.js"></script>';
         $this->assertEquals($expected, $result);
