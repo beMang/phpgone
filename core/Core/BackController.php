@@ -104,22 +104,22 @@ abstract class BackController
      */
     protected function provideParameter(\ReflectionParameter $reflectionParameter)
     {
-        if ($reflectionParameter->getType() == 'string' || $reflectionParameter->getType() == '') {
+        if ($reflectionParameter->getType() == null || $reflectionParameter->getType()->getName() == 'string') {
             if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
                 return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
             }
         }
-        if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' ||
-            $reflectionParameter->getType() == 'Psr\Http\Message\RequestInterface'
+        if ($reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
+            $reflectionParameter->getType()->getName() == 'Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType() == 'bemang\Config'
-            || $reflectionParameter->getType() == 'bemang\ConfigInterface'
+        if ($reflectionParameter->getType()->getName() == 'bemang\Config'
+            || $reflectionParameter->getType()->getName() == 'bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if ($reflectionParameter->getType() == 'bemang\renderer\RendererInterface'
+        if ($reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();
@@ -134,7 +134,7 @@ abstract class BackController
         }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {
-            if ($reflectionParameter->getType() == $interface) {
+            if ($reflectionParameter->getType()->getName() == $interface) {
                 return new $toProvide();
             }
         }
