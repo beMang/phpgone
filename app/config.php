@@ -8,7 +8,7 @@ return [
     'basePath' => '/', //base path for de application (better to not change)
     'defaultRender' => 'twig', //php or twig
     'viewsPath' => './app/views/',
-    'assetsPath' => './app/assets/',
+    'publicPath' => './public/',
     'routes' => [
         'doc' => new Route('/doc', $ctrlNamespace . 'Demo\Show', 'doc'),
         'home' => new Route('/', $ctrlNamespace . 'Demo\Show', 'index'),

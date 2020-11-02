@@ -38,7 +38,7 @@ class Url
     public function getAssetsPath($custom = null)
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return Config::getInstance()->get('assetsPath') . $custom;
+        return Config::getInstance()->get('publicPath') . $custom;
     }
 
     public function getRelativeAssetsPath($custom = null)
