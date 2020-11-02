@@ -6,8 +6,6 @@ use \bemang\Config;
 
 /**
  * Class permettant de récupérer les url des dossiers principaux
- * //TODO Prendre en compte le base path + adapter aux nouveaux dossiers avec nouvelle 
- * architecture
  */
 class Url
 {
@@ -44,11 +42,5 @@ class Url
     public function getRelativeAssetsPath($custom = null)
     {
         return $this->getAssetsPath($custom);
-    }
-
-    public function getRelativeAppPath($custom = null)
-    {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return Config::getInstance()->get('basePath') . 'app/' . $custom;
     }
 }

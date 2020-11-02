@@ -5,7 +5,6 @@ use phpGone\Router\Route;
 $ctrlNamespace = '\\app\\Controllers\\';
 
 return [
-    'basePath' => '/', //base path for de application (better to not change)
     'defaultRender' => 'twig', //php or twig
     'viewsPath' => './app/views/',
     'publicPath' => './public/',

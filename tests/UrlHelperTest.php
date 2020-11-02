@@ -51,12 +51,4 @@ class UrlHelperTest extends \PHPUnit\Framework\TestCase
         $customPath = $this->urlInstance->getRelativeAssetsPath('test');
         $this->assertEquals($basePath . 'test/', $customPath);
     }
-
-    public function testRelativeAppPath()
-    {
-        $this->assertDirectoryExists(dirname(__FILE__) . '/../' . $this->urlInstance->getRelativeAppPath());
-        $basePath = $this->urlInstance->getRelativeAppPath();
-        $customPath = $this->urlInstance->getRelativeAppPath('test');
-        $this->assertEquals($basePath . 'test/', $customPath);
-    }
 }
