@@ -10,8 +10,9 @@
         "guzzlehttp/psr7": "1.*",
         "bemang/config-system": "^1.0",
         "bemang/cache-system": "^1.0",
-        "psr/http-server-middleware": "^1.0@dev",
-        "bemang/renderer-system": "1.*.*"
+        "psr/http-server-middleware": "1.*",
+        "bemang/renderer-system": "1.*",
+        "consolidation/robo": "2.*"
     },
     "autoload": {
         "psr-4": {
@@ -22,7 +23,7 @@
     },
     "suggest": {
         "phpunit/phpunit": "^9",
-        "consolidation/robo": "^1.0",
+        "consolidation/robo": "2.*",
         "bemang/session-system": "^1.0"
     }
 }

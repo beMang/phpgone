@@ -2,13 +2,15 @@
 
 namespace phpGone\TwigExtensions;
 
+use Twig\TwigFunction;
 use phpGone\Helpers\Url;
 use phpGone\Core\Application;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Extension twig facilitant l'accès aux url
  */
-class UrlExtension extends \Twig_Extension
+class UrlExtension extends AbstractExtension
 {
     protected $urlHelperInstance;
 
@@ -20,9 +22,9 @@ class UrlExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('tmpPath', [$this->urlHelperInstance, 'getTmpPath']),
-            new \Twig_SimpleFunction('appPath', [$this->urlHelperInstance, 'getAppPath']),
-            new \Twig_SimpleFunction('testsPath', [$this->urlHelperInstance, 'getTestsPath'])
+            new TwigFunction('tmpPath', [$this->urlHelperInstance, 'getTmpPath']),
+            new TwigFunction('appPath', [$this->urlHelperInstance, 'getAppPath']),
+            new TwigFunction('testsPath', [$this->urlHelperInstance, 'getTestsPath'])
         ];
     }
 }
