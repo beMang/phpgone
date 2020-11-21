@@ -7,7 +7,7 @@ services:
   - mysql
 
 install:
-  - composer require consolidation/robo:^2.*
+  - composer require consolidation/robo:2.*
   - composer install
   - composer update
   - composer dump -o
