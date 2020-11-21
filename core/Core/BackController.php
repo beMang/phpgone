@@ -17,8 +17,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 abstract class BackController
 {
-    private $route;
-    private $request;
+    private Route $route;
+    private ServerRequestInterface $request;
     
     /**
      * Uniqument les classes simples à construire !!

@@ -9,7 +9,7 @@ namespace phpGone\Router;
   */
 class Routeur
 {
-    protected $routes = [];
+    protected array$routes = [];
     const NO_ROUTE = 1;
 
     /**

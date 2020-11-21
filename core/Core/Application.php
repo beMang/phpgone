@@ -19,21 +19,21 @@ class Application
      *
      * @var ServerRequestInterface
      */
-    protected $httpRequest;
+    protected ServerRequestInterface $httpRequest;
 
     /**
      * Contient la réponse générée par l'application
      *
      * @var ResponseInterface
      */
-    protected $httpResponse;
+    protected ResponseInterface $httpResponse;
 
     /**
      * Contient le gestionnaire de middlewares
      *
      * @var MiddlewaresHandler
      */
-    protected $middlewaresHandler;
+    protected MiddlewaresHandler $middlewaresHandler;
 
     /**
      * Constructeur de la classe
