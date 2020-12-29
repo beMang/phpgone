@@ -47,7 +47,7 @@ class Route
 
     protected function setAction(string $action)
     {
-        if (is_callable([$this->getController(), $action])) {
+        if (method_exists($this->getController(), $action)) {
             $this->action = $action;
         } else {
             throw new \InvalidArgumentException(
