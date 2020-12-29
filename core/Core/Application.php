@@ -19,21 +19,21 @@ class Application
      *
      * @var ServerRequestInterface
      */
-    protected $httpRequest;
+    protected ServerRequestInterface $httpRequest;
 
     /**
      * Contient la réponse générée par l'application
      *
      * @var ResponseInterface
      */
-    protected $httpResponse;
+    protected ResponseInterface $httpResponse;
 
     /**
      * Contient le gestionnaire de middlewares
      *
      * @var MiddlewaresHandler
      */
-    protected $middlewaresHandler;
+    protected MiddlewaresHandler $middlewaresHandler;
 
     /**
      * Constructeur de la classe
@@ -75,7 +75,7 @@ class Application
      *
      * @return objet Requete
      */
-    public function getRequest()
+    public function getRequest() :ServerRequestInterface
     {
         return $this->httpRequest;
     }
@@ -86,7 +86,7 @@ class Application
      * @param string $middleware Middleware à utiliser
      * @return Application Application (Pour enchainer les méthodes pipe)
      */
-    public function addMiddleware($middleware) : Application
+    public function addMiddleware($middleware) :self
     {
         $this->middlewaresHandler->pipe($middleware);
         return $this;

@@ -29,7 +29,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
      *
      * @var int
      */
-    protected $middlewaresIndex = 0;
+    protected int $middlewaresIndex = 0;
 
     /**
      * Ajoute un middleware à l'application (Au début du tableau)

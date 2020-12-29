@@ -2,6 +2,8 @@
 
 namespace phpGone\Router;
 
+use bemang\Config;
+
 /**
  * Class Route
  *
@@ -9,12 +11,12 @@ namespace phpGone\Router;
  */
 class Route
 {
-    protected $action;
-    protected $controller;
-    protected $url;
-    protected $matches = ['completePath' => null];
-    protected $expression = '([{][a-z]*[|]?[}])';
-    protected $patterns = [
+    protected string $action;
+    protected string $pathController;
+    protected string $url;
+    protected array $matches = ['completePath' => null];
+    protected string $expression = '([{][a-z]*[|]?[}])';
+    protected array $patterns = [
         '`[{][a-z]*[}]`' => '(.*)',
         '`[{][a-z]*[|]{1}[}]`' => '([0-9]*)'
     ];
@@ -45,7 +47,7 @@ class Route
 
     protected function setAction(string $action)
     {
-        if (is_callable([$this->getController(), $action])) {
+        if (method_exists($this->getController(), $action)) {
             $this->action = $action;
         } else {
             throw new \InvalidArgumentException(
@@ -56,11 +58,11 @@ class Route
 
     protected function setController(string $controller)
     {
-        if (class_exists('\\app\\Controllers\\' . $controller)) {
-            $this->controller = '\\app\\Controllers\\' . $controller;
+        if (class_exists($controller)) {
+            $this->pathController = $controller;
         } else {
-            throw new \InvalidArgumentException('La classe du controller \\app\\Controllers\\' .
-            $controller . 'est inexistante (Voir fichier de config)');
+            throw new \InvalidArgumentException('La classe du controller ' .
+            $controller . ' est inexistante (Voir fichier de config)');
         }
     }
 
@@ -108,7 +110,7 @@ class Route
      */
     public function getController() :string
     {
-        return $this->controller;
+        return $this->pathController;
     }
 
     /**

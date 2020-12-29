@@ -6,7 +6,6 @@ use \bemang\Config;
 
 /**
  * Class permettant de récupérer les url des dossiers principaux
- * @todo Prendre en compte le base path
  */
 class Url
 {
@@ -14,6 +13,12 @@ class Url
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tmp/' . $custom;
+    }
+
+    public function getViewsPath($custom = null)
+    {
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        return Config::getInstance()->get('viewsPath') . $custom;
     }
 
     public function getAppPath($custom = null)
@@ -31,18 +36,11 @@ class Url
     public function getAssetsPath($custom = null)
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return $this->getAppPath('assets') . $custom;
+        return Config::getInstance()->get('publicPath') . $custom;
     }
 
     public function getRelativeAssetsPath($custom = null)
     {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return $this->getRelativeAppPath('assets') . $custom;
-    }
-
-    public function getRelativeAppPath($custom = null)
-    {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return Config::getInstance()->get('basePath') . 'app/' . $custom;
+        return $this->getAssetsPath($custom);
     }
 }

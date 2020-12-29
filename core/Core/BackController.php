@@ -17,8 +17,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 abstract class BackController
 {
-    private $route;
-    private $request;
+    private Route $route;
+    private ServerRequestInterface $request;
     
     /**
      * Uniqument les classes simples à construire !!
@@ -97,27 +97,29 @@ abstract class BackController
     /**
      * Fourni le bon argument
      *
+     * //TODO : revoir la manière de distribution de certains arguments (les mettre dans le tableau) (?)
+     *
      * @param \ReflectionParameter $param
      * @return mixin argument à utiliser
      */
     protected function provideParameter(\ReflectionParameter $reflectionParameter)
     {
-        if ($reflectionParameter->getType() == 'string' || $reflectionParameter->getType() == '') {
+        if ($reflectionParameter->getType() == null || $reflectionParameter->getType()->getName() == 'string') {
             if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
                 return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
             }
         }
-        if ($reflectionParameter->getType() == 'GuzzleHttp\Psr7\Request' ||
-            $reflectionParameter->getType() == '\Psr\Http\Message\RequestInterface'
+        if ($reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
+            $reflectionParameter->getType()->getName() == 'Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType() == '\bemang\Config'
-            || $reflectionParameter->getType() == '\bemang\ConfigInterface'
+        if ($reflectionParameter->getType()->getName() == 'bemang\Config'
+            || $reflectionParameter->getType()->getName() == 'bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if ($reflectionParameter->getType() == '\bemang\renderer\RendererInterface'
+        if ($reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();
@@ -132,7 +134,7 @@ abstract class BackController
         }
         //Provide simple classes/interfaces
         foreach ($this->argumentToProvide as $interface => $toProvide) {
-            if ($reflectionParameter->getType() == $interface) {
+            if ($reflectionParameter->getType()->getName() == $interface) {
                 return new $toProvide();
             }
         }
@@ -161,18 +163,25 @@ abstract class BackController
     protected function phpRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new PHPRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         return new Response('200', [], $render->render($view, $datas));
     }
 
     protected function twigRender(string $view, array $datas) :ResponseInterface
     {
         $url = new Url();
-        $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+        $render = new TwigRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
         return new Response('200', [], $render->render($view, $datas));
     }
 
+    /**
+     * Permet de rediriger vers une autre route
+     *
+     * @param string $route
+     * @param integer $status
+     * @return ResponseInterface
+     */
     protected function redirectToRoute(string $route, int $status = 301) :ResponseInterface
     {
         $routes = Config::getInstance()->get('routes');
@@ -187,6 +196,11 @@ abstract class BackController
         }
     }
 
+    /**
+     * Permet de changer de route et d'avoir une erreur 404
+     *
+     * @return ResponseInterface Réponse avec l'erreur 404
+     */
     protected function error() :ResponseInterface
     {
         $errorRoute = Config::getInstance()->get('routes')['404'];
