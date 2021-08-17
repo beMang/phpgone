@@ -43,15 +43,8 @@ class CoreMiddleware implements MiddlewareInterface
      */
     public function getController($router, $request)
     {
-        $routes = Config::getInstance()->get('routes');
-        
-        foreach ($routes as $route) {
-            $router->addRoute($route);
-            unset($route);
-        }
-
         try {
-            $matchedRoute = $router->getRoute($request->getUri()->getPath());
+            $matchedRoute = $router->getMatchedRoute($request->getUri()->getPath());
         } catch (\RuntimeException $e) {
             if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant

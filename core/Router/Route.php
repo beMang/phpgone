@@ -3,12 +3,15 @@
 namespace phpGone\Router;
 
 use bemang\Config;
+use Attribute;
 
 /**
  * Class Route
  *
  * Représente une route
  */
+
+#[Attribute]
 class Route
 {
     protected string $action;

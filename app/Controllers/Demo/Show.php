@@ -3,6 +3,7 @@
 namespace app\Controllers\Demo;
 
 use GuzzleHttp\Psr7\Response;
+use phpGone\Router\Route;
 
 /**
  * Controller basique
@@ -21,6 +22,7 @@ class Show extends \phpGone\Core\BackController
         return $this->render($this->mainView, []);
     }
 
+    #[Route('/doc', 'app\Controllers\Demo\Show', 'doc')]
     public function doc()
     {
         return $this->render('Demo/doc', [], 'php');
