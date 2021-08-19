@@ -6,7 +6,7 @@
     </include>
   </coverage>
   <testsuite name="phpGone test">
-    <directory suffix=".php">tests</directory>
+    <directory suffix=".php" phpVersion="8.0.0">tests</directory>
     <exclude>./tests/TestClass/</exclude>
   </testsuite>
 </phpunit>

@@ -5,7 +5,7 @@ use bemang\Config;
 use phpGone\Router\Route;
 use phpGone\Core\Application;
 use GuzzleHttp\Psr7\ServerRequest;
-use tests\TestClass\TestController;
+use tests\TestClass\Controllers\TestController;
 
 class ControllerTest extends \PHPUnit\Framework\TestCase
 {

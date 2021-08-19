@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\TestClass;
+namespace tests\TestClass\Controllers;
 
 use bemang\Config;
 use phpGone\Helpers\Url;

@@ -5,10 +5,11 @@ use phpGone\Router\Route;
 
 class RouteTest extends \PHPUnit\Framework\TestCase
 {
-    
+    protected const CONTROLLER_PATH = '\\tests\\TestClass\\Controllers\\TestController';
+
     public function testUrl()
     {
-        $route = new Route('/test', '\\tests\\TestClass\\TestController', 'test');
+        $route = new Route('/test', self::CONTROLLER_PATH, 'test');
         $this->assertSTringContainsString('/test', $route->getUrl());
     }
 
@@ -24,6 +25,6 @@ class RouteTest extends \PHPUnit\Framework\TestCase
     {
         $action = uniqid();
         $this->expectExceptionMessage('L\'action de la route est inaccesible ou inconnue (Voir fichier de config)');
-        new Route('/test', '\\tests\\TestClass\\TestController', $action);
+        new Route('/test', self::CONTROLLER_PATH, $action);
     }
 }
