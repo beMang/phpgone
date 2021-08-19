@@ -1,9 +1,10 @@
 <?php
+
 namespace tests;
 
 class MiddlewaresDispatcherTest extends \PHPUnit\Framework\TestCase
 {
-    
+
     public function testWithNullMiddlewares()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');

@@ -37,7 +37,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
      * @param string|MiddlewareInterface $middleware Middleware à ajouter
      * @return bool
      */
-    public function pipe($middleware) :bool
+    public function pipe($middleware): bool
     {
         array_unshift($this->middlewares, $middleware);
         return true;
@@ -63,11 +63,12 @@ class MiddlewaresHandler implements RequestHandlerInterface
      *
      * @return MiddlewareInterface|null Middleware ou null si pas de middleware
      */
-    private function getMiddleware() :?MiddlewareInterface
+    private function getMiddleware(): ?MiddlewareInterface
     {
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
             $middleware = $this->middlewares[$this->middlewaresIndex];
-            if (is_object($middleware) &&
+            if (
+                is_object($middleware) &&
                 $middleware instanceof MiddlewareInterface
             ) {
                 $this->middlewaresIndex++;
@@ -95,7 +96,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
      *
      * @return bool
      */
-    public function resetMiddlewares() :bool
+    public function resetMiddlewares(): bool
     {
         $this->middlewares = [];
         return true;

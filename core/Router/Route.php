@@ -38,7 +38,7 @@ class Route
         $this->setAction($method);
     }
 
-    public function match(string $url) :bool
+    public function match(string $url): bool
     {
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             $this->setMatches($matches);
@@ -88,7 +88,7 @@ class Route
         if (is_array($matches)) {
             if (count($this->matches) === count($matches)) {
                 $keys = array_keys($this->matches);
-                for ($i=0; $i < count($this->matches); $i++) {
+                for ($i = 0; $i < count($this->matches); $i++) {
                     $this->matches[$keys[$i]] = $matches[$i];
                 }
             } else {
@@ -101,7 +101,7 @@ class Route
      *
      * @return string
      */
-    public function getAction() :string
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -111,7 +111,7 @@ class Route
      *
      * @return string
      */
-    public function getController() :string
+    public function getController(): string
     {
         return $this->pathController;
     }
@@ -121,7 +121,7 @@ class Route
      *
      * @return string
      */
-    public function getUrl() :string
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -131,7 +131,7 @@ class Route
      *
      * @return array
      */
-    public function getMatches() :array
+    public function getMatches(): array
     {
         return $this->matches;
     }

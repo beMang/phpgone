@@ -3,13 +3,13 @@
 namespace tests\TwigExtensions;
 
 use bemang\Config;
-use \phpGone\TwigExtensions\AssetsExtension;
+use phpGone\TwigExtensions\AssetsExtension;
 
 class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
 {
     protected $assetExtension;
-    
-    public function setUp() :void
+
+    public function setUp(): void
     {
         $extension = new AssetsExtension();
         $this->assetExtension = $extension;
@@ -21,21 +21,21 @@ class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
     {
         $assetsPath = Config::getInstance()->get('publicPath');
         $result = $this->assetExtension->css('test');
-        $expected = '<link rel="stylesheet" type="text/css" href="' . $assetsPath .'css/test.css">';
+        $expected = '<link rel="stylesheet" type="text/css" href="' . $assetsPath . 'css/test.css">';
         $this->assertEquals($expected, $result);
         $result = $this->assetExtension->css(['test', 'test2']);
-        $this->assertSTringContainsString('<link rel="stylesheet" type="text/css" href="' . $assetsPath .'css/test.css">', $result);
-        $this->assertSTringContainsString('<link rel="stylesheet" type="text/css" href="' . $assetsPath .'css/test2.css">', $result);
+        $this->assertSTringContainsString('<link rel="stylesheet" type="text/css" href="' . $assetsPath . 'css/test.css">', $result);
+        $this->assertSTringContainsString('<link rel="stylesheet" type="text/css" href="' . $assetsPath . 'css/test2.css">', $result);
     }
 
     public function testJs()
     {
         $assetsPath = Config::getInstance()->get('publicPath');
         $result = $this->assetExtension->js('test');
-        $expected = '<script src="' . $assetsPath .'js/test.js"></script>';
+        $expected = '<script src="' . $assetsPath . 'js/test.js"></script>';
         $this->assertEquals($expected, $result);
         $result = $this->assetExtension->js(['test', 'test2']);
-        $this->assertSTringContainsString('<script src="' . $assetsPath .'js/test.js"></script>', $result);
-        $this->assertSTringContainsString('<script src="' . $assetsPath .'js/test2.js"></script>', $result);
+        $this->assertSTringContainsString('<script src="' . $assetsPath . 'js/test.js"></script>', $result);
+        $this->assertSTringContainsString('<script src="' . $assetsPath . 'js/test2.js"></script>', $result);
     }
 }

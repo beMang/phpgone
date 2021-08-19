@@ -19,7 +19,7 @@ abstract class BackController
 {
     private Route $route;
     private ServerRequestInterface $request;
-    
+
     /**
      * Uniqument les classes simples à construire !!
      *
@@ -48,7 +48,7 @@ abstract class BackController
      *
      * @return void
      */
-    public function execute() :ResponseInterface
+    public function execute(): ResponseInterface
     {
         if (method_exists($this, 'setUp')) {
             call_user_func_array([$this, 'setUp'], [$this->request]);
@@ -69,7 +69,7 @@ abstract class BackController
         $this->route = $route;
     }
 
-    protected function getRoute() :Route
+    protected function getRoute(): Route
     {
         return $this->route;
     }
@@ -80,7 +80,7 @@ abstract class BackController
         return $method->getParameters();
     }
 
-    protected function provideParameters(string $action) :array
+    protected function provideParameters(string $action): array
     {
         if (method_exists($this, $action)) {
             $resultArray = [];
@@ -109,17 +109,20 @@ abstract class BackController
                 return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
             }
         }
-        if ($reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
+        if (
+            $reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
             $reflectionParameter->getType()->getName() == 'Psr\Http\Message\RequestInterface'
         ) {
             return $this->request;
         }
-        if ($reflectionParameter->getType()->getName() == 'bemang\Config'
+        if (
+            $reflectionParameter->getType()->getName() == 'bemang\Config'
             || $reflectionParameter->getType()->getName() == 'bemang\ConfigInterface'
         ) {
             return Config::getInstance();
         }
-        if ($reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
+        if (
+            $reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
         ) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
                 $url = new Url();
@@ -140,7 +143,7 @@ abstract class BackController
         }
     }
 
-    protected function render(string $view, array $datas, string $renderSystem = null) :ResponseInterface
+    protected function render(string $view, array $datas, string $renderSystem = null): ResponseInterface
     {
         if (is_null($renderSystem)) {
             if (Config::getInstance()->get('defaultRender') === 'php') {
@@ -160,14 +163,14 @@ abstract class BackController
         }
     }
 
-    protected function phpRender(string $view, array $datas) :ResponseInterface
+    protected function phpRender(string $view, array $datas): ResponseInterface
     {
         $url = new Url();
         $render = new PHPRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
         return new Response('200', [], $render->render($view, $datas));
     }
 
-    protected function twigRender(string $view, array $datas) :ResponseInterface
+    protected function twigRender(string $view, array $datas): ResponseInterface
     {
         $url = new Url();
         $render = new TwigRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
@@ -182,7 +185,7 @@ abstract class BackController
      * @param integer $status
      * @return ResponseInterface
      */
-    protected function redirectToRoute(string $route, int $status = 301) :ResponseInterface
+    protected function redirectToRoute(string $route, int $status = 301): ResponseInterface
     {
         $routes = Config::getInstance()->get('routes');
         if (isset($routes[$route]) && $routes[$route] instanceof Route) {
@@ -201,7 +204,7 @@ abstract class BackController
      *
      * @return ResponseInterface Réponse avec l'erreur 404
      */
-    protected function error() :ResponseInterface
+    protected function error(): ResponseInterface
     {
         $errorRoute = Config::getInstance()->get('routes')['404'];
         $controllerName = $errorRoute->getController();

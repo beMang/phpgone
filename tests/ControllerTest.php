@@ -1,4 +1,5 @@
 <?php
+
 namespace tests;
 
 use bemang\Config;
@@ -10,13 +11,13 @@ use tests\TestClass\Controllers\TestController;
 class ControllerTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function setUp() :void
+    public function setUp(): void
     {
         $config = Config::getInstance();
         $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
     }
 
-    public function getTestController(string $routeName, ServerRequest $request) :TestController
+    public function getTestController(string $routeName, ServerRequest $request): TestController
     {
         $route = Config::getInstance()->get('routes')[$routeName];
         $route->match($request->getUri());

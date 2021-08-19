@@ -2,7 +2,6 @@
 
 namespace phpGone\Middlewares;
 
-use bemang\Config;
 use phpGone\Core\BackController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -39,7 +38,7 @@ class CoreMiddleware implements MiddlewareInterface
      * Récupère le controlleur correspondant à la requête
      *
      * @param \phpGone\Router\Routeur $router Routeur à utiliser
-     * @return void
+     * @return BackController
      */
     public function getController($router, $request)
     {

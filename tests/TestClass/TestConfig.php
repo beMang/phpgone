@@ -4,7 +4,7 @@ namespace tests\TestClass;
 
 $ctrlNamespace = '\\tests\\TestClass\\Controllers\\';
 
-use \phpGone\Router\Route;
+use phpGone\Router\Route;
 
 return [
     'defaultRender' => 'twig', //php or twig

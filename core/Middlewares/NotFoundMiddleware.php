@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de la classe NotFoundMiddleware
  *
@@ -8,6 +9,7 @@
  * @copyright 2017 Antonutti Adrien
  * @author Antonutti Adrien <antonuttiadrien@email.com>
  */
+
 namespace phpGone\Middlewares;
 
 use bemang\Config;
