@@ -13,7 +13,7 @@ use phpGone\Router\Route;
 class Routeur
 {
     protected array $routes = [];
-    const NO_ROUTE = 1;
+    public const NO_ROUTE = 1;
 
     public function __construct()
     {
