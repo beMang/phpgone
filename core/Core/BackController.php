@@ -8,6 +8,7 @@ use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
 use bemang\renderer\PHPRender;
 use bemang\renderer\TwigRender;
+use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -187,7 +188,8 @@ abstract class BackController
      */
     protected function redirectToRoute(string $route, int $status = 301): ResponseInterface
     {
-        $routes = Config::getInstance()->get('routes');
+        $router = new Routeur();
+        $routes = $router->getAttributesRoutes();
         if (isset($routes[$route]) && $routes[$route] instanceof Route) {
             $controllerClass = $routes[$route]->getController();
             $controller = new $controllerClass($routes[$route], $this->request);
@@ -206,7 +208,8 @@ abstract class BackController
      */
     protected function error(): ResponseInterface
     {
-        $errorRoute = Config::getInstance()->get('routes')['404'];
+        $router = new Routeur();
+        $errorRoute = $router->getAttributesRoutes()['error404'];
         $controllerName = $errorRoute->getController();
         $controller = new $controllerName($errorRoute, $this->request);
         $response = $controller->execute();

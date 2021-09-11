@@ -63,6 +63,8 @@ class Route
     {
         if (class_exists($controller)) {
             $this->pathController = $controller;
+        } elseif (class_exists(Config::getInstance()->get('controllersPath')[1] . $controller)) {
+            $this->pathController = Config::getInstance()->get('controllersPath')[1] . $controller;
         } else {
             throw new \InvalidArgumentException('La classe du controller ' .
             $controller . ' est inexistante (Voir fichier de config)');

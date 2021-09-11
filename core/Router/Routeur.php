@@ -39,7 +39,8 @@ class Routeur
 
     public function registerControllers(): void
     {
-        $config_routes = Config::getInstance()->get('routes');
+        //$config_routes = Config::getInstance()->get('routes');
+        $config_routes = [];
         $attributs_routes = $this->getAttributesRoutes();
 
         $routes = array_merge($config_routes, $attributs_routes);
@@ -56,7 +57,8 @@ class Routeur
                 $attributes = $method->getAttributes();
                 if (!empty($attributes)) {
                     foreach ($attributes as $attribute) {
-                        $attributes_routes[] = $attribute->newInstance();
+                        $instance = $attribute->newInstance();
+                        $attributes_routes[$instance->getAction()] = $instance;
                     }
                 }
             }

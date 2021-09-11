@@ -2,6 +2,7 @@
 
 namespace app\Controllers\Error;
 
+use phpGone\Router\Route;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -9,7 +10,8 @@ use Psr\Log\LoggerInterface;
  */
 class Error extends \phpGone\Core\BackController
 {
-    public function index(LoggerInterface $logger)
+    #[Route('', 'Error\Error', 'error404')]
+    public function error404(LoggerInterface $logger)
     {
         $logger->error('Error 404');
         return $this->render('Error/404.twig', []);

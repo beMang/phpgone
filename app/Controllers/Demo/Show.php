@@ -17,12 +17,13 @@ class Show extends \phpGone\Core\BackController
         $this->mainView = 'Demo/index.twig';
     }
 
+    #[Route('/', 'Demo\Show', 'index')]
     public function index()
     {
         return $this->render($this->mainView, []);
     }
 
-    #[Route('/doc', 'app\Controllers\Demo\Show', 'doc')]
+    #[Route('/doc', 'Demo\Show', 'doc')]
     public function doc()
     {
         return $this->render('Demo/doc', [], 'php');
@@ -34,6 +35,7 @@ class Show extends \phpGone\Core\BackController
      * @param int $num
      * @return void
      */
+    #[Route('/{num|}', 'Demo\Show', 'demonum')]
     public function demonum($num)
     {
         return new Response('200', [], 'ça marche, voici le numéro de l\'url : ' . $num);

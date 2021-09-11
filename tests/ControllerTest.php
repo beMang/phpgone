@@ -6,6 +6,7 @@ use bemang\Config;
 use phpGone\Router\Route;
 use phpGone\Core\Application;
 use GuzzleHttp\Psr7\ServerRequest;
+use phpGone\Router\Routeur;
 use tests\TestClass\Controllers\TestController;
 
 class ControllerTest extends \PHPUnit\Framework\TestCase
@@ -19,7 +20,8 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function getTestController(string $routeName, ServerRequest $request): TestController
     {
-        $route = Config::getInstance()->get('routes')[$routeName];
+        $routeur = new Routeur();
+        $route = $routeur->getAttributesRoutes()[$routeName];
         $route->match($request->getUri());
         return new TestController($route, $request);
     }
@@ -27,7 +29,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
     public function testError404()
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');
-        $controller = $this->getTestController('404', $request);
+        $controller = $this->getTestController('error404', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
         $stream->rewind();

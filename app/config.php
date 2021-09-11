@@ -1,7 +1,5 @@
 <?php
 
-use phpGone\Router\Route;
-
 $ctrlNamespace = '\\app\\Controllers\\';
 
 return [
@@ -9,11 +7,6 @@ return [
     'viewsPath' => './app/views/',
     'publicPath' => './public/',
     'controllersPath' => ['./app/Controllers/', $ctrlNamespace],
-    'routes' => [
-        'home' => new Route('/', $ctrlNamespace . 'Demo\Show', 'index'),
-        'testnum' => new Route('/{num|}', $ctrlNamespace . 'Demo\Show', 'demonum'),
-        '404' => new Route('', $ctrlNamespace . 'Error\Error', 'index')
-    ], //Route de l'application
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
         \phpGone\TwigExtensions\UrlExtension::class,
         \phpGone\TwigExtensions\AssetsExtension::class
