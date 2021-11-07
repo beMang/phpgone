@@ -1,11 +1,12 @@
 <?php
+
 namespace tests;
 
 class UrlHelperTest extends \PHPUnit\Framework\TestCase
 {
     private $urlInstance;
-    
-    public function setUp() :void
+
+    public function setUp(): void
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
         $app = new \phpGone\Core\Application(__DIR__ . '/TestClass/TestConfig.php', $request);

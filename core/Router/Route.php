@@ -3,12 +3,15 @@
 namespace phpGone\Router;
 
 use bemang\Config;
+use Attribute;
 
 /**
  * Class Route
  *
  * Représente une route
  */
+
+#[Attribute]
 class Route
 {
     protected string $action;
@@ -35,7 +38,7 @@ class Route
         $this->setAction($method);
     }
 
-    public function match(string $url) :bool
+    public function match(string $url): bool
     {
         if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
             $this->setMatches($matches);
@@ -60,6 +63,8 @@ class Route
     {
         if (class_exists($controller)) {
             $this->pathController = $controller;
+        } elseif (class_exists(Config::getInstance()->get('controllersPath')[1] . $controller)) {
+            $this->pathController = Config::getInstance()->get('controllersPath')[1] . $controller;
         } else {
             throw new \InvalidArgumentException('La classe du controller ' .
             $controller . ' est inexistante (Voir fichier de config)');
@@ -85,7 +90,7 @@ class Route
         if (is_array($matches)) {
             if (count($this->matches) === count($matches)) {
                 $keys = array_keys($this->matches);
-                for ($i=0; $i < count($this->matches); $i++) {
+                for ($i = 0; $i < count($this->matches); $i++) {
                     $this->matches[$keys[$i]] = $matches[$i];
                 }
             } else {
@@ -98,7 +103,7 @@ class Route
      *
      * @return string
      */
-    public function getAction() :string
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -108,7 +113,7 @@ class Route
      *
      * @return string
      */
-    public function getController() :string
+    public function getController(): string
     {
         return $this->pathController;
     }
@@ -118,7 +123,7 @@ class Route
      *
      * @return string
      */
-    public function getUrl() :string
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -128,7 +133,7 @@ class Route
      *
      * @return array
      */
-    public function getMatches() :array
+    public function getMatches(): array
     {
         return $this->matches;
     }

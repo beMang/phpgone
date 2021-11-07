@@ -1,12 +1,13 @@
 <?php
 
-namespace tests\TestClass;
+namespace tests\TestClass\Controllers;
 
 use bemang\Config;
 use phpGone\Helpers\Url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use bemang\renderer\RendererInterface;
+use phpGone\Router\Route;
 
 class TestController extends \phpGone\Core\BackController
 {
@@ -17,6 +18,13 @@ class TestController extends \phpGone\Core\BackController
         $this->test = 'test';
     }
 
+    #[Route('/', 'TestController', 'index')]
+    public function index()
+    {
+        return new Response('200', [], 'home');
+    }
+
+    #[Route('/{testname}', 'TestController', 'test')]
     public function test($testname)
     {
         if ($testname == 'error') {
@@ -36,6 +44,7 @@ class TestController extends \phpGone\Core\BackController
         }
     }
 
+    #[Route('', 'TestController', 'parameters')]
     public function parameters(Request $request, Config $config, RendererInterface $render, Url $url)
     {
         if (isset($request) && isset($config) && isset($render) && isset($url)) {
@@ -45,18 +54,15 @@ class TestController extends \phpGone\Core\BackController
         }
     }
 
+    #[Route('/', 'TestController', 'redirect')]
     public function redirect()
     {
         return new Response('200', [], 'Redirect');
     }
 
+    #[Route('', 'TestController', 'error404')]
     public function error404()
     {
         return new Response('404', [], 'Error 404');
-    }
-
-    public function index()
-    {
-        return new Response('200', [], 'home');
     }
 }

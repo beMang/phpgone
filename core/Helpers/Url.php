@@ -2,7 +2,7 @@
 
 namespace phpGone\Helpers;
 
-use \bemang\Config;
+use bemang\Config;
 
 /**
  * Class permettant de récupérer les url des dossiers principaux

@@ -39,7 +39,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $stream->rewind();
         $this->assertSTringContainsString('Error 404', $stream->read(1024 * 8));
     }
-    
+
     /**
      * @runInSeparateProcess
      */

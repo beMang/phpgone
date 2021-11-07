@@ -4,7 +4,6 @@ namespace phpGone\TwigExtensions;
 
 use Twig\TwigFunction;
 use phpGone\Helpers\Url;
-use phpGone\Core\Application;
 use Twig\Extension\AbstractExtension;
 
 /**
