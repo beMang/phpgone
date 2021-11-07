@@ -2,7 +2,7 @@
 
 namespace phpGone\Middlewares;
 
-use bemang\Config;
+use phpGone\Core\BackController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,7 +23,6 @@ class CoreMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $response = new \GuzzleHttp\Psr7\Response();
         $controller = $this->getController(
             new \phpGone\Router\Routeur(),
             $request
@@ -31,10 +30,7 @@ class CoreMiddleware implements MiddlewareInterface
         if (is_null($controller)) {
             return $handler->handle($request);
         }
-        ob_start();
-        $controller->execute();
-        $responseController = ob_get_clean();
-        $response->getBody()->write($responseController);
+        $response = $controller->execute();
         return $response;
     }
 
@@ -42,30 +38,18 @@ class CoreMiddleware implements MiddlewareInterface
      * Récupère le controlleur correspondant à la requête
      *
      * @param \phpGone\Router\Routeur $router Routeur à utiliser
-     * @return void
+     * @return BackController
      */
     public function getController($router, $request)
     {
-        $xml = new \DOMDocument;
-        $routes = Config::getInstance()->get('routes');
-        
-        foreach ($routes as $route) {
-            $router->addRoute($route);
-            unset($route);
-        }
-
         try {
-            $matchedRoute = $router->getRoute($request->getUri()->getPath());
+            $matchedRoute = $router->getMatchedRoute($request->getUri()->getPath());
         } catch (\RuntimeException $e) {
             if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant
             }
         }
-
-        $_GET = array_merge($_GET, $matchedRoute->getMatches());
-
         $controllerClass = $matchedRoute->getController();
-                            
         return new $controllerClass($matchedRoute, $request);
     }
 }

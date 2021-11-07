@@ -14,42 +14,42 @@ class Logger extends \Psr\Log\AbstractLogger
     {
         switch ($loglevel) {
             case LogLevel::EMERGENCY:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::ALERT:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::CRITICAL:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::ERROR:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::WARNING:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::NOTICE:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::INFO:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
 
             case LogLevel::DEBUG:
-                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . $message . "\n";
+                $text = date('d/m/y - G:i:s') . ' - ' . $loglevel . ' - Message : ' . $message . "\n";
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
             default:

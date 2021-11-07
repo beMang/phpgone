@@ -1,19 +1,15 @@
 <?php
-namespace Test;
+
+namespace tests;
 
 class UrlHelperTest extends \PHPUnit\Framework\TestCase
 {
     private $urlInstance;
 
-    public static function setUpBeforeClass()
-    {
-        require_once(__DIR__ . '/../vendor/autoload.php');
-    }
-    
-    public function setUp()
+    public function setUp(): void
     {
         $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
-        $app = new \phpGone\Core\Application(__DIR__ . '/../app/config.php', $request);
+        $app = new \phpGone\Core\Application(__DIR__ . '/TestClass/TestConfig.php', $request);
         $this->urlInstance = new \phpGone\Helpers\Url($app);
     }
 
@@ -54,14 +50,6 @@ class UrlHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertDirectoryExists(dirname(__FILE__) . '/../' . $this->urlInstance->getRelativeAssetsPath());
         $basePath = $this->urlInstance->getRelativeAssetsPath();
         $customPath = $this->urlInstance->getRelativeAssetsPath('test');
-        $this->assertEquals($basePath . 'test/', $customPath);
-    }
-
-    public function testRelativeAppPath()
-    {
-        $this->assertDirectoryExists(dirname(__FILE__) . '/../' . $this->urlInstance->getRelativeAppPath());
-        $basePath = $this->urlInstance->getRelativeAppPath();
-        $customPath = $this->urlInstance->getRelativeAppPath('test');
         $this->assertEquals($basePath . 'test/', $customPath);
     }
 }

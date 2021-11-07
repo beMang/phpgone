@@ -1,16 +1,14 @@
 <?php
 
-use phpGone\Router\Route;
+$ctrlNamespace = '\\app\\Controllers\\';
 
 return [
-    'basePath' => '/', //base path for de application (better to no change)
-    'routes' => [
-        new Route('/', 'Demo\Show', 'index'),
-        new Route('/doc', 'Demo\Show', 'doc')
-    ], //Route de l'application
-    'errorPage' => ['Error\Error', 'index'], //Page pour les erreurs 404
+    'defaultRender' => 'twig', //php or twig
+    'viewsPath' => './app/views/',
+    'publicPath' => './public/',
+    'controllersPath' => ['./app/Controllers/', $ctrlNamespace],
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
-        phpGone\Renderer\TwigExtensions\UrlExtension::class,
-        phpGone\Renderer\TwigExtensions\AssetsExtension::class
+        \phpGone\TwigExtensions\UrlExtension::class,
+        \phpGone\TwigExtensions\AssetsExtension::class
     ]
 ];

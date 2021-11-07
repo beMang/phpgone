@@ -1,5 +1,6 @@
 <?php
-namespace Test;
+
+namespace tests;
 
 use Psr\Log\LogLevel;
 
@@ -16,11 +17,6 @@ class LogTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public static function setUpBeforeClass()
-    {
-        require_once(__DIR__ . '/../vendor/autoload.php');
-    }
-    
     public function getLogger()
     {
         return new \phpGone\Log\Logger();
@@ -43,7 +39,7 @@ class LogTest extends \PHPUnit\Framework\TestCase
     public function getLastLog()
     {
         $tab = file(__DIR__ . '/../tmp/log/phpgonelog.log');
-        return $der_ligne = $tab[count($tab)-1];
+        return $der_ligne = $tab[count($tab) - 1];
     }
 
     public function testAllLog()
@@ -51,7 +47,7 @@ class LogTest extends \PHPUnit\Framework\TestCase
         foreach ($this->getLevels() as $level) {
             $message = 'Test : ' . $level;
             $this->getLogger()->$level($message, []);
-            $this->assertContains($message, $this->getLastLog());
+            $this->assertSTringContainsString($message, $this->getLastLog());
         }
     }
 

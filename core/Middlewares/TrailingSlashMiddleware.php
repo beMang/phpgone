@@ -18,7 +18,7 @@ class TrailingSlashMiddleware implements MiddlewareInterface
         $uri = $request->getUri()->getPath();
         if (substr($uri, -1, 1) == '/') {
             if (!empty(substr($uri, 0, -1))) {
-                $response = new \GuzzleHttp\Psr7\Response;
+                $response = new \GuzzleHttp\Psr7\Response();
                 $response = $response->withStatus(301)
                                  ->withHeader('Location', substr($uri, 0, -1));
                 return $response;

@@ -5,29 +5,24 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "psr/simple-cache": "^1.0",
-        "psr/log": "^1.0",
-        "twig/twig": "^2.4",
-        "guzzlehttp/psr7": "^1.4",
-        "bemang/config-system": "1.*.*",
-        "bemang/cache-system": "1.*.*",
-        "psr/http-server-middleware": "^1.0@dev"
-    },
-    "require-dev": {
-        "consolidation/robo": "^1.0@dev"
+        "psr/simple-cache": "1.*",
+        "psr/log": "1.*",
+        "guzzlehttp/psr7": "1.*",
+        "bemang/config-system": "^1.0",
+        "psr/http-server-middleware": "1.*",
+        "bemang/renderer-system": "1.*",
+        "consolidation/robo": "2.*"
     },
     "autoload": {
         "psr-4": {
             "app\\": "app",
-            "phpGone\\": "core"
+            "phpGone\\": "core",
+            "tests\\": "tests"
         }
     },
     "suggest": {
-        "phpunit/phpunit": "^6.5"
-    },
-    "scripts": {
-        "post-create-project-cmd": [
-            "./vendor/bin/robo creat:tmp-dir"
-        ]
+        "phpunit/phpunit": "^9",
+        "consolidation/robo": "2.*",
+        "bemang/session-system": "^1.0"
     }
 }

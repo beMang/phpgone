@@ -2,16 +2,18 @@
 
 namespace app\Controllers\Error;
 
-use phpGone\Renderer\Renderer;
+use phpGone\Router\Route;
+use Psr\Log\LoggerInterface;
 
 /**
  * Controller pour la gestion des erreurs 404
  */
 class Error extends \phpGone\Core\BackController
 {
-    public function index()
+    #[Route('', 'Error\Error', 'error404')]
+    public function error404(LoggerInterface $logger)
     {
-        Renderer::twigRender('Demo/index.twig', [], true);
-        Renderer::twigRender('Error/404.twig', []);
+        $logger->error('Error 404');
+        return $this->render('Error/404.twig', []);
     }
 }

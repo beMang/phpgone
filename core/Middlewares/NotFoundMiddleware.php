@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fichier de la classe NotFoundMiddleware
  *
@@ -8,6 +9,7 @@
  * @copyright 2017 Antonutti Adrien
  * @author Antonutti Adrien <antonuttiadrien@email.com>
  */
+
 namespace phpGone\Middlewares;
 
 use bemang\Config;
@@ -15,6 +17,8 @@ use Psr\Log\LogLevel;
 use phpGone\Log\Logger;
 use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
+use phpGone\Core\BackController;
+use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,18 +39,16 @@ class NotFoundMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $errorPageConfig = Config::getInstance()->get('errorPage');
-        $controllerClass = '\\app\\Controllers\\' . $errorPageConfig[0];
-        $route = new Route('404', $errorPageConfig[0], $errorPageConfig[1]);
-        $controller = new $controllerClass($route, $request);
-        $response = new Response;
-        ob_start();
-        $controller->execute();
-        $responseController = ob_get_clean();
-        $response->getBody()->write($responseController);
-        $response = $response->withStatus(404);
-        $logger = new Logger();
-        $logger->info('Error 404, NotFoundMiddleware');
+        $controller = $this->getController($request);
+        $response = $controller->execute();
         return $response;
+    }
+
+    protected function getController(ServerRequestInterface $request): BackController
+    {
+        $router = new Routeur();
+        $errorRoute = $router->getAttributesRoutes()['error404'];
+        $controllerName = $errorRoute->getController();
+        return new $controllerName($errorRoute, $request);
     }
 }

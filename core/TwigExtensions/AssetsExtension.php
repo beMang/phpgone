@@ -1,15 +1,15 @@
 <?php
 
-namespace phpGone\Renderer\TwigExtensions;
+namespace phpGone\TwigExtensions;
 
+use Twig\TwigFunction;
 use phpGone\Helpers\Url;
-use phpGone\Core\Application;
-use phpGone\Renderer\TwigExtensions\BaseTwigExtension;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Extension twig pour ajouter des assets facilement
  */
-class AssetsExtension extends \Twig_Extension
+class AssetsExtension extends AbstractExtension
 {
     protected $urlHelperInstance;
 
@@ -21,8 +21,8 @@ class AssetsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('css', [$this, 'css'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('js', [$this, 'js'], ['is_safe' => ['html']])
+            new TwigFunction('css', [$this, 'css'], ['is_safe' => ['html']]),
+            new TwigFunction('js', [$this, 'js'], ['is_safe' => ['html']])
         ];
     }
 

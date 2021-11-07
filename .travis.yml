@@ -1,27 +1,30 @@
 language: php
 
 php:
-  - 7.2.5
-  - 7.1.9
+  - 8.0
 
-matrix:
-  allow_failures:
-    - php: 7.1.9
+env:
+    global:
+        - XDEBUG_MODE=coverage
 
 services:
   - mysql
 
 install:
+  - composer require consolidation/robo:2.*
   - composer install
+  - composer update
+  - composer dump -o
+  - ./vendor/bin/robo creat:tmp-dir
+  - composer require phpunit/phpunit
 
 cache:
   directories:
   - vendor
 
 script:
-  - composer dump -o
-  - ./vendor/bin/robo creat:tmp-dir
-  - phpunit --coverage-clover build/logs/clover.xml
+ - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
 
 after_success:
   - composer require php-coveralls/php-coveralls
