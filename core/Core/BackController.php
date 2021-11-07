@@ -98,7 +98,6 @@ abstract class BackController
     /**
      * Fourni le bon argument
      *
-     * //TODO : revoir la manière de distribution de certains arguments (les mettre dans le tableau) (?)
      *
      * @param \ReflectionParameter $param
      * @return mixin argument à utiliser
