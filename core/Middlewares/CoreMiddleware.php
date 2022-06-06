@@ -3,10 +3,12 @@
 namespace phpGone\Middlewares;
 
 use phpGone\Core\BackController;
+use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RuntimeException;
 
 /**
  * Class CoreMiddleware
@@ -24,7 +26,7 @@ class CoreMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $controller = $this->getController(
-            new \phpGone\Router\Routeur(),
+            new Routeur(),
             $request
         );
         if (is_null($controller)) {
@@ -37,15 +39,15 @@ class CoreMiddleware implements MiddlewareInterface
     /**
      * Récupère le controlleur correspondant à la requête
      *
-     * @param \phpGone\Router\Routeur $router Routeur à utiliser
+     * @param Routeur $router Routeur à utiliser
      * @return BackController
      */
     public function getController($router, $request)
     {
         try {
             $matchedRoute = $router->getMatchedRoute($request->getUri()->getPath());
-        } catch (\RuntimeException $e) {
-            if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
+        } catch (RuntimeException $e) {
+            if ($e->getCode() == Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant
             }
         }

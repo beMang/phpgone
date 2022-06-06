@@ -4,8 +4,9 @@ namespace tests\TwigExtensions;
 
 use bemang\Config;
 use phpGone\TwigExtensions\AssetsExtension;
+use PHPUnit\Framework\TestCase;
 
-class AssetExtensionsTest extends \PHPUnit\Framework\TestCase
+class AssetExtensionsTest extends TestCase
 {
     protected $assetExtension;
 

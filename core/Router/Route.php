@@ -4,6 +4,7 @@ namespace phpGone\Router;
 
 use bemang\Config;
 use Attribute;
+use InvalidArgumentException;
 
 /**
  * Class Route
@@ -53,7 +54,7 @@ class Route
         if (method_exists($this->getController(), $action)) {
             $this->action = $action;
         } else {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'L\'action de la route est inaccesible ou inconnue (Voir fichier de config)'
             );
         }
@@ -66,7 +67,7 @@ class Route
         } elseif (class_exists(Config::getInstance()->get('controllersPath')[1] . $controller)) {
             $this->pathController = Config::getInstance()->get('controllersPath')[1] . $controller;
         } else {
-            throw new \InvalidArgumentException('La classe du controller ' .
+            throw new InvalidArgumentException('La classe du controller ' .
             $controller . ' est inexistante (Voir fichier de config)');
         }
     }

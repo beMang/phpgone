@@ -3,8 +3,8 @@
 namespace phpGone\Core;
 
 use bemang\Config;
-use phpGone\Core\ResponseSender;
-use phpGone\Core\MiddlewaresHandler;
+use bemang\ConfigException;
+use bemang\InvalidArgumentExceptionConfig;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -38,10 +38,12 @@ class Application
     /**
      * Constructeur de la classe
      *
-     * @param string $config Fichier de base pour configuration de l'application
+     * @param string $configFile Fichier de base pour configuration de l'application
      * @param ServerRequestInterface $request Requete à traiter
+     * @throws ConfigException
+     * @throws InvalidArgumentExceptionConfig
      */
-    public function __construct($configFile, ServerRequestInterface $request)
+    public function __construct(string $configFile, ServerRequestInterface $request)
     {
         $config = Config::getInstance();
         $config->define(require($configFile));
@@ -73,7 +75,7 @@ class Application
     /**
      * Permet de récupérer la requête
      *
-     * @return objet Requete
+     * @return ServerRequestInterface Requete
      */
     public function getRequest(): ServerRequestInterface
     {
@@ -86,7 +88,7 @@ class Application
      * @param string $middleware Middleware à utiliser
      * @return Application Application (Pour enchainer les méthodes pipe)
      */
-    public function addMiddleware($middleware): self
+    public function addMiddleware(string $middleware): self
     {
         $this->middlewaresHandler->pipe($middleware);
         return $this;

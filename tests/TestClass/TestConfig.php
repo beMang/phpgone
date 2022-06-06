@@ -5,6 +5,8 @@ namespace tests\TestClass;
 $ctrlNamespace = '\\tests\\TestClass\\Controllers\\';
 
 use phpGone\Router\Route;
+use phpGone\TwigExtensions\AssetsExtension;
+use phpGone\TwigExtensions\UrlExtension;
 
 return [
     'defaultRender' => 'twig', //php or twig
@@ -12,7 +14,7 @@ return [
     'assetsPath' => './tests/TestClass/assets/',
     'controllersPath' => ['./tests/TestClass/Controllers/', $ctrlNamespace],
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
-        \phpGone\TwigExtensions\UrlExtension::class,
-        \phpGone\TwigExtensions\AssetsExtension::class
+        UrlExtension::class,
+        AssetsExtension::class
     ]
 ];

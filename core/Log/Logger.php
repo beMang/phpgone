@@ -2,13 +2,15 @@
 
 namespace phpGone\Log;
 
+use Psr\Log\AbstractLogger;
+use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 
 /**
  * Class Logger
  * Permet d'écrire dans les fichiers de logs
  */
-class Logger extends \Psr\Log\AbstractLogger
+class Logger extends AbstractLogger
 {
     public function log($loglevel, $message, array $context = [])
     {
@@ -53,7 +55,7 @@ class Logger extends \Psr\Log\AbstractLogger
                 file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
                 break;
             default:
-                throw new \Psr\Log\InvalidArgumentException('Le niveau du log est invalide');
+                throw new InvalidArgumentException('Le niveau du log est invalide');
             break;
         }
     }

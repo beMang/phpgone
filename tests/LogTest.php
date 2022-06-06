@@ -2,9 +2,11 @@
 
 namespace tests;
 
+use phpGone\Log\Logger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class LogTest extends \PHPUnit\Framework\TestCase
+class LogTest extends TestCase
 {
     public function __destruct()
     {
@@ -19,7 +21,7 @@ class LogTest extends \PHPUnit\Framework\TestCase
 
     public function getLogger()
     {
-        return new \phpGone\Log\Logger();
+        return new Logger();
     }
 
     public function getLevels()

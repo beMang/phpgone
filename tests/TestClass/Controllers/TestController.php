@@ -3,13 +3,14 @@
 namespace tests\TestClass\Controllers;
 
 use bemang\Config;
+use phpGone\Core\BackController;
 use phpGone\Helpers\Url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use bemang\renderer\RendererInterface;
 use phpGone\Router\Route;
 
-class TestController extends \phpGone\Core\BackController
+class TestController extends BackController
 {
     protected $test;
 

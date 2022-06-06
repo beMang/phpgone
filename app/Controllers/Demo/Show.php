@@ -3,12 +3,13 @@
 namespace app\Controllers\Demo;
 
 use GuzzleHttp\Psr7\Response;
+use phpGone\Core\BackController;
 use phpGone\Router\Route;
 
 /**
  * Controller basique
  */
-class Show extends \phpGone\Core\BackController
+class Show extends BackController
 {
     protected $mainView;
 

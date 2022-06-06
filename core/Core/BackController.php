@@ -3,7 +3,11 @@
 namespace phpGone\Core;
 
 use bemang\Config;
+use bemang\ConfigException;
+use bemang\InvalidArgumentExceptionConfig;
+use InvalidArgumentException;
 use phpGone\Helpers\Url;
+use phpGone\Log\Logger;
 use phpGone\Router\Route;
 use GuzzleHttp\Psr7\Response;
 use bemang\renderer\PHPRender;
@@ -11,6 +15,9 @@ use bemang\renderer\TwigRender;
 use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use ReflectionMethod;
+use ReflectionParameter;
 
 /**
  * Class BackController
@@ -26,9 +33,9 @@ abstract class BackController
      *
      * @var array
      */
-    protected $argumentToProvide = [
-        \Psr\Log\LoggerInterface::class => \phpGone\Log\Logger::class,
-        \phpGone\Helpers\Url::class => \phpGone\Helpers\Url::class
+    protected array $argumentToProvide = [
+        LoggerInterface::class => Logger::class,
+        Url::class => Url::class
     ];
 
     /**
@@ -77,7 +84,7 @@ abstract class BackController
 
     protected function getActionParameters(string $action)
     {
-        $method = new \ReflectionMethod(get_class($this), $action);
+        $method = new ReflectionMethod(get_class($this), $action);
         return $method->getParameters();
     }
 
@@ -91,7 +98,7 @@ abstract class BackController
             }
             return $resultArray;
         } else {
-            throw new \InvalidArgumentException("La méthode $action n'existe pas");
+            throw new InvalidArgumentException("La méthode $action n'existe pas");
         }
     }
 
@@ -99,10 +106,10 @@ abstract class BackController
      * Fourni le bon argument
      *
      *
-     * @param \ReflectionParameter $param
-     * @return mixin argument à utiliser
+     * @param ReflectionParameter $param
+     * @return mixed argument à utiliser
      */
-    protected function provideParameter(\ReflectionParameter $reflectionParameter)
+    protected function provideParameter(ReflectionParameter $reflectionParameter): mixed
     {
         if ($reflectionParameter->getType() == null || $reflectionParameter->getType()->getName() == 'string') {
             if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
@@ -143,6 +150,7 @@ abstract class BackController
         }
     }
 
+    /** @noinspection PhpInconsistentReturnPointsInspection */
     protected function render(string $view, array $datas, string $renderSystem = null): ResponseInterface
     {
         if (is_null($renderSystem)) {
@@ -158,11 +166,14 @@ abstract class BackController
             } elseif ($renderSystem === 'twig') {
                 return $this->twigRender($view, $datas);
             } else {
-                throw new \InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
+                throw new InvalidArgumentException("Le système de rendu $renderSystem est inconnu");
             }
         }
     }
 
+    /**
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
     protected function phpRender(string $view, array $datas): ResponseInterface
     {
         $url = new Url();
@@ -170,6 +181,11 @@ abstract class BackController
         return new Response('200', [], $render->render($view, $datas));
     }
 
+    /**
+     * @throws InvalidArgumentExceptionConfig
+     * @throws ConfigException
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
     protected function twigRender(string $view, array $datas): ResponseInterface
     {
         $url = new Url();
@@ -193,10 +209,9 @@ abstract class BackController
             $controllerClass = $routes[$route]->getController();
             $controller = new $controllerClass($routes[$route], $this->request);
             $response = $controller->execute();
-            $response = $response->withStatus($status);
-            return $response;
+            return $response->withStatus($status);
         } else {
-            throw new \InvalidArgumentException('Route inconnue ou invalide');
+            throw new InvalidArgumentException('Route inconnue ou invalide');
         }
     }
 
@@ -212,7 +227,6 @@ abstract class BackController
         $controllerName = $errorRoute->getController();
         $controller = new $controllerName($errorRoute, $this->request);
         $response = $controller->execute();
-        $response = $response->withStatus(404);
-        return $response;
+        return $response->withStatus(404);
     }
 }

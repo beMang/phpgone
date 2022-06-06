@@ -1,5 +1,8 @@
 <?php
 
+use phpGone\TwigExtensions\AssetsExtension;
+use phpGone\TwigExtensions\UrlExtension;
+
 $ctrlNamespace = '\\app\\Controllers\\';
 
 return [
@@ -8,7 +11,7 @@ return [
     'publicPath' => './public/',
     'controllersPath' => ['./app/Controllers/', $ctrlNamespace],
     'TwigExtensions' => [ //Extensions twig à charger pour le rendu
-        \phpGone\TwigExtensions\UrlExtension::class,
-        \phpGone\TwigExtensions\AssetsExtension::class
+        UrlExtension::class,
+        AssetsExtension::class
     ]
 ];

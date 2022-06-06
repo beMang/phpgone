@@ -2,10 +2,14 @@
 
 namespace phpGone\Core;
 
+use phpGone\Middlewares\CoreMiddleware;
+use phpGone\Middlewares\NotFoundMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionClass;
+use RuntimeException;
 
 /**
  * class MiddlewaresHandler
@@ -20,8 +24,8 @@ class MiddlewaresHandler implements RequestHandlerInterface
      * @var string[]
      */
     protected $middlewares = [
-        \phpGone\Middlewares\CoreMiddleware::class,
-        \phpGone\Middlewares\NotFoundMiddleware::class
+        CoreMiddleware::class,
+        NotFoundMiddleware::class
     ];
 
     /**
@@ -53,7 +57,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
     {
         $middleware = $this->getMiddleware();
         if (is_null($middleware)) {
-            throw new \RuntimeException('Un middleware est mal configuré ou aucun middleware défini');
+            throw new RuntimeException('Un middleware est mal configuré ou aucun middleware défini');
         }
         return call_user_func_array([$middleware, 'process'], [$request, $this]);
     }
@@ -75,7 +79,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
                 return $middleware;
             } else {
                 if (class_exists($middleware)) {
-                    $reflexionClass = new \ReflectionClass($middleware);
+                    $reflexionClass = new ReflectionClass($middleware);
                     if ($reflexionClass->implementsInterface(MiddlewareInterface::class)) {
                         $resultMiddleware = new $middleware();
                         $this->middlewaresIndex++;
