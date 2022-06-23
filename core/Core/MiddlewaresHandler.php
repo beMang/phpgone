@@ -2,10 +2,14 @@
 
 namespace phpGone\Core;
 
+use phpGone\Middlewares\CoreMiddleware;
+use phpGone\Middlewares\NotFoundMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionClass;
+use RuntimeException;
 
 /**
  * class MiddlewaresHandler
@@ -19,9 +23,9 @@ class MiddlewaresHandler implements RequestHandlerInterface
      *
      * @var string[]
      */
-    protected $middlewares = [
-        \phpGone\Middlewares\CoreMiddleware::class,
-        \phpGone\Middlewares\NotFoundMiddleware::class
+    protected array $middlewares = [
+        CoreMiddleware::class,
+        NotFoundMiddleware::class
     ];
 
     /**
@@ -37,14 +41,14 @@ class MiddlewaresHandler implements RequestHandlerInterface
      * @param string|MiddlewareInterface $middleware Middleware à ajouter
      * @return bool
      */
-    public function pipe($middleware): bool
+    public function pipe(MiddlewareInterface|string $middleware): bool
     {
         array_unshift($this->middlewares, $middleware);
         return true;
     }
 
     /**
-     * Parcours les middlwares et les execute
+     * Parcours les middlewares et les execute
      *
      * @param ServerRequestInterface $request Requête à envoyer aux middlewares
      * @return ResponseInterface Réponse obtenue
@@ -53,7 +57,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
     {
         $middleware = $this->getMiddleware();
         if (is_null($middleware)) {
-            throw new \RuntimeException('Un middleware est mal configuré ou aucun middleware défini');
+            throw new RuntimeException('Un middleware est mal configuré ou aucun middleware défini');
         }
         return call_user_func_array([$middleware, 'process'], [$request, $this]);
     }
@@ -68,14 +72,13 @@ class MiddlewaresHandler implements RequestHandlerInterface
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
             $middleware = $this->middlewares[$this->middlewaresIndex];
             if (
-                is_object($middleware) &&
                 $middleware instanceof MiddlewareInterface
             ) {
                 $this->middlewaresIndex++;
                 return $middleware;
             } else {
                 if (class_exists($middleware)) {
-                    $reflexionClass = new \ReflectionClass($middleware);
+                    $reflexionClass = new ReflectionClass($middleware);
                     if ($reflexionClass->implementsInterface(MiddlewareInterface::class)) {
                         $resultMiddleware = new $middleware();
                         $this->middlewaresIndex++;

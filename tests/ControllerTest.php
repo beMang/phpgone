@@ -7,11 +7,11 @@ use phpGone\Router\Route;
 use phpGone\Core\Application;
 use GuzzleHttp\Psr7\ServerRequest;
 use phpGone\Router\Routeur;
+use PHPUnit\Framework\TestCase;
 use tests\TestClass\Controllers\TestController;
 
-class ControllerTest extends \PHPUnit\Framework\TestCase
+class ControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         $config = Config::getInstance();
@@ -28,7 +28,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testError404()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/eadsdqf');
+        $request = new ServerRequest('GET', '/eadsdqf');
         $controller = $this->getTestController('error404', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -37,7 +37,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response->getStatusCode(), 404);
 
         //again for another way into the controller
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/error');
+        $request = new ServerRequest('GET', '/error');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -48,7 +48,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testRedirection()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/redirect');
+        $request = new ServerRequest('GET', '/redirect');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -59,7 +59,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testBadRedirection()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/redirectfalse');
+        $request = new ServerRequest('GET', '/redirectfalse');
         $controller = $this->getTestController('test', $request);
         $this->expectExceptionMessage('Route inconnue ou invalide');
         $response = $controller->execute();
@@ -67,7 +67,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testParameters()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
+        $request = new ServerRequest('GET', '/');
         $controller = $this->getTestController('parameters', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -76,7 +76,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response->getStatusCode(), 200);
 
         Config::getInstance()->define('defaultRender', 'php');
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
+        $request = new ServerRequest('GET', '/');
         $controller = $this->getTestController('parameters', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -88,7 +88,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     public function testAllRender()
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/render');
+        $request = new ServerRequest('GET', '/render');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -97,7 +97,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response->getStatusCode(), 200);
 
         Config::getInstance()->define('defaultRender', 'php');
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/render');
+        $request = new ServerRequest('GET', '/render');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -106,7 +106,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response->getStatusCode(), 200);
         Config::getInstance()->define('', 'twig');
 
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/phprender');
+        $request = new ServerRequest('GET', '/phprender');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();
@@ -114,7 +114,7 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertSTringContainsString('test', $stream->read(1024 * 8));
         $this->assertEquals($response->getStatusCode(), 200);
 
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/twigrender');
+        $request = new ServerRequest('GET', '/twigrender');
         $controller = $this->getTestController('test', $request);
         $response = $controller->execute();
         $stream = $response->getBody();

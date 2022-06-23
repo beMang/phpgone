@@ -3,10 +3,12 @@
 namespace phpGone\Middlewares;
 
 use phpGone\Core\BackController;
+use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RuntimeException;
 
 /**
  * Class CoreMiddleware
@@ -24,32 +26,34 @@ class CoreMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $controller = $this->getController(
-            new \phpGone\Router\Routeur(),
+            new Routeur(),
             $request
         );
         if (is_null($controller)) {
             return $handler->handle($request);
         }
-        $response = $controller->execute();
-        return $response;
+        return $controller->execute();
     }
 
     /**
-     * Récupère le controlleur correspondant à la requête
+     * Récupère le contrôleur correspondant à la requête
      *
-     * @param \phpGone\Router\Routeur $router Routeur à utiliser
-     * @return BackController
+     * @param Routeur $router Routeur à utiliser
+     * @param ServerRequestInterface $request Requête à traiter
+     * @return BackController|null
      */
-    public function getController($router, $request)
+    public function getController(Routeur $router, ServerRequestInterface $request): ?BackController
     {
         try {
             $matchedRoute = $router->getMatchedRoute($request->getUri()->getPath());
-        } catch (\RuntimeException $e) {
-            if ($e->getCode() == \phpGone\Router\Routeur::NO_ROUTE) {
+            $controllerClass = $matchedRoute->getController();
+            return new $controllerClass($matchedRoute, $request);
+        } catch (RuntimeException $e) {
+            if ($e->getCode() == Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant
+            } else {
+                throw new RuntimeException("Erreur de phpgone");
             }
         }
-        $controllerClass = $matchedRoute->getController();
-        return new $controllerClass($matchedRoute, $request);
     }
 }

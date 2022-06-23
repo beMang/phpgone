@@ -4,6 +4,7 @@ namespace phpGone\Router;
 
 use bemang\Config;
 use Attribute;
+use InvalidArgumentException;
 
 /**
  * Class Route
@@ -48,12 +49,12 @@ class Route
         }
     }
 
-    protected function setAction(string $action)
+    protected function setAction(string $action): void
     {
         if (method_exists($this->getController(), $action)) {
             $this->action = $action;
         } else {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'L\'action de la route est inaccesible ou inconnue (Voir fichier de config)'
             );
         }
@@ -66,12 +67,12 @@ class Route
         } elseif (class_exists(Config::getInstance()->get('controllersPath')[1] . $controller)) {
             $this->pathController = Config::getInstance()->get('controllersPath')[1] . $controller;
         } else {
-            throw new \InvalidArgumentException('La classe du controller ' .
+            throw new InvalidArgumentException('La classe du controller ' .
             $controller . ' est inexistante (Voir fichier de config)');
         }
     }
 
-    protected function setUrl(string $url)
+    protected function setUrl(string $url): void
     {
         preg_match_all($this->expression, $url, $matches);
         foreach ($matches[0] as $key => $value) {
@@ -85,7 +86,7 @@ class Route
         $this->url = $finalUrl;
     }
 
-    protected function setMatches($matches)
+    protected function setMatches($matches): void
     {
         if (is_array($matches)) {
             if (count($this->matches) === count($matches)) {
@@ -94,6 +95,7 @@ class Route
                     $this->matches[$keys[$i]] = $matches[$i];
                 }
             } else {
+                // Je sais pas trop à quel cas ça correspond
             }
         }
     }
@@ -109,7 +111,7 @@ class Route
     }
 
     /**
-     * Récupère le controlleur de la route
+     * Récupère le contrôleur de la route
      *
      * @return string
      */

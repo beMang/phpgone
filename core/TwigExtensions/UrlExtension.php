@@ -11,14 +11,14 @@ use Twig\Extension\AbstractExtension;
  */
 class UrlExtension extends AbstractExtension
 {
-    protected $urlHelperInstance;
+    protected Url $urlHelperInstance;
 
     public function __construct()
     {
         $this->urlHelperInstance = new Url();
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('tmpPath', [$this->urlHelperInstance, 'getTmpPath']),

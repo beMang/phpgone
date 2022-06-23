@@ -1,6 +1,8 @@
 <?php
 
-class RoboFile extends \Robo\Tasks
+use Robo\Tasks;
+
+class RoboFile extends Tasks
 {
     public function clear($opts = ['c' => false, 'l' => false])
     {

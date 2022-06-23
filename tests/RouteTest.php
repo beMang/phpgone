@@ -3,8 +3,9 @@
 namespace tests;
 
 use phpGone\Router\Route;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends \PHPUnit\Framework\TestCase
+class RouteTest extends TestCase
 {
     protected const CONTROLLER_PATH = '\\tests\\TestClass\\Controllers\\TestController';
 

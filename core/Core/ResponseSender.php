@@ -2,6 +2,8 @@
 
 namespace phpGone\Core;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Class qui permet de renvoyer une réponse au client
  */
@@ -10,10 +12,10 @@ class ResponseSender
     /**
      * Renvoie une réponse au client
      *
-     * @param \Psr\Http\Message\ResponseInterface $response Réponse à renvoyer
+     * @param ResponseInterface $response Réponse à renvoyer
      * @return boolean Résultat
      */
-    public function send(\Psr\Http\Message\ResponseInterface $response): bool
+    public function send(ResponseInterface $response): bool
     {
         $http_line = sprintf(
             'HTTP/%s %s %s',

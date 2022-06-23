@@ -3,43 +3,73 @@
 namespace phpGone\Helpers;
 
 use bemang\Config;
+use bemang\ConfigException;
+use bemang\InvalidArgumentExceptionConfig;
 
 /**
  * Class permettant de récupérer les url des dossiers principaux
  */
 class Url
 {
-    public function getTmpPath($custom = null)
+    /**
+     * @param string|null $custom
+     * @return string
+     */
+    public function getTmpPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tmp/' . $custom;
     }
 
-    public function getViewsPath($custom = null)
+    /**
+     * @throws InvalidArgumentExceptionConfig
+     * @throws ConfigException
+     */
+    public function getViewsPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return Config::getInstance()->get('viewsPath') . $custom;
     }
 
-    public function getAppPath($custom = null)
+    /**
+     * @param string|null $custom
+     * @return string
+     */
+    public function getAppPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../app/' . $custom;
     }
 
-    public function getTestsPath($custom = null)
+    /**
+     * @param string|null $custom
+     * @return string
+     */
+    public function getTestsPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tests/' . $custom;
     }
 
-    public function getAssetsPath($custom = null)
+    /**
+     * @param string|null $custom
+     * @return string
+     * @throws ConfigException
+     * @throws InvalidArgumentExceptionConfig
+     */
+    public function getAssetsPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return Config::getInstance()->get('publicPath') . $custom;
     }
 
-    public function getRelativeAssetsPath($custom = null)
+    /**
+     * @param string|null $custom
+     * @return string
+     * @throws ConfigException
+     * @throws InvalidArgumentExceptionConfig
+     */
+    public function getRelativeAssetsPath(string $custom = null): string
     {
         return $this->getAssetsPath($custom);
     }

@@ -4,8 +4,12 @@ namespace phpGone\Router;
 
 use bemang\Config;
 use phpGone\Router\Route;
+use ReflectionClass;
+use RuntimeException;
 
- /**
+use function join;
+
+/**
   * class Routeur
   *
   * Choisi la bonne route en fonction de l'url
@@ -24,7 +28,7 @@ class Routeur
      * Récupère la bonne route en fonction de l'url
      *
      * @param [type] $url
-     * @return void
+     * @return Route
      */
     public function getMatchedRoute($url): Route
     {
@@ -34,7 +38,7 @@ class Routeur
             }
             unset($route);
         }
-        throw new \RuntimeException('Aucune route ne correspond à l\'url', self::NO_ROUTE);
+        throw new RuntimeException('Aucune route ne correspond à l\'url', self::NO_ROUTE);
     }
 
     public function registerControllers(): void
@@ -52,7 +56,7 @@ class Routeur
         $attributes_routes = [];
         $classes = $this->getClassesFromADir(Config::getInstance()->get('controllersPath')[0]);
         foreach ($classes as $class) {
-            $reflection = new \ReflectionClass($class);
+            $reflection = new ReflectionClass($class);
             foreach ($reflection->getMethods() as $method) {
                 $attributes = $method->getAttributes();
                 if (!empty($attributes)) {
@@ -93,11 +97,11 @@ class Routeur
             );
             $file = str_replace('.php', '', $file);
             $parts = explode('/', $file);
-            $className = $base_namespace . \join('\\', $parts);
+            $className = $base_namespace . join('\\', $parts);
             if (class_exists($className)) {
                 return $className;
             } else {
-                throw new \RuntimeException('La classe ' . $className . ' n\'existe pas');
+                throw new RuntimeException('La classe ' . $className . ' n\'existe pas');
             }
         }
     }

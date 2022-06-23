@@ -2,15 +2,20 @@
 
 namespace tests;
 
-class UrlHelperTest extends \PHPUnit\Framework\TestCase
+use GuzzleHttp\Psr7\ServerRequest;
+use phpGone\Core\Application;
+use phpGone\Helpers\Url;
+use PHPUnit\Framework\TestCase;
+
+class UrlHelperTest extends TestCase
 {
     private $urlInstance;
 
     public function setUp(): void
     {
-        $request = new \GuzzleHttp\Psr7\ServerRequest('GET', '/');
-        $app = new \phpGone\Core\Application(__DIR__ . '/TestClass/TestConfig.php', $request);
-        $this->urlInstance = new \phpGone\Helpers\Url($app);
+        $request = new ServerRequest('GET', '/');
+        $app = new Application(__DIR__ . '/TestClass/TestConfig.php', $request);
+        $this->urlInstance = new Url($app);
     }
 
     public function testTmpPath()
