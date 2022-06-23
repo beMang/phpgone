@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class MiddlewaresDispatcherTest extends TestCase
 {
-
     public function testWithNullMiddlewares()
     {
         $request = new ServerRequest('GET', '/');

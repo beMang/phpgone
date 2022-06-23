@@ -23,7 +23,7 @@ class MiddlewaresHandler implements RequestHandlerInterface
      *
      * @var string[]
      */
-    protected $middlewares = [
+    protected array $middlewares = [
         CoreMiddleware::class,
         NotFoundMiddleware::class
     ];
@@ -41,14 +41,14 @@ class MiddlewaresHandler implements RequestHandlerInterface
      * @param string|MiddlewareInterface $middleware Middleware à ajouter
      * @return bool
      */
-    public function pipe($middleware): bool
+    public function pipe(MiddlewareInterface|string $middleware): bool
     {
         array_unshift($this->middlewares, $middleware);
         return true;
     }
 
     /**
-     * Parcours les middlwares et les execute
+     * Parcours les middlewares et les execute
      *
      * @param ServerRequestInterface $request Requête à envoyer aux middlewares
      * @return ResponseInterface Réponse obtenue
@@ -72,7 +72,6 @@ class MiddlewaresHandler implements RequestHandlerInterface
         if (array_key_exists($this->middlewaresIndex, $this->middlewares)) {
             $middleware = $this->middlewares[$this->middlewaresIndex];
             if (
-                is_object($middleware) &&
                 $middleware instanceof MiddlewareInterface
             ) {
                 $this->middlewaresIndex++;

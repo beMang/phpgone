@@ -12,7 +12,6 @@ use tests\TestClass\Controllers\TestController;
 
 class ControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         $config = Config::getInstance();

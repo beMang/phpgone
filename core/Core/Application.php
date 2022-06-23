@@ -39,7 +39,7 @@ class Application
      * Constructeur de la classe
      *
      * @param string $configFile Fichier de base pour configuration de l'application
-     * @param ServerRequestInterface $request Requete à traiter
+     * @param ServerRequestInterface $request Requête à traiter
      * @throws ConfigException
      * @throws InvalidArgumentExceptionConfig
      */
@@ -75,7 +75,7 @@ class Application
     /**
      * Permet de récupérer la requête
      *
-     * @return ServerRequestInterface Requete
+     * @return ServerRequestInterface Requête
      */
     public function getRequest(): ServerRequestInterface
     {

@@ -49,7 +49,7 @@ class Route
         }
     }
 
-    protected function setAction(string $action)
+    protected function setAction(string $action): void
     {
         if (method_exists($this->getController(), $action)) {
             $this->action = $action;
@@ -72,7 +72,7 @@ class Route
         }
     }
 
-    protected function setUrl(string $url)
+    protected function setUrl(string $url): void
     {
         preg_match_all($this->expression, $url, $matches);
         foreach ($matches[0] as $key => $value) {
@@ -86,7 +86,7 @@ class Route
         $this->url = $finalUrl;
     }
 
-    protected function setMatches($matches)
+    protected function setMatches($matches): void
     {
         if (is_array($matches)) {
             if (count($this->matches) === count($matches)) {
@@ -95,6 +95,7 @@ class Route
                     $this->matches[$keys[$i]] = $matches[$i];
                 }
             } else {
+                // Je sais pas trop à quel cas ça correspond
             }
         }
     }
@@ -110,7 +111,7 @@ class Route
     }
 
     /**
-     * Récupère le controlleur de la route
+     * Récupère le contrôleur de la route
      *
      * @return string
      */

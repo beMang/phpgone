@@ -32,26 +32,28 @@ class CoreMiddleware implements MiddlewareInterface
         if (is_null($controller)) {
             return $handler->handle($request);
         }
-        $response = $controller->execute();
-        return $response;
+        return $controller->execute();
     }
 
     /**
-     * Récupère le controlleur correspondant à la requête
+     * Récupère le contrôleur correspondant à la requête
      *
      * @param Routeur $router Routeur à utiliser
-     * @return BackController
+     * @param ServerRequestInterface $request Requête à traiter
+     * @return BackController|null
      */
-    public function getController($router, $request)
+    public function getController(Routeur $router, ServerRequestInterface $request): ?BackController
     {
         try {
             $matchedRoute = $router->getMatchedRoute($request->getUri()->getPath());
+            $controllerClass = $matchedRoute->getController();
+            return new $controllerClass($matchedRoute, $request);
         } catch (RuntimeException $e) {
             if ($e->getCode() == Routeur::NO_ROUTE) {
                 return null; //Permet de passer au middleware suivant
+            } else {
+                throw new RuntimeException("Erreur de phpgone");
             }
         }
-        $controllerClass = $matchedRoute->getController();
-        return new $controllerClass($matchedRoute, $request);
     }
 }

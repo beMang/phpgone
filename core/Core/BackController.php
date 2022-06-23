@@ -16,12 +16,13 @@ use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
 
 /**
  * Class BackController
- * Class abstraite de base pour les controleurs
+ * Class abstraite de base pour les contrôleurs
  */
 abstract class BackController
 {
@@ -29,7 +30,7 @@ abstract class BackController
     private ServerRequestInterface $request;
 
     /**
-     * Uniqument les classes simples à construire !!
+     * Uniquement les classes simples à construire !!
      *
      * @var array
      */
@@ -39,12 +40,10 @@ abstract class BackController
     ];
 
     /**
-     * Constucteur du BackController
-     *
      * @param Route $route Route qui a 'matché'
      * @param ServerRequestInterface $request Requête à traiter
      */
-    public function __construct(Route $route, $request)
+    public function __construct(Route $route, ServerRequestInterface $request)
     {
         $this->setRoute($route);
         $this->setRequest($request);
@@ -54,7 +53,9 @@ abstract class BackController
      * Execute la bonne fonction enfante en fonction de l'action
      * et fourni les bons arguments
      *
-     * @return void
+     * @return ResponseInterface
+     * @throws ReflectionException
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
      */
     public function execute(): ResponseInterface
     {
@@ -67,12 +68,12 @@ abstract class BackController
         );
     }
 
-    private function setRequest(ServerRequestInterface $request)
+    private function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
     }
 
-    private function setRoute(Route $route)
+    private function setRoute(Route $route): void
     {
         $this->route = $route;
     }
@@ -82,12 +83,19 @@ abstract class BackController
         return $this->route;
     }
 
-    protected function getActionParameters(string $action)
+    /**
+     * @throws ReflectionException
+     */
+    protected function getActionParameters(string $action): array
     {
         $method = new ReflectionMethod(get_class($this), $action);
         return $method->getParameters();
     }
 
+    /**
+     * @throws ReflectionException
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
     protected function provideParameters(string $action): array
     {
         if (method_exists($this, $action)) {
@@ -106,8 +114,10 @@ abstract class BackController
      * Fourni le bon argument
      *
      *
-     * @param ReflectionParameter $param
-     * @return mixed argument à utiliser
+     * @param ReflectionParameter $reflectionParameter
+     * @return mixed Argument à utiliser
+     * @noinspection PhpInconsistentReturnPointsInspection
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
      */
     protected function provideParameter(ReflectionParameter $reflectionParameter): mixed
     {
@@ -131,7 +141,7 @@ abstract class BackController
         if (
             $reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
         ) {
-            if (Config::getInstance()->get('defaultRender') === 'php') {
+            if ('php' === Config::getInstance()->get('defaultRender')) {
                 $url = new Url();
                 return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
             }
@@ -150,7 +160,12 @@ abstract class BackController
         }
     }
 
-    /** @noinspection PhpInconsistentReturnPointsInspection */
+    /**
+    /**
+     * @throws InvalidArgumentExceptionConfig
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     * @throws ConfigException
+     */
     protected function render(string $view, array $datas, string $renderSystem = null): ResponseInterface
     {
         if (is_null($renderSystem)) {

@@ -44,6 +44,10 @@ class NotFoundMiddleware implements MiddlewareInterface
         return $response;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return BackController
+     */
     protected function getController(ServerRequestInterface $request): BackController
     {
         $router = new Routeur();

@@ -6,6 +6,7 @@ use bemang\Config;
 use phpGone\Router\Route;
 use ReflectionClass;
 use RuntimeException;
+
 use function join;
 
 /**
@@ -27,7 +28,7 @@ class Routeur
      * Récupère la bonne route en fonction de l'url
      *
      * @param [type] $url
-     * @return void
+     * @return Route
      */
     public function getMatchedRoute($url): Route
     {
