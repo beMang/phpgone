@@ -2,9 +2,9 @@
 
 namespace phpGone\TwigExtensions;
 
-use Twig\TwigFunction;
 use phpGone\Helpers\Url;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Extension twig facilitant l'accès aux url

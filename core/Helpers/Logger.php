@@ -1,10 +1,12 @@
 <?php
 
-namespace phpGone\Log;
+namespace phpGone\Helpers;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
+use ReflectionClass;
+use Stringable;
 
 /**
  * Class Logger
@@ -14,13 +16,13 @@ class Logger extends AbstractLogger
 {
     /**
      * @param $level
-     * @param string|\Stringable $message
+     * @param string|Stringable $message
      * @param array $context
      * @return void
      */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
-        $reflection = new \ReflectionClass(LogLevel::class);
+        $reflection = new ReflectionClass(LogLevel::class);
         $cst = $reflection->getConstants();
         if (in_array($level, $cst)) {
             $text = date('d/m/y - G:i:s') . ' - ' . $level . ' - Message : ' . $message . "\n";

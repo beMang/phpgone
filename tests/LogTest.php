@@ -2,7 +2,7 @@
 
 namespace tests;
 
-use phpGone\Log\Logger;
+use phpGone\Helpers\Logger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 

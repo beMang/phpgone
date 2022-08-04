@@ -57,10 +57,9 @@ class Url
      * @throws ConfigException
      * @throws InvalidArgumentExceptionConfig
      */
-    public function getAssetsPath(string $custom = null): string
+    public function getRelativeAssetsPath(string $custom = null): string
     {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return Config::getInstance()->get('publicPath') . $custom;
+        return $this->getAssetsPath($custom);
     }
 
     /**
@@ -69,8 +68,9 @@ class Url
      * @throws ConfigException
      * @throws InvalidArgumentExceptionConfig
      */
-    public function getRelativeAssetsPath(string $custom = null): string
+    public function getAssetsPath(string $custom = null): string
     {
-        return $this->getAssetsPath($custom);
+        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        return Config::getInstance()->get('publicPath') . $custom;
     }
 }

@@ -5,9 +5,9 @@ namespace phpGone\TwigExtensions;
 use bemang\ConfigException;
 use bemang\InvalidArgumentExceptionConfig;
 use Exception;
-use Twig\TwigFunction;
 use phpGone\Helpers\Url;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Extension twig pour ajouter des assets facilement
@@ -48,15 +48,15 @@ class AssetsExtension extends AbstractExtension
     {
         if (is_string($nameFile)) {
             return '<link rel="stylesheet" type="text/css" href="' .
-            $this->urlHelperInstance->getRelativeAssetsPath() .
-            'css/' . $nameFile  . '.css">';
+                $this->urlHelperInstance->getRelativeAssetsPath() .
+                'css/' . $nameFile . '.css">';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
                 <link rel="stylesheet" type="text/css" href="' .
-                $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .
-                $file  . '.css">';
+                    $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .
+                    $file . '.css">';
             }
             return $result;
         } else {
@@ -75,15 +75,15 @@ class AssetsExtension extends AbstractExtension
     {
         if (is_string($nameFile)) {
             return '<script src="' .
-            $this->urlHelperInstance->getRelativeAssetsPath() .
-            'js/' . $nameFile  . '.js"></script>';
+                $this->urlHelperInstance->getRelativeAssetsPath() .
+                'js/' . $nameFile . '.js"></script>';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
                 <script src="' .
-                $this->urlHelperInstance->getRelativeAssetsPath() .
-                'js/' . $file  . '.js"></script>';
+                    $this->urlHelperInstance->getRelativeAssetsPath() .
+                    'js/' . $file . '.js"></script>';
             }
             return $result;
         } else {

@@ -3,42 +3,23 @@
 namespace phpGone\Router;
 
 use bemang\Config;
-use phpGone\Router\Route;
 use ReflectionClass;
 use RuntimeException;
-
 use function join;
 
 /**
-  * class Routeur
-  *
-  * Choisi la bonne route en fonction de l'url
-  */
+ * class Routeur
+ *
+ * Choisi la bonne route en fonction de l'url
+ */
 class Routeur
 {
-    protected array $routes = [];
     public const NO_ROUTE = 1;
+    protected array $routes = [];
 
     public function __construct()
     {
         $this->registerControllers();
-    }
-
-    /**
-     * Récupère la bonne route en fonction de l'url
-     *
-     * @param [type] $url
-     * @return Route
-     */
-    public function getMatchedRoute($url): Route
-    {
-        foreach ($this->routes as $route) {
-            if ($route->match($url) === true) {
-                return $route;
-            }
-            unset($route);
-        }
-        throw new RuntimeException('Aucune route ne correspond à l\'url', self::NO_ROUTE);
     }
 
     public function registerControllers(): void
@@ -117,5 +98,22 @@ class Routeur
             }
         }
         return $uniformed_array;
+    }
+
+    /**
+     * Récupère la bonne route en fonction de l'url
+     *
+     * @param [type] $url
+     * @return Route
+     */
+    public function getMatchedRoute($url): Route
+    {
+        foreach ($this->routes as $route) {
+            if ($route->match($url) === true) {
+                return $route;
+            }
+            unset($route);
+        }
+        throw new RuntimeException('Aucune route ne correspond à l\'url', self::NO_ROUTE);
     }
 }

@@ -61,6 +61,12 @@ class Application
         return $this->setHttpResponse($this->middlewaresHandler->handle($this->httpRequest));
     }
 
+    private function setHttpResponse(ResponseInterface $response): ResponseInterface
+    {
+        $this->httpResponse = $response;
+        return $response;
+    }
+
     /**
      * Envoie le résultat au client
      *
@@ -92,11 +98,5 @@ class Application
     {
         $this->middlewaresHandler->pipe($middleware);
         return $this;
-    }
-
-    private function setHttpResponse(ResponseInterface $response): ResponseInterface
-    {
-        $this->httpResponse = $response;
-        return $response;
     }
 }

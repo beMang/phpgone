@@ -12,16 +12,11 @@
 
 namespace phpGone\Middlewares;
 
-use bemang\Config;
-use Psr\Log\LogLevel;
-use phpGone\Log\Logger;
-use phpGone\Router\Route;
-use GuzzleHttp\Psr7\Response;
 use phpGone\Core\BackController;
 use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**

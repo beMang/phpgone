@@ -5,13 +5,13 @@ namespace phpGone\Core;
 use bemang\Config;
 use bemang\ConfigException;
 use bemang\InvalidArgumentExceptionConfig;
-use InvalidArgumentException;
-use phpGone\Helpers\Url;
-use phpGone\Log\Logger;
-use phpGone\Router\Route;
-use GuzzleHttp\Psr7\Response;
 use bemang\renderer\PHPRender;
 use bemang\renderer\TwigRender;
+use GuzzleHttp\Psr7\Response;
+use InvalidArgumentException;
+use phpGone\Helpers\Logger;
+use phpGone\Helpers\Url;
+use phpGone\Router\Route;
 use phpGone\Router\Routeur;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,9 +26,6 @@ use ReflectionParameter;
  */
 abstract class BackController
 {
-    private Route $route;
-    private ServerRequestInterface $request;
-
     /**
      * Uniquement les classes simples à construire !!
      *
@@ -38,6 +35,8 @@ abstract class BackController
         LoggerInterface::class => Logger::class,
         Url::class => Url::class
     ];
+    private Route $route;
+    private ServerRequestInterface $request;
 
     /**
      * @param Route $route Route qui a 'matché'
@@ -49,23 +48,9 @@ abstract class BackController
         $this->setRequest($request);
     }
 
-    /**
-     * Execute la bonne fonction enfante en fonction de l'action
-     * et fourni les bons arguments
-     *
-     * @return ResponseInterface
-     * @throws ReflectionException
-     * @throws \bemang\renderer\Exception\InvalidArgumentException
-     */
-    public function execute(): ResponseInterface
+    private function setRoute(Route $route): void
     {
-        if (method_exists($this, 'setUp')) {
-            call_user_func_array([$this, 'setUp'], [$this->request]);
-        }
-        return call_user_func_array(
-            [$this, $this->getRoute()->getAction()],
-            $this->provideParameters($this->getRoute()->getAction())
-        );
+        $this->route = $route;
     }
 
     private function setRequest(ServerRequestInterface $request): void
@@ -73,95 +58,8 @@ abstract class BackController
         $this->request = $request;
     }
 
-    private function setRoute(Route $route): void
-    {
-        $this->route = $route;
-    }
-
-    protected function getRoute(): Route
-    {
-        return $this->route;
-    }
-
     /**
-     * @throws ReflectionException
-     */
-    protected function getActionParameters(string $action): array
-    {
-        $method = new ReflectionMethod(get_class($this), $action);
-        return $method->getParameters();
-    }
-
-    /**
-     * @throws ReflectionException
-     * @throws \bemang\renderer\Exception\InvalidArgumentException
-     */
-    protected function provideParameters(string $action): array
-    {
-        if (method_exists($this, $action)) {
-            $resultArray = [];
-            $parameters = $this->getActionParameters($action);
-            foreach ($parameters as $reflectionParameter) {
-                $resultArray[] = $this->provideParameter($reflectionParameter);
-            }
-            return $resultArray;
-        } else {
-            throw new InvalidArgumentException("La méthode $action n'existe pas");
-        }
-    }
-
-    /**
-     * Fourni le bon argument
-     *
-     *
-     * @param ReflectionParameter $reflectionParameter
-     * @return mixed Argument à utiliser
-     * @noinspection PhpInconsistentReturnPointsInspection
-     * @throws \bemang\renderer\Exception\InvalidArgumentException
-     */
-    protected function provideParameter(ReflectionParameter $reflectionParameter): mixed
-    {
-        if ($reflectionParameter->getType() == null || $reflectionParameter->getType()->getName() == 'string') {
-            if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
-                return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
-            }
-        }
-        if (
-            $reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
-            $reflectionParameter->getType()->getName() == 'Psr\Http\Message\RequestInterface'
-        ) {
-            return $this->request;
-        }
-        if (
-            $reflectionParameter->getType()->getName() == 'bemang\Config'
-            || $reflectionParameter->getType()->getName() == 'bemang\ConfigInterface'
-        ) {
-            return Config::getInstance();
-        }
-        if (
-            $reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
-        ) {
-            if ('php' === Config::getInstance()->get('defaultRender')) {
-                $url = new Url();
-                return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-            }
-            if (Config::getInstance()->get('defaultRender') === 'twig') {
-                $url = new Url();
-                $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
-                $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
-                return $render;
-            }
-        }
-        //Provide simple classes/interfaces
-        foreach ($this->argumentToProvide as $interface => $toProvide) {
-            if ($reflectionParameter->getType()->getName() == $interface) {
-                return new $toProvide();
-            }
-        }
-    }
-
-    /**
-    /**
+     * /**
      * @throws InvalidArgumentExceptionConfig
      * @throws \bemang\renderer\Exception\InvalidArgumentException
      * @throws ConfigException
@@ -227,6 +125,107 @@ abstract class BackController
             return $response->withStatus($status);
         } else {
             throw new InvalidArgumentException('Route inconnue ou invalide');
+        }
+    }
+
+    /**
+     * Execute la bonne fonction enfante en fonction de l'action
+     * et fourni les bons arguments
+     *
+     * @return ResponseInterface
+     * @throws ReflectionException
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
+    public function execute(): ResponseInterface
+    {
+        if (method_exists($this, 'setUp')) {
+            call_user_func_array([$this, 'setUp'], [$this->request]);
+        }
+        return call_user_func_array(
+            [$this, $this->getRoute()->getAction()],
+            $this->provideParameters($this->getRoute()->getAction())
+        );
+    }
+
+    protected function getRoute(): Route
+    {
+        return $this->route;
+    }
+
+    /**
+     * @throws ReflectionException
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
+    protected function provideParameters(string $action): array
+    {
+        if (method_exists($this, $action)) {
+            $resultArray = [];
+            $parameters = $this->getActionParameters($action);
+            foreach ($parameters as $reflectionParameter) {
+                $resultArray[] = $this->provideParameter($reflectionParameter);
+            }
+            return $resultArray;
+        } else {
+            throw new InvalidArgumentException("La méthode $action n'existe pas");
+        }
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    protected function getActionParameters(string $action): array
+    {
+        $method = new ReflectionMethod(get_class($this), $action);
+        return $method->getParameters();
+    }
+
+    /**
+     * Fourni le bon argument
+     *
+     *
+     * @param ReflectionParameter $reflectionParameter
+     * @return mixed Argument à utiliser
+     * @noinspection PhpInconsistentReturnPointsInspection
+     * @throws \bemang\renderer\Exception\InvalidArgumentException
+     */
+    protected function provideParameter(ReflectionParameter $reflectionParameter): mixed
+    {
+        if ($reflectionParameter->getType() == null || $reflectionParameter->getType()->getName() == 'string') {
+            if (array_key_exists($reflectionParameter->getName(), $this->getRoute()->getMatches())) {
+                return $this->getRoute()->getMatches()[$reflectionParameter->getName()];
+            }
+        }
+        if (
+            $reflectionParameter->getType()->getName() == 'GuzzleHttp\Psr7\Request' ||
+            $reflectionParameter->getType()->getName() == 'Psr\Http\Message\RequestInterface'
+        ) {
+            return $this->request;
+        }
+        if (
+            $reflectionParameter->getType()->getName() == 'bemang\Config'
+            || $reflectionParameter->getType()->getName() == 'bemang\ConfigInterface'
+        ) {
+            return Config::getInstance();
+        }
+        if (
+            $reflectionParameter->getType()->getName() == 'bemang\renderer\RendererInterface'
+        ) {
+            if ('php' === Config::getInstance()->get('defaultRender')) {
+                $url = new Url();
+                return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+            }
+            if (Config::getInstance()->get('defaultRender') === 'twig') {
+                $url = new Url();
+                $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+                $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
+                return $render;
+            }
+        }
+        //Provide simple classes/interfaces
+        foreach ($this->argumentToProvide as $interface => $toProvide) {
+            if ($reflectionParameter->getType()->getName() == $interface) {
+                return new $toProvide();
+            }
         }
     }
 

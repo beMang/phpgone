@@ -4,8 +4,8 @@ namespace phpGone\Middlewares;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
@@ -21,7 +21,7 @@ class TrailingSlashMiddleware implements MiddlewareInterface
             if (!empty(substr($uri, 0, -1))) {
                 $response = new Response();
                 $response = $response->withStatus(301)
-                                 ->withHeader('Location', substr($uri, 0, -1));
+                    ->withHeader('Location', substr($uri, 0, -1));
                 return $response;
             }
         }

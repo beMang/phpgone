@@ -2,8 +2,8 @@
 
 namespace phpGone\Router;
 
-use bemang\Config;
 use Attribute;
+use bemang\Config;
 use InvalidArgumentException;
 
 /**
@@ -11,7 +11,6 @@ use InvalidArgumentException;
  *
  * Représente une route
  */
-
 #[Attribute]
 class Route
 {
@@ -39,27 +38,6 @@ class Route
         $this->setAction($method);
     }
 
-    public function match(string $url): bool
-    {
-        if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
-            $this->setMatches($matches);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected function setAction(string $action): void
-    {
-        if (method_exists($this->getController(), $action)) {
-            $this->action = $action;
-        } else {
-            throw new InvalidArgumentException(
-                'L\'action de la route est inaccesible ou inconnue (Voir fichier de config)'
-            );
-        }
-    }
-
     protected function setController(string $controller)
     {
         if (class_exists($controller)) {
@@ -68,35 +46,17 @@ class Route
             $this->pathController = Config::getInstance()->get('controllersPath')[1] . $controller;
         } else {
             throw new InvalidArgumentException('La classe du controller ' .
-            $controller . ' est inexistante (Voir fichier de config)');
+                $controller . ' est inexistante (Voir fichier de config)');
         }
     }
 
-    protected function setUrl(string $url): void
+    public function match(string $url): bool
     {
-        preg_match_all($this->expression, $url, $matches);
-        foreach ($matches[0] as $key => $value) {
-            preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
-            $this->matches[$matchName[1]] = null;
-        }
-        $finalUrl = $url;
-        foreach ($this->patterns as $key => $value) {
-            $finalUrl = preg_replace($key, $value, $finalUrl);
-        }
-        $this->url = $finalUrl;
-    }
-
-    protected function setMatches($matches): void
-    {
-        if (is_array($matches)) {
-            if (count($this->matches) === count($matches)) {
-                $keys = array_keys($this->matches);
-                for ($i = 0; $i < count($this->matches); $i++) {
-                    $this->matches[$keys[$i]] = $matches[$i];
-                }
-            } else {
-                // Je sais pas trop à quel cas ça correspond
-            }
+        if (preg_match('`^' . $this->url . '$`', $url, $matches)) {
+            $this->setMatches($matches);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -108,6 +68,17 @@ class Route
     public function getAction(): string
     {
         return $this->action;
+    }
+
+    protected function setAction(string $action): void
+    {
+        if (method_exists($this->getController(), $action)) {
+            $this->action = $action;
+        } else {
+            throw new InvalidArgumentException(
+                'L\'action de la route est inaccesible ou inconnue (Voir fichier de config)'
+            );
+        }
     }
 
     /**
@@ -130,6 +101,20 @@ class Route
         return $this->url;
     }
 
+    protected function setUrl(string $url): void
+    {
+        preg_match_all($this->expression, $url, $matches);
+        foreach ($matches[0] as $key => $value) {
+            preg_match('`^[{]([a-z]*)[|]?[}]$`', $value, $matchName);
+            $this->matches[$matchName[1]] = null;
+        }
+        $finalUrl = $url;
+        foreach ($this->patterns as $key => $value) {
+            $finalUrl = preg_replace($key, $value, $finalUrl);
+        }
+        $this->url = $finalUrl;
+    }
+
     /**
      * Renvoie les matches (url correcte)
      *
@@ -138,5 +123,19 @@ class Route
     public function getMatches(): array
     {
         return $this->matches;
+    }
+
+    protected function setMatches($matches): void
+    {
+        if (is_array($matches)) {
+            if (count($this->matches) === count($matches)) {
+                $keys = array_keys($this->matches);
+                for ($i = 0; $i < count($this->matches); $i++) {
+                    $this->matches[$keys[$i]] = $matches[$i];
+                }
+            } else {
+                // Je sais pas trop à quel cas ça correspond
+            }
+        }
     }
 }
