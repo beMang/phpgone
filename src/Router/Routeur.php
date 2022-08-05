@@ -5,6 +5,7 @@ namespace phpGone\Router;
 use bemang\Config;
 use ReflectionClass;
 use RuntimeException;
+
 use function join;
 
 /**

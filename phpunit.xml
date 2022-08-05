@@ -2,11 +2,11 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" cacheResult="false" bootstrap="./vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd">
   <coverage>
     <include>
-      <directory suffix=".php">core</directory>
+      <directory suffix=".php">src</directory>
     </include>
   </coverage>
   <testsuite name="phpGone test">
-    <directory suffix=".php" phpVersion="8.0.0">tests</directory>
+    <directory suffix=".php" phpVersion="8.1">tests</directory>
     <exclude>./tests/TestClass/</exclude>
   </testsuite>
 </phpunit>

@@ -58,6 +58,11 @@ abstract class BackController
         $this->request = $request;
     }
 
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
+    }
+
     /**
      * /**
      * @throws InvalidArgumentExceptionConfig

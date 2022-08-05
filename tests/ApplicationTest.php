@@ -15,7 +15,7 @@ class ApplicationTest extends TestCase
         $config = Config::getInstance();
         $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
     }
-    
+
     public function testIndex()
     {
         $request = new ServerRequest('GET', '/');

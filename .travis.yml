@@ -11,11 +11,9 @@ services:
   - mysql
 
 install:
-  - composer require consolidation/robo:2.*
   - composer install
   - composer update
   - composer dump -o
-  - ./vendor/bin/robo creat:tmp-dir
   - composer require phpunit/phpunit
 
 cache:

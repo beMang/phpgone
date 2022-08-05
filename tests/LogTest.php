@@ -18,7 +18,7 @@ class LogTest extends TestCase
         $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
         $this->urlHelper = new Url();
     }
-    
+
     public function __destruct()
     {
         $filename = $this->urlHelper->getTmpPath('log') . 'phpgonelog.log';

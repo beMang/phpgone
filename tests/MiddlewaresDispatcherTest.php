@@ -15,7 +15,7 @@ class MiddlewaresDispatcherTest extends TestCase
         $config = Config::getInstance();
         $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
     }
-    
+
     public function testWithNullMiddlewares()
     {
         $request = new ServerRequest('GET', '/');

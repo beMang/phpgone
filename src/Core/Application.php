@@ -3,10 +3,12 @@
 namespace phpGone\Core;
 
 use bemang\Config;
+use phpGone\Helpers\Url;
 use bemang\ConfigException;
-use bemang\InvalidArgumentExceptionConfig;
 use Psr\Http\Message\ResponseInterface;
+use bemang\InvalidArgumentExceptionConfig;
 use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 /**
  * class Application
@@ -99,7 +101,7 @@ class Application
         return $this;
     }
 
-    public function checkConfig(Config $config)
+    public function checkConfig(Config $config): void
     {
         $directory_to_check = ['publicPath', 'controllersPath', 'viewsPath', 'tmpPath'];
         foreach ($directory_to_check as $key) {
@@ -108,6 +110,20 @@ class Application
             } else {
                 if (!is_dir($config->get($key))) {
                     throw new ConfigException('Configuration invalide, la clé ' . $key . 'n\' est pas un dossier valide');
+                }
+            }
+        }
+        $url = new Url();
+        $this->checkTmpDir($url->getTmpPath());
+    }
+
+    public function checkTmpDir($tmpDir): void
+    {
+        $dirToCheck = ['/log/', '/cache/twig/', 'cache/phpgone/'];
+        foreach ($dirToCheck as $dir) {
+            if (!is_dir($tmpDir . $dir)) {
+                if (!mkdir($tmpDir . $dir, 0777, true)) {
+                    throw new RuntimeException('Impossible d\' initialiser le dossier tmp correctement. - ' . $tmpDir . $dir);
                 }
             }
         }

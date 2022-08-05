@@ -16,7 +16,7 @@ class UrlHelperTest extends TestCase
     {
         $config = Config::getInstance();
         $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
-        
+
         $request = new ServerRequest('GET', '/');
         $app = new Application(Config::getInstance(), $request);
         $this->urlInstance = new Url($app);
