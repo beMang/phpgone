@@ -48,14 +48,14 @@ class AssetsExtension extends AbstractExtension
     {
         if (is_string($nameFile)) {
             return '<link rel="stylesheet" type="text/css" href="' .
-                $this->urlHelperInstance->getRelativeAssetsPath() .
+                $this->urlHelperInstance->getAssetsPath() .
                 'css/' . $nameFile . '.css">';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
                 <link rel="stylesheet" type="text/css" href="' .
-                    $this->urlHelperInstance->getRelativeAssetsPath() . 'css/' .
+                    $this->urlHelperInstance->getAssetsPath() . 'css/' .
                     $file . '.css">';
             }
             return $result;
@@ -75,14 +75,14 @@ class AssetsExtension extends AbstractExtension
     {
         if (is_string($nameFile)) {
             return '<script src="' .
-                $this->urlHelperInstance->getRelativeAssetsPath() .
+                $this->urlHelperInstance->getAssetsPath() .
                 'js/' . $nameFile . '.js"></script>';
         } elseif (is_array($nameFile)) {
             $result = '';
             foreach ($nameFile as $file) {
                 $result = $result . '
                 <script src="' .
-                    $this->urlHelperInstance->getRelativeAssetsPath() .
+                    $this->urlHelperInstance->getAssetsPath() .
                     'js/' . $file . '.js"></script>';
             }
             return $result;

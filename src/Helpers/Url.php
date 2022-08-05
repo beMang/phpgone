@@ -18,7 +18,7 @@ class Url
     public function getTmpPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return __DIR__ . '/../../tmp/' . $custom;
+        return Config::getInstance()->get('tmpPath');
     }
 
     /**
@@ -35,31 +35,10 @@ class Url
      * @param string|null $custom
      * @return string
      */
-    public function getAppPath(string $custom = null): string
-    {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return __DIR__ . '/../../app/' . $custom;
-    }
-
-    /**
-     * @param string|null $custom
-     * @return string
-     */
     public function getTestsPath(string $custom = null): string
     {
         $custom = (!is_null($custom)) ? $custom . '/' : '';
         return __DIR__ . '/../../tests/' . $custom;
-    }
-
-    /**
-     * @param string|null $custom
-     * @return string
-     * @throws ConfigException
-     * @throws InvalidArgumentExceptionConfig
-     */
-    public function getRelativeAssetsPath(string $custom = null): string
-    {
-        return $this->getAssetsPath($custom);
     }
 
     /**

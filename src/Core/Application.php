@@ -43,10 +43,9 @@ class Application
      * @throws ConfigException
      * @throws InvalidArgumentExceptionConfig
      */
-    public function __construct(string $configFile, ServerRequestInterface $request)
+    public function __construct(Config $config, ServerRequestInterface $request)
     {
-        $config = Config::getInstance();
-        $config->define(require($configFile));
+        $this->checkConfig($config);
         $this->httpRequest = $request;
         $this->middlewaresHandler = new MiddlewaresHandler();
     }
@@ -98,5 +97,11 @@ class Application
     {
         $this->middlewaresHandler->pipe($middleware);
         return $this;
+    }
+
+    public function checkConfig(Config $config): bool
+    {
+        // TODO : Vérifier que chaque chemin est correct afin de ne pas foirer la configuration
+        return True;
     }
 }

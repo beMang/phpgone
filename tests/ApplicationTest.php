@@ -2,17 +2,24 @@
 
 namespace tests;
 
+use bemang\Config;
 use phpGone\Core\Application;
+use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Psr7\ServerRequest;
 use phpGone\Middlewares\TrailingSlashMiddleware;
-use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $config = Config::getInstance();
+        $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
+    }
+    
     public function testIndex()
     {
         $request = new ServerRequest('GET', '/');
-        $app = new Application(__DIR__ . '/TestClass/TestConfig.php', $request);
+        $app = new Application(Config::getInstance(), $request);
         $app->addMiddleware(TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
@@ -24,7 +31,7 @@ class ApplicationTest extends TestCase
     public function testTrailingSlashMiddleware()
     {
         $request = new ServerRequest('GET', '/asfdsq/');
-        $app = new Application(__DIR__ . '/../app/config.php', $request);
+        $app = new Application(Config::getInstance(), $request);
         $app->addMiddleware(TrailingSlashMiddleware::class);
         $response = $app->run();
         $this->assertEquals(301, $response->getStatusCode(301));
@@ -34,7 +41,7 @@ class ApplicationTest extends TestCase
     public function testError404()
     {
         $request = new ServerRequest('GET', '/error/404/fmdskqq');
-        $app = new Application(__DIR__ . '/../app/config.php', $request);
+        $app = new Application(Config::getInstance(), $request);
         $app->addMiddleware(TrailingSlashMiddleware::class);
         $response = $app->run();
         $stream = $response->getBody();
@@ -48,7 +55,7 @@ class ApplicationTest extends TestCase
     public function testSender()
     {
         $request = new ServerRequest('GET', '/', ['Host' => 'local']);
-        $app = new Application(__DIR__ . '/TestClass/TestConfig.php', $request);
+        $app = new Application(Config::getInstance(), $request);
         $response = $app->run();
         $this->assertTrue($app->send());
     }
@@ -56,7 +63,7 @@ class ApplicationTest extends TestCase
     public function testGetRequest()
     {
         $request = new ServerRequest('GET', '/');
-        $app = new Application(__DIR__ . '/TestClass/TestConfig.php', $request);
+        $app = new Application(Config::getInstance(), $request);
         $this->assertEquals($request, $app->getRequest());
     }
 }

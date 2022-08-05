@@ -3,8 +3,6 @@
 namespace tests;
 
 use bemang\Config;
-use phpGone\Router\Route;
-use phpGone\Core\Application;
 use GuzzleHttp\Psr7\ServerRequest;
 use phpGone\Router\Routeur;
 use PHPUnit\Framework\TestCase;

@@ -212,11 +212,11 @@ abstract class BackController
         ) {
             if ('php' === Config::getInstance()->get('defaultRender')) {
                 $url = new Url();
-                return new PHPRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+                return new PHPRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
             }
             if (Config::getInstance()->get('defaultRender') === 'twig') {
                 $url = new Url();
-                $render = new TwigRender($url->getAppPath('views'), $url->getTmpPath('cache/twig'));
+                $render = new TwigRender($url->getViewsPath(), $url->getTmpPath('cache/twig'));
                 $render->addTwigExtensions(Config::getInstance()->get('TwigExtensions'));
                 return $render;
             }
