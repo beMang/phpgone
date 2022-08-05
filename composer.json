@@ -1,7 +1,7 @@
 {
     "name": "bemang/phpgone",
     "description": "Framework phpgone",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
@@ -9,13 +9,11 @@
         "guzzlehttp/psr7": "2.*.*",
         "bemang/config-system": "1.*",
         "psr/http-server-middleware": "1.*",
-        "bemang/renderer-system": "1.*",
-        "consolidation/robo": "4.*"
+        "bemang/renderer-system": "1.*"
     },
     "autoload": {
         "psr-4": {
-            "app\\": "app",
-            "phpGone\\": "core",
+            "phpGone\\": "src",
             "tests\\": "tests"
         }
     }
