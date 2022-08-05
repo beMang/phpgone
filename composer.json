@@ -16,5 +16,6 @@
             "phpGone\\": "src",
             "tests\\": "tests"
         }
-    }
+    },
+    "version": "3.0.0"
 }

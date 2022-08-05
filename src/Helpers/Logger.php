@@ -2,6 +2,7 @@
 
 namespace phpGone\Helpers;
 
+use bemang\Config;
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
@@ -24,9 +25,12 @@ class Logger extends AbstractLogger
     {
         $reflection = new ReflectionClass(LogLevel::class);
         $cst = $reflection->getConstants();
+        $urlHelper = new Url();
+        echo('hey');
         if (in_array($level, $cst)) {
             $text = date('d/m/y - G:i:s') . ' - ' . $level . ' - Message : ' . $message . "\n";
-            file_put_contents(dirname(__FILE__) . '/../../tmp/log/phpgonelog.log', $text, FILE_APPEND);
+            echo(file_put_contents($urlHelper->getTmpPath('log') . 'phpgonelog.log', $text, FILE_APPEND));
+            echo('bonjour');
         } else {
             throw new InvalidArgumentException('Le niveau du log est invalide');
         }

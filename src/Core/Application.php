@@ -99,9 +99,17 @@ class Application
         return $this;
     }
 
-    public function checkConfig(Config $config): bool
+    public function checkConfig(Config $config)
     {
-        // TODO : Vérifier que chaque chemin est correct afin de ne pas foirer la configuration
-        return True;
+        $directory_to_check = ['publicPath', 'controllersPath', 'viewsPath', 'tmpPath'];
+        foreach ($directory_to_check as $key) {
+            if (!$config->has($key)) {
+                throw new ConfigException('Configuration incomplète, clé "' . $key . ' manquante.');
+            } else {
+                if (!is_dir($config->get($key))) {
+                    throw new ConfigException('Configuration invalide, la clé ' . $key . 'n\' est pas un dossier valide');
+                }
+            }
+        }
     }
 }

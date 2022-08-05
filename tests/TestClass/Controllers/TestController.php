@@ -41,7 +41,7 @@ class TestController extends BackController
         } elseif ($testname == 'twigrender') {
             return $this->render('test.twig', [], 'twig');
         } else {
-            return new Response('200', [], $testname . ' shit');
+            return $this->error404();
         }
     }
 

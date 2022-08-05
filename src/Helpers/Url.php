@@ -17,8 +17,8 @@ class Url
      */
     public function getTmpPath(string $custom = null): string
     {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
-        return Config::getInstance()->get('tmpPath');
+        $custom = (!is_null($custom)) ? '/' . $custom . '/' : '/';
+        return Config::getInstance()->get('tmpPath') . $custom;
     }
 
     /**
@@ -27,7 +27,7 @@ class Url
      */
     public function getViewsPath(string $custom = null): string
     {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        $custom = (!is_null($custom)) ? '/' . $custom . '/' : '/';
         return Config::getInstance()->get('viewsPath') . $custom;
     }
 
@@ -47,9 +47,9 @@ class Url
      * @throws ConfigException
      * @throws InvalidArgumentExceptionConfig
      */
-    public function getAssetsPath(string $custom = null): string
+    public function getPublicPath(string $custom = null): string
     {
-        $custom = (!is_null($custom)) ? $custom . '/' : '';
+        $custom = (!is_null($custom)) ? '/' . $custom . '/' : '/';
         return Config::getInstance()->get('publicPath') . $custom;
     }
 }

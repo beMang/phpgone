@@ -2,17 +2,27 @@
 
 namespace tests;
 
+use bemang\Config;
+use Psr\Log\LogLevel;
+use phpGone\Helpers\Url;
 use phpGone\Helpers\Logger;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LogLevel;
 
 class LogTest extends TestCase
 {
+    protected Url $urlHelper;
+
+    public function setUp(): void
+    {
+        $config = Config::getInstance();
+        $config->define(require(__DIR__ . '/TestClass/TestConfig.php'));
+        $this->urlHelper = new Url();
+    }
+    
     public function __destruct()
     {
-        if (file_exists(__DIR__ . '/../tmp/log/phpgonelog.log')) {
-            $filename = __DIR__ . '/../tmp/log/phpgonelog.log';
-
+        $filename = $this->urlHelper->getTmpPath('log') . 'phpgonelog.log';
+        if (file_exists($filename)) {
             $handle = fopen($filename, 'r+');
             ftruncate($handle, 0);
             fclose($handle);
@@ -40,7 +50,7 @@ class LogTest extends TestCase
 
     public function getLastLog()
     {
-        $tab = file(__DIR__ . '/../tmp/log/phpgonelog.log');
+        $tab = file($this->urlHelper->getTmpPath('log') . 'phpgonelog.log');
         return $der_ligne = $tab[count($tab) - 1];
     }
 

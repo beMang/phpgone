@@ -35,7 +35,7 @@ class Routeur
     public function getAttributesRoutes()
     {
         $attributes_routes = [];
-        $classes = $this->getClassesFromADir(Config::getInstance()->get('controllersPath')[0]);
+        $classes = $this->getClassesFromADir(Config::getInstance()->get('controllersPath'));
         foreach ($classes as $class) {
             $reflection = new ReflectionClass($class);
             foreach ($reflection->getMethods() as $method) {
@@ -70,7 +70,7 @@ class Routeur
     {
         if (is_file($file)) {
             $file = str_replace('//', '/', $file); //Url "propre"
-            $base_namespace = Config::getInstance()->get('controllersPath')[1];
+            $base_namespace = Config::getInstance()->get('controllersNamespace');
             $file = str_replace(
                 '.' . str_replace('\\', '/', $base_namespace),
                 '',

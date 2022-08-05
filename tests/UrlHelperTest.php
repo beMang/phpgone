@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class UrlHelperTest extends TestCase
 {
-    private $urlInstance;
+    private Url $urlInstance;
 
     public function setUp(): void
     {
@@ -38,11 +38,11 @@ class UrlHelperTest extends TestCase
         $this->assertEquals($basePath . 'test/', $customPath);
     }
 
-    public function testAssetsPath()
+    public function testPublicPath()
     {
-        $this->assertDirectoryExists($this->urlInstance->getAssetsPath());
-        $basePath = $this->urlInstance->getAssetsPath();
-        $customPath = $this->urlInstance->getAssetsPath('test');
+        $this->assertDirectoryExists($this->urlInstance->getPublicPath());
+        $basePath = $this->urlInstance->getPublicPath();
+        $customPath = $this->urlInstance->getPublicPath('test');
         $this->assertEquals($basePath . 'test/', $customPath);
     }
 }
