@@ -5,7 +5,7 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "psr/log": "3.*",
+        "psr/log": "2.*",
         "guzzlehttp/psr7": "2.*.*",
         "bemang/config-system": "1.*",
         "psr/http-server-middleware": "1.*",
