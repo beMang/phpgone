@@ -7,6 +7,8 @@ use phpGone\Helpers\Url;
 use bemang\ConfigException;
 use Psr\Http\Message\ResponseInterface;
 use bemang\InvalidArgumentExceptionConfig;
+use InvalidArgumentException;
+use phpGone\Helpers\File;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
@@ -101,6 +103,12 @@ class Application
         return $this;
     }
 
+    /**
+     * Permet de vérifier la validité des différents chemins de la config
+     *
+     * @param Config $config
+     * @return void
+     */
     public function checkConfig(Config $config): void
     {
         $directory_to_check = ['publicPath', 'controllersPath', 'viewsPath', 'tmpPath'];
@@ -117,7 +125,13 @@ class Application
         $this->checkTmpDir($url->getTmpPath());
     }
 
-    public function checkTmpDir($tmpDir): void
+    /**
+     * Permet de vérifier la validité du dossier tmp et le réparer si besoin
+     *
+     * @param string $tmpDir
+     * @return void
+     */
+    public function checkTmpDir(string $tmpDir): void
     {
         $dirToCheck = ['/log/', '/cache/twig/', 'cache/phpgone/'];
         foreach ($dirToCheck as $dir) {
@@ -127,5 +141,49 @@ class Application
                 }
             }
         }
+    }
+
+    /**
+     * Nettoie le dossier tmp
+     *
+     * @return boolean succès de l'opération
+     */
+    public function clearTmpDir(): bool
+    {
+        return ($this->clearLog() && $this->clearCache('both'));
+    }
+
+    public function clearLog(): bool
+    {
+        $url = new Url();
+        $logDir = $url->getTmpPath('log');
+        return File::clearDirectory($logDir);
+    }
+
+    public function clearCache(string $type): bool
+    {
+        if ($type == 'twig') {
+            return $this->clearTWigCache();
+        } elseif($type == 'phpgone') {
+            return $this->clearPhpgoneCache();
+        } elseif($type == 'both') {
+            return ($this->clearPhpgoneCache() && $this->clearTWigCache());
+        } else {
+            throw new InvalidArgumentException('Type inconnu de cache');
+        }
+    }
+
+    public function clearTWigCache(): bool
+    {
+        $url = new Url();
+        $to_clear = $url->getTmpPath('cache/twig');
+        return File::clearDirectory($to_clear);
+    }
+
+    public function clearPhpgoneCache(): bool
+    {
+        $url = new Url();
+        $to_clear = $url->getTmpPath('cache/phpgone');
+        return File::clearDirectory($to_clear);
     }
 }

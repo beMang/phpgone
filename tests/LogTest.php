@@ -3,6 +3,8 @@
 namespace tests;
 
 use bemang\Config;
+use GuzzleHttp\Psr7\ServerRequest;
+use phpGone\Core\Application;
 use Psr\Log\LogLevel;
 use phpGone\Helpers\Url;
 use phpGone\Helpers\Logger;
@@ -27,6 +29,10 @@ class LogTest extends TestCase
             ftruncate($handle, 0);
             fclose($handle);
         }
+        /**
+        $app = new Application(Config::getInstance(),new ServerRequest('GET', 'test'));
+        $app->clearTmpDir();
+        */
     }
 
     public function getLogger()
