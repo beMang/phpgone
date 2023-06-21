@@ -23,7 +23,6 @@ class File
                 unlink($dir_to_clean . '/' . $value);
             } else {
                 throw new RuntimeException('Erreur pour le nettoyage du dossier ' . $dir_to_clean);
-                
             }
         }
         return true;

@@ -164,9 +164,9 @@ class Application
     {
         if ($type == 'twig') {
             return $this->clearTWigCache();
-        } elseif($type == 'phpgone') {
+        } elseif ($type == 'phpgone') {
             return $this->clearPhpgoneCache();
-        } elseif($type == 'both') {
+        } elseif ($type == 'both') {
             return ($this->clearPhpgoneCache() && $this->clearTWigCache());
         } else {
             throw new InvalidArgumentException('Type inconnu de cache');
